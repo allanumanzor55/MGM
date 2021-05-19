@@ -1,10 +1,10 @@
 <?php
-class TipoEmpleado{
-    private $descripcion;
+include_once('abstract-modelo.php');
+class TipoEmpleado extends Modelo{
 
     public function __construct($descripcion)
     {
-        $this->setDescripcion($descripcion);
+        parent::__construct($descripcion);
     }
 
     public function guardar(){
@@ -25,7 +25,9 @@ class TipoEmpleado{
     static public function buscar($valor,$cnn){
 
     }
+    public function obtenerDatos(){
 
+    }
     /**
      *  Get the value of descripcion
      */ 

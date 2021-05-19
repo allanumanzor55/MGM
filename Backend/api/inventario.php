@@ -5,12 +5,13 @@ include_once('../class/class-conexion.php');
 //crear conexion para metodos estaticos, ya que en estos nos se pueden instanciar clases
 $db = new Conexion();
 $cnn = $db->getConexion();
+$_POST = json_decode(file_get_contents("php://input"), true); 
 switch($_SERVER['REQUEST_METHOD']){
     case 'POST'://guardar
-        $inventario = new Inventario($_POST['descripcion'],$_POST['categoria'],$_POST['estilo'],
-                                    $_POST['talla'],$_POST['proveedor'],$_POST['color'],
-                                    floatval($_POST['precio']),intval($_POST['precio']));
-        $inventario->guardar();
+        $inventario = new Inventario($_POST['descripcion'],$_POST['categoria'],$_POST['proveedor'],
+                                    $_POST['talla'],$_POST['color'],floatval($_POST['precio']),
+                                    intval($_POST['stock']));
+        echo $inventario->guardar();
     break;
     case 'GET'://visualizar
         $response;
@@ -24,13 +25,13 @@ switch($_SERVER['REQUEST_METHOD']){
     break; 
     case 'PUT'://modificar
         $_PUT = json_decode(file_get_contents("php://input"), TRUE);
-        $inventario = new Inventario($_PUT['descripcion'],$_PUT['categoria'],$_PUT['estilo'],
-                                    $_PUT['talla'],$_PUT['proveedor'],$_PUT['color'],
-                                    floatval($_PUT['precio']),intval($_PUT['precio']));
-        $inventario->modificar();
+        $inventario = new Inventario($_PUT['descripcion'],$_PUT['categoria'],$_PUT['proveedor'],
+                                    $_PUT['talla'],$_PUT['color'],floatval($_PUT['precio']),
+                                    intval($_PUT['stock']));
+        echo $inventario->modificar($_GET['id']);
     break;
     case 'DELETE'://eliminar
-        Inventario::eliminar($_GET['id'],$cnn);
+        echo Inventario::eliminar($_GET['id'],$cnn);
     break;
 }
 ?>

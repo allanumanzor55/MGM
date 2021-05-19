@@ -1,4 +1,5 @@
 <?php
+//
 class Conexion {
     private $conexion = null;
     private $db;

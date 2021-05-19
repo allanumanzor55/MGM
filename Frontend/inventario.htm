@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <title>Inventario</title>
+</head>
+<body>
+    <body id="bg-landing" class="container-fluid px-0">
+        <div class="container-fluid bg-opacity h-100 w-100">
+            <header>
+                <nav class="navbar navbar-expand navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-light bg-light py-0 fixed-top">
+                    <a class="navbar-brand mx-0" href="#">
+                        <img src="img/logo-3.png" alt="" width="65" height="60" class="d-inline-block align-text-top">
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                          <li class="nav-item">
+                            <a href="#" class="nav-link btn-mg-1 fs-4 bi bi-search mt-1"></a>
+                          </li>
+                          <ul class="navbar-nav mt-2">
+                            <li class="nav-item">
+                              <a class="nav-link btn-mg-1 bi" aria-current="page" href="home.htm">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link btn-mg-1 bi" aria-current="page" href="inventario.htm">Inventario</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-mg-1 bi" aria-current="page" href="empleados.htm">Empleados</a>
+                              </li>
+                            <li class="nav-item">
+                              <a class="nav-link btn-mg-1 bi" href="clientes.htm">Clientes</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link btn-mg-1 bi" href="ventas.htm" tabindex="-1" aria-disabled="true">Ventas</a>
+                            </li>
+                          </ul>
+                        </ul>
+                        <div class="d-flex" id="navbarTogglerDemo03">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link btn-mg-1 fs-3 bi bi-person-circle" data-bs-toggle="offcanvas" href="#perfilCanvas" role="button" aria-controls="perfilCanvas"></a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link btn-mg-1 fs-3 bi bi-gear" href="setting.htm"></a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div class="row" style="min-height: 10.8vh !important;">
+            </div>
+            <main class="row px-5">
+              <div class="container vw-100 vh-100 bg-light pt-1">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role=" presentation">
+                    <button class="nav-link nav-link-mg-1 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#ingresar" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link nav-link-mg-1" id="registro-tab" data-bs-toggle="tab" data-bs-target="#registro" type="button" role="tab" aria-controls="registro" aria-selected="false">Registro</button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="ingresar" role="tabpanel" aria-labelledby="ingresar-tab">
+                    <div class="container">
+                      <form>
+
+                      </form>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="registro" role="tabpanel" aria-labelledby="registro-tab">...</div>
+                </div>
+              </div>
+            </main>
+        </div>
+
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="perfilCanvas" aria-labelledby="perfilCanvasLabel">
+            <div class="offcanvas-header">
+              <h5 id="perfilCanvasLabel">Perfil</h5>
+              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              ...
+            </div>
+          </div>
+        </div>
+    </body>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

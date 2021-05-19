@@ -20,11 +20,9 @@ class Cliente extends Persona{
         try{
             $query = $this->cnn->prepare("CALL guardarCliente(:tipoCliente,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad);");
             $query->execute($this->obtenerDatos());
-            return '{"mensaje":"registro agregado exitosamente","centinela":"true"}';
+            return Acciones::error_message("agregado",true);
         }catch(Exception $e){
-            return '{"mensaje":"'.$e->getMessage().'"
-                    ,"trazo:":'.json_encode($e->getTrace(),true).'}
-                    ,"centinela":"false"}';
+            return Acciones::error_message($e,false);
         }
     }
     static public function obtener($id,$cnn){
@@ -34,9 +32,7 @@ class Cliente extends Persona{
             $result = $query->fetch(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
-            return '{"mensaje":"'.$e->getMessage().'"
-                    ,"trazo:":'.json_encode($e->getTrace(),true).'}
-                    ,"centinela":"false"}';
+            return Acciones::error_message($e,false);
         }
     }
     static public function obtenerTodos($cnn){
@@ -46,9 +42,7 @@ class Cliente extends Persona{
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
-            return '{"mensaje":"'.$e->getMessage().'"
-                    ,"trazo:":'.json_encode($e->getTrace(),true).'}
-                    ,"centinela":"false"}';
+            return Acciones::error_message($e,false);
         }
     }
     public function modificar($id){
@@ -58,18 +52,16 @@ class Cliente extends Persona{
             unset($datos['tipoCliente']);
             $datos["id"]=$id;
             $query->execute($datos);
-            return '{"mensaje":"registro modificado exitosamente","centinela":"true"}';
+            return Acciones::error_message("modificado",true);
         }catch(Exception $e){
-            return '{"mensaje":"'.$e->getMessage().'"
-                    ,"trazo:":'.json_encode($e->getTrace(),true).'}
-                    ,"centinela":"false"}';
+            return Acciones::error_message($e,false);
         }
     }
     static public function eliminar($id,$cnn){
         try{
             $query = $cnn->prepare("CALL eliminarCliente(:id)");
             $query->execute(array("id"=>$id));
-            return '{"mensaje":"registro eliminado exitosamente","centinela":"true"}';
+            return Acciones::error_message("eliminado",true);
         }catch(Exception $e){
             return '{"mensaje":"'.$e->getMessage().'"
                     ,"trazo:":'.json_encode($e->getTrace(),true).'}
@@ -83,9 +75,7 @@ class Cliente extends Persona{
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
-            return '{"mensaje":"'.$e->getMessage().'"
-                    ,"trazo:":'.json_encode($e->getTrace(),true).'}
-                    ,"centinela":"false"}';
+            return Acciones::error_message($e,false);
         }
     }
 

@@ -20,9 +20,9 @@ class Empleado extends Persona{
         try{
             $query = $this->cnn->prepare("CALL guardarEmpleado(:tipoEmpleado,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:sueldo);");
             $query->execute($this->obtenerDatos());
-            return '{"mensaje":"registro agregado exitosamente","centinela":"true"}';
+            return Acciones::error_message("agregado",true);
         }catch(Exception $e){
-            return '{"mensaje":"'.$e.'", "centinela":"false"';
+            return Acciones::error_message($e,false);
         }
     }
     static public function obtener($id,$cnn){
@@ -32,7 +32,7 @@ class Empleado extends Persona{
             $result = $query->fetch(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
-            return '{"mensaje":"'.$e.'", "centinela":"false"';
+            return Acciones::error_message($e,false);
         }
     }
     static public function obtenerTodos($cnn){
@@ -42,7 +42,7 @@ class Empleado extends Persona{
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
-            return '{"mensaje":"'.$e.'", "centinela":"false"';
+            return Acciones::error_message($e,false);
         }
     }
     public function modificar($id){
@@ -52,18 +52,18 @@ class Empleado extends Persona{
             unset($datos['tipoEmpleado']);
             $datos["id"]=$id;
             $query->execute($datos);
-            return '{"mensaje":"registro modificado exitosamente","centinela":"true"}';
+            return Acciones::error_message("modificado",true);
         }catch(Exception $e){
-            return '{"mensaje":"'.$e.'", "centinela":"false"';
+            return Acciones::error_message($e,false);
         }
     }
     static public function eliminar($id,$cnn){
         try{
             $query = $cnn->prepare("CALL eliminarEmpleado(:id)");
             $query->execute(array("id"=>$id));
-            return '{"mensaje":"registro eliminado exitosamente","centinela":"true"}';
+            return Acciones::error_message("eliminado",true);
         }catch(Exception $e){
-            return '{"mensaje":"'.$e.'", "centinela":"false"';          
+            return Acciones::error_message($e,false);
         }
     }
     static public function buscar($valor,$cnn){
@@ -73,7 +73,7 @@ class Empleado extends Persona{
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
-            return '{"mensaje":"'.$e.'", "centinela":"false"';
+            return Acciones::error_message($e,false);
         }
     }
 

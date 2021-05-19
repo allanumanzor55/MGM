@@ -1,7 +1,9 @@
 <?php
 include_once('class-conexion.php');
 include_once('interface-crud.php');
+include_once('trait-acciones.php');
 abstract class Persona extends Conexion implements CRUD{
+    use Acciones;
     private $dni;
     private $nombre;
     private $primerApellido;

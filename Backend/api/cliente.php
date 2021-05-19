@@ -4,7 +4,6 @@ include_once('../class/class-cliente.php');
 //crear conexion para metodos estaticos, ya que en estos nos se pueden instanciar clases
 $db = new Conexion();
 $cnn = $db->getConexion();
-$_POST = json_decode(file_get_contents("php://input"), true); 
 switch($_SERVER['REQUEST_METHOD']){
     case 'POST'://guardar
         $cliente = new Cliente( intval($_POST['tipoCliente']),$_POST['dni'],$_POST['nombre'],$_POST['primerApellido'],

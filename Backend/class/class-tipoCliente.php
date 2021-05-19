@@ -1,10 +1,11 @@
 <?php
-class TipoCliente{
+include_once('abstract-modelo.php');
+class TipoCliente extends Modelo{
     private $descripcion;
 
     public function __construct($descripcion)
     {
-        $this->setDescripcion($descripcion);
+        parent::__construct($descripcion);
     }
 
     public function guardar(){
@@ -24,6 +25,10 @@ class TipoCliente{
     }
     static public function buscar($valor,$cnn){
 
+    }
+
+    public function obtenerDatos(){
+        
     }
 
     /**

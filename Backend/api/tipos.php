@@ -3,7 +3,8 @@
     //crear conexion para metodos estaticos, ya que en estos nos se pueden instanciar clases
     $db = new Conexion();
     $cnn = $db->getConexion();
-    if($_POST['clase']=="cliente"){
+    $_POST = json_decode(file_get_contents("php://input"), true); 
+    if($_GET['clase']=="cliente"){
         include_once('../class/class-tipoCliente.php');
         switch($_SERVER['REQUEST_METHOD']){
             case 'POST'://guardar
@@ -28,7 +29,7 @@
                 echo TipoCliente::eliminar($_GET['id'],$cnn);
             break;
         }
-    }elseif($_POST['clase']=="empleado"){
+    }elseif($_GET['clase']=="empleado"){
         include_once('../class/class-tipoEmpleado.php');
         switch($_SERVER['REQUEST_METHOD']){
             case 'POST'://guardar

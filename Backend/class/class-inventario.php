@@ -1,47 +1,105 @@
 <?php
 include_once('class-conexion.php');
 include_once('interface-crud.php');
+include_once('trait-acciones.php');
 class Inventario extends Conexion implements CRUD{
+    use Acciones;
     private $descripcion;
     private $categoria;
-    private $estilo;
     private $talla;
     private $proveedor;
     private $color;
     private $precio;
     private $stock;
+    private $cnn;
+    private $db;
     
-    public function __construct($descripcion,$categoria,$estilo,$talla,$proveedor,$color,$precio,$stock)
+    public function __construct($descripcion,$categoria,$proveedor,$talla,$color,$precio,$stock)
     {
         $this->setDescripcion($descripcion);
         $this->setCategoria($categoria);
-        $this->setEstilo($estilo);
+        $this->setTalla($talla);
         $this->setProveedor($proveedor);
         $this->setColor($color);
         $this->setPrecio($precio);
         $this->setStock($stock);
+        $this->db = new Conexion();
+        $this->cnn = $this->db->getConexion();
     }
-    public function FunctionName(Type $var = null)
-    {
-        # code...
-    }
+    
     public function guardar(){
-        
+        try{
+            $query = $this->cnn->prepare("CALL agregarProducto(:descripcion,:categoria,:proveedor,:talla,:color,:stock,:precio);");
+            $query->execute($this->obtenerDatos());
+            return Acciones::error_message("agregado",true);
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
     }
     static public function obtener($id,$cnn){
-
+        try{
+            $query = $cnn->prepare("CALL obtenerProducto(:id)");
+            $query->execute(array("id"=>$id));
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
     }
     static public function obtenerTodos($cnn){
-
+        try{
+            $query = $cnn->prepare("CALL obtenerProductos()");
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
     }
-    public function modificar($id){
 
+    public function modificar($id){
+        try{
+            $query = $this->cnn->prepare("CALL modificarProducto(:descripcion,:categoria,:proveedor,:talla,:color,:stock,:precio,:id);");
+            $datos = $this->obtenerDatos();
+            unset($datos['tipoProducto']);
+            $datos["id"]=$id;
+            $query->execute($datos);
+            return Acciones::error_message("modificado",true);
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
     }
     static public function eliminar($id,$cnn){
-
+        try{
+            $query = $cnn->prepare("CALL eliminarProducto(:id)");
+            $query->execute(array("id"=>$id));
+            return Acciones::error_message("eliminado",true);
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
     }
     static public function buscar($valor,$cnn){
+        try {
+            $query = $cnn->prepare("CALL buscarProducto(:valor)");
+            $query->execute(array("valor"=>$valor));
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
 
+    public function obtenerDatos()
+    {
+        return array(
+            "descripcion"=>$this->getDescripcion(),
+            "categoria"=>$this->getCategoria(),
+            "proveedor"=>$this->getProveedor(),
+            "talla"=>$this->getTalla(),
+            "color"=>$this->getColor(),
+            "stock"=>$this->getStock(),
+            "precio"=>$this->getPrecio()
+        );
     }
 
     /**

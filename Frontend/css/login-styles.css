@@ -1,0 +1,17 @@
+#bg-login{
+    background-image: url('../img/back-5.jpg') !important;
+    background-attachment: fixed;
+    background-size: 50%;
+}
+
+#gradient{
+    background-image: url('../img/back-13.webp') !important;
+}
+
+.rounded-mg{
+    border-radius: 20px !important;
+}
+
+.btn-primary-mg{
+    background-color: tomato !important;
+}

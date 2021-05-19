@@ -36,6 +36,10 @@ class Facturacion extends Conexion implements CRUD{
 
     }
 
+    public function obtenerDatos()
+    {
+        
+    }
     /**
      * Get the value of pedido
      */ 

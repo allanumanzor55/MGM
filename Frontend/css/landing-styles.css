@@ -1,0 +1,94 @@
+
+#bg-landing{
+    background-image: url('../img/back-5.jpg') !important;
+    background-attachment: fixed;
+    background-size: 50%;
+}
+
+body#bg-landing::-webkit-scrollbar{
+    display: none;
+}
+.bg-opacity{
+    background-image: url('../img/back-13.webp') !important;
+    background-repeat: repeat !important; 
+}
+
+
+#navbar-lp.bg-light{
+    background-color: rgba(255,255,255, 0.8) !important;
+}
+.btn-mg-1{
+    transition-property: all, background, left !important;
+    transition-duration: 0.2s !important;
+    -webkit-transition-property: all, background, left !important;
+    -webkit-transition-duration: 0.2s !important;
+    -o-transition-property: all, background, left !important;
+    -o-transition-duration: 0.2s !important;
+}
+
+.nav-link.btn-mg-1.bi:hover{
+    background: -webkit-linear-gradient(yellow,red) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: tomato !important;
+    transition-property: all, background, left;
+    transition-duration: 0.2s;
+    -webkit-transition-property: all, background, left;
+    -webkit-transition-duration: 0.2s;
+    -o-transition-property: all, background, left;
+    -o-transition-duration: 0.2s;
+}
+.navbar.navbar-mg-1{
+    transition-property: all, background, left !important;
+    transition-duration: 0.2s !important;
+    -webkit-transition-property: all, background, left !important;
+    -webkit-transition-duration: 0.2s !important;
+    -o-transition-property: all, background, left !important;
+    -o-transition-duration: 0.2s !important;
+}
+.navbar.navbar-mg-1:hover{
+    background: -webkit-linear-gradient(yellow,red) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: tomato !important;
+    transition-property: all, background, left;
+    transition-duration: 0.2s;
+    -webkit-transition-property: all, background, left;
+    -webkit-transition-duration: 0.2s;
+    -o-transition-property: all, background, left;
+    -o-transition-duration: 0.2s;
+}
+#logo-text-mg-1{
+    transition-duration: 1s !important;
+}
+h1#logo-text-mg-1:hover{  
+    font-size: 85px !important;
+}
+
+.btn-mg-2{
+    background: -webkit-linear-gradient(yellow,red) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: tomato !important;
+}
+.radio-mg-1:checked{
+    background-color: tomato !important;
+    border: none !important;
+}
+
+.nav-link.nav-link-mg-1{
+    color: tomato !important;
+}
+
+.nav-link.nav-link-mg-1.active{
+    color: red !important;
+}
+
+.nav-link.nav-link-mg-2{
+    color: tomato !important;
+}
+
+.nav-link.nav-link-mg-2.active{
+    background-color: red !important;
+    color:white !important;
+}
