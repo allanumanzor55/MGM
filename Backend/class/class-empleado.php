@@ -45,6 +45,18 @@ class Empleado extends Persona{
             return Acciones::error_message($e,false);
         }
     }
+
+    static public function obtenerPorTipo($cnn,$tipo){
+        try{
+            $query = $cnn->prepare("CALL obtenerEmpleadosPorTipo(:tipo)");
+            $query->execute(array("tipo"=>$tipo));
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
+
     public function modificar($id){
         try{
             $query = $this->cnn->prepare("CALL modificarEmpleado(:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:sueldo,:id)");

@@ -1,19 +1,21 @@
 <?php
-include_once('interface-crud.php');
-include_once('abstract-modelo.php');
-class Categoria extends Modelo implements CRUD{
-    private $tipo;
-    private $estilo;
-    public function __construct($tipo,$estilo)
+include_once('abstract-inventario.php');
+class InventarioMaterial extends Inventario{
+    private $marca;
+    private $proveedor;
+    
+    public function __construct($descripcion,$marca,$proveedor,$precio,$stock)
     {
-        parent::__construct0();
-        $this->setTipo($tipo);
-        $this->setEstilo($estilo);
+        parent::__construct($descripcion,$precio,$stock);
+        $this->setMarca($marca);
+        $this->setProveedor($proveedor);
+        $this->db = new Conexion();
+        $this->cnn = $this->db->getConexion();
     }
-
+    
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL agregarCategoria(:tipo,:estilo)");
+            $query = $this->cnn->prepare("CALL agregarMaterial(:descripcion,:marca,:proveedor,:precio,:stock);");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -22,7 +24,7 @@ class Categoria extends Modelo implements CRUD{
     }
     static public function obtener($id,$cnn){
         try{
-            $query = $cnn->prepare("CALL obtenerCategoria(:id)");
+            $query = $cnn->prepare("CALL obtenerMaterial(:id)");
             $query->execute(array("id"=>$id));
             $result = $query->fetch(PDO::FETCH_ASSOC);
             return $result;
@@ -30,21 +32,9 @@ class Categoria extends Modelo implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
-
-    static public function obtenerPorTipo($tipo,$cnn){
-        try{
-            $query = $cnn->prepare("CALL obtenerCategoriasPorTipo(:tipo)");
-            $query->execute(array("tipo"=>$tipo));
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
-        }catch(Exception $e){
-            return Acciones::error_message($e,false);
-        }
-    }
-
     static public function obtenerTodos($cnn){
         try{
-            $query = $cnn->prepare("CALL obtenerCategorias()");
+            $query = $cnn->prepare("CALL obtenerMateriales()");
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -52,9 +42,10 @@ class Categoria extends Modelo implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
+
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarCategoria(:tipo,:estilo,:id)");
+            $query = $this->cnn->prepare("CALL modificarMaterial(:descripcion,:marca,:proveedor,:precio,:stock,:id);");
             $datos = $this->obtenerDatos();
             $datos["id"]=$id;
             $query->execute($datos);
@@ -65,7 +56,7 @@ class Categoria extends Modelo implements CRUD{
     }
     static public function eliminar($id,$cnn){
         try{
-            $query = $cnn->prepare("CALL eliminarCategoria(:id)");
+            $query = $cnn->prepare("CALL eliminarMaterial(:id)");
             $query->execute(array("id"=>$id));
             return Acciones::error_message("eliminado",true);
         }catch(Exception $e){
@@ -74,7 +65,7 @@ class Categoria extends Modelo implements CRUD{
     }
     static public function buscar($valor,$cnn){
         try {
-            $query = $cnn->prepare("CALL buscarCategoria(:valor)");
+            $query = $cnn->prepare("CALL buscarMaterial(:valor)");
             $query->execute(array("valor"=>$valor));
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -82,42 +73,57 @@ class Categoria extends Modelo implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
+
     public function obtenerDatos()
     {
         return array(
-            "tipo"=>$this->getTipo(),
-            "estilo"=>$this->getEstilo()
+            "descripcion"=>$this->getDescripcion(),
+            "marca"=>$this->getMarca(),
+            "proveedor"=>$this->getProveedor(),
+            "precio"=>$this->getPrecio(),
+            "stock"=>$this->getStock()
         );
     }
+
     
-    public function getTipo()
+    /**
+     * Get the value of marca
+     */ 
+    public function getMarca()
     {
-        return $this->tipo; 
+        return $this->marca;
     }
 
-    public function setTipo($tipo)
+    /**
+     * Set the value of marca
+     *
+     * @return  self
+     */ 
+    public function setMarca($marca)
     {
-        $this->tipo=$tipo;
+        $this->marca = $marca;
+
+        return $this;
     }
 
-    public function getMaterial()
+    /**
+     * Get the value of proveedor
+     */ 
+    public function getProveedor()
     {
-        return $this->material; 
+        return $this->proveedor;
     }
 
-    public function setMaterial($material)
+    /**
+     * Set the value of proveedor
+     *
+     * @return  self
+     */ 
+    public function setProveedor($proveedor)
     {
-        $this->material=$material;
-    }
+        $this->proveedor = $proveedor;
 
-    public function getEstilo()
-    {
-        return $this->estilo; 
-    }
-
-    public function setEstilo($estilo)
-    {
-        $this->estilo=$estilo;
+        return $this;
     }
 }
 ?>

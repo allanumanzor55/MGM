@@ -28,6 +28,11 @@ BEGIN
     SELECT * FROM empleados WHERE idEmpleado = _id AND estado = 1;
 END/
 
+CREATE PROCEDURE obtenerEmpleadosPorTipo(IN _tipo INT )
+BEGIN
+    SELECT * FROM empleados WHERE tipoEmpleado = _tipo AND estado = 1;
+END/
+
 CREATE PROCEDURE modificarEmpleado(IN _dni TINYTEXT,
 IN _nombre TINYTEXT, IN _primerApellido TINYTEXT, IN _segundoApellido TINYTEXT,
 IN _direccion TINYTEXT, IN _correo TINYTEXT, IN _celular TINYTEXT, IN _telefono TINYTEXT,
@@ -58,6 +63,3 @@ BEGIN
     WHERE estado=1 AND 
     (nombre LIKE CONCAT('%',_valor,'%') OR primerApellido LIKE CONCAT('%',_valor,'%') OR segundoApellido LIKE CONCAT('%',_valor,'%'));
 END/
-
-
-/**SELECT CONVERT( AES_DECRYPT(usuarios.password,CONCAT(usuarios.usuario,usuarios.idPermiso,usuarios.usuario)) USING utf8) FROM usuarios;**/

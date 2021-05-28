@@ -92,3 +92,7 @@ h1#logo-text-mg-1:hover{
     background-color: red !important;
     color:white !important;
 }
+
+.btn-outline-warning:hover{
+    color:white !important;
+}

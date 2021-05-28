@@ -10,7 +10,7 @@
 </head>
 <body>
     <body id="bg-landing" class="container-fluid px-0">
-        <div class="container-fluid bg-opacity h-100 w-100">
+        <div class="container-fluid bg-opacity min-h-100 min-w-100">
             <header>
                 <nav class="navbar navbar-expand navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-light bg-light py-0 fixed-top">
                     <a class="navbar-brand mx-0" href="#">
@@ -45,8 +45,8 @@
                                     <a class="nav-link btn-mg-1 fs-3 bi bi-person-circle" data-bs-toggle="offcanvas" href="#perfilCanvas" role="button" aria-controls="perfilCanvas"></a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link btn-mg-1 fs-3 bi bi-gear" href="setting.htm"></a>
-                              </li>
+                                  <a href="#" class="nav-link btn-mg-1 fs-3 bi bi-gear" onclick="accederConfiguraciones(this)"></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -55,25 +55,268 @@
             <div class="row" style="min-height: 10.8vh !important;">
             </div>
             <main class="row px-5">
-              <div class="container vw-100 vh-100 bg-light pt-1">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item" role=" presentation">
-                    <button class="nav-link nav-link-mg-1 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#ingresar" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link nav-link-mg-1" id="registro-tab" data-bs-toggle="tab" data-bs-target="#registro" type="button" role="tab" aria-controls="registro" aria-selected="false">Registro</button>
-                  </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active" id="ingresar" role="tabpanel" aria-labelledby="ingresar-tab">
-                    <div class="container">
-                      <form>
+              <div class="container vw-100 min-vh-100 bg-light pt-1">
+                <div class="table-responsive align-items-start bg-light min-vh-100 pt-2">
+                  <ul class="nav nav-pills mb-3" id="pills-tabInventario" role="tablist">
+                      <li class="nav-item" role="presentation">
+                          <button class="nav-link nav-link-mg-2 active" id="inventarioMateriaPrimaTab" data-bs-toggle="pill"
+                          data-bs-target="#tabContentInventarioMateriaPrima" type="button" role="tab"
+                          aria-controls="inventarioMateriaPrima" aria-selected="true">Materia prima</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-mg-2" id="inventarioMaterialesTab" data-bs-toggle="pill"
+                        data-bs-target="#tabContentInventarioMateriales" type="button" role="tab"
+                        aria-controls="inventarioMateriales" aria-selected="false">Materiales</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-mg-2" id="inventarioHerramientasTab" data-bs-toggle="pill"
+                        data-bs-target="#tabContentInventarioHerramientas" type="button" role="tab"
+                        aria-controls="inventarioHerramientas" aria-selected="false">
+                            Herramientas
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link nav-link-mg-2" id="inventarioGeneralTab" data-bs-toggle="pill"
+                        data-bs-target="#tabContentInventarioGeneral" type="button" role="tab"
+                        aria-controls="inventarioGeneral" aria-selected="false">
+                            General
+                        </button>
+                      </li>
+                  </ul>
+                  <div class="tab-content min-vh-50" id="pills-tabContentInventario">
+                      <!--CONTENIDO DE FORMULARIOS Y CARDS-->
+                      <!--Materia Prima-->
+                      <div class="tab-pane fade show active" id="tabContentInventarioMateriaPrima" role="tabpanel"
+                      aria-labelledby="inventarioMateriaPrimaTab">
+                        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                          <li class="nav-item" role=" presentation">
+                            <button class="nav-link nav-link-mg-1 active" id="ingresarPrima-tab" data-bs-toggle="tab" data-bs-target="#ingresarPrima" type="button" role="tab" aria-controls="ingresarPrima" aria-selected="true">Ingresar</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link nav-link-mg-1" id="cardInventarioPrima-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioPrima" type="button" role="tab" aria-controls="cardInventarioPrima" aria-selected="false"
+                            onclick="refrescarCardsInventario('Prima')">Registros Inventario</button>
+                          </li>
+                          <li class="nav-item col ms-2" role="presentation">
+                            <input type="text" class="form-control" placeholder="Buscar" id="buscarPrima" onkeyup="buscarInventario(this.value,'Prima')">
+                          </li>
+                        </ul>
+                        <div class="tab-content min-vh-50" id="tabContentInventarioMateriaPrima">
+                          <div class="tab-pane fade show active" id="ingresarPrima" role="tabpanel" aria-labelledby="ingresarPrima-tab">
+                            <div class="container">
+                              <form id="formInventarioPrima" class="row" enctype="multipart/form-data">
+                                <input type="hidden" name="id" id="idInventarioPrima">
+                                <div class="col-12">
+                                    <label for="selectCategoria" class="form-label">Categoria</label>
+                                    <select class="form-select" name="categoria" id="selectCategoria"
+                                    onchange="rellenarSelectEstilo(this.value)">
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                  <label for="selectEstilo" class="form-label">Estilo</label>
+                                  <select class="form-select" name="estilo" id="selectEstilo">
+                                  </select>
+                                </div>
+                                <div class="col-12">
+                                  <label for="selectTalla" class="form-label">Talla</label>
+                                  <select class="form-select" name="talla" id="selectTalla">
+                                  </select>
+                                </div>
+                                <div class="col-12">
+                                  <label for="selectProveedor" class="form-label">Proveedor</label>
+                                  <select class="form-select" name="proveedor" id="selectProveedorInvPrima">
+                                    <option value="1">TelMax</option>
+                                  </select>
+                                </div>
+                                <div class="col-12">
+                                  <label for="formFile" class="form-label">Fotografia</label>
+                                  <input class="form-control" type="file" name="foto" id="fotoInvPrima">
+                                </div>
+                                <div class="col-12">
+                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" name="descripcion" id="descripcionInvPrima">
+                                </div>
+                                <div class="col-12">
+                                    <label for="color" class="form-label">Color</label>
+                                    <input type="text" name="color" class="form-control" id="color">
+                                </div>
+                                <div class="col-12">
+                                  <label for="stock" class="form-label">Stock</label>
+                                  <input type="number" name="stock" class="form-control" id="stockInvPrima">
+                              </div>
+                                <div class="col-12">
+                                    <label for="precio" class="form-label">Precio</label>
+                                    <input type="number" name="precio" class="form-control" id="precioInvPrima">
+                                </div>
+                                <div class="row justify-content-center my-3">
+                                  <div class="col-5">
+                                    <a class="btn btn-danger btn-block" onclick="guardarInventario(this,'Prima')" style="display: block !important">Guardar</a>
+                                    <a class="btn btn-success btn-block" onclick="confirmarModificarInventario(this,'Prima')" style="display: none !important;">Modificar</a>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade min-vh-50" id="cardInventarioPrima" role="tabpanel" aria-labelledby="cardInventarioPrima-tab">
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <!--Materiales-->
+                      <div class="tab-pane fade show" id="tabContentInventarioMateriales" role="tabpanel"
+                      aria-labelledby="inventarioMateriaPrimaTab">
+                        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                          <li class="nav-item" role=" presentation">
+                            <button class="nav-link nav-link-mg-1 active" id="ingresarMaterial-tab" data-bs-toggle="tab" data-bs-target="#ingresarMaterial" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link nav-link-mg-1" id="cardInventarioMaterial-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioMaterial" type="button" role="tab" aria-controls="cardInventario" aria-selected="false"
+                            onclick="refrescarCardsInventario('Material')">Registros Materiales</button>
+                          </li>
+                        </ul>
 
-                      </form>
-                    </div>
+                        <div class="tab-content min-vh-50" id="myTabContent">
+                          <div class="tab-pane fade show active min-vh-50" id="ingresarMaterial" role="tabpanel" aria-labelledby="ingresarMaterial-tab">
+                            <div class="container">
+                              <form id="formInventarioMaterial" class="row g-3" enctype="multipart/form-data">
+                                <input type="hidden" name="id" id="idInventarioMaterial">
+                                <div class="col-12">
+                                  <label for="selectProveedor" class="form-label">Proveedor</label>
+                                  <select class="form-select" name="proveedor" id="selectProveedorInvMaterial">
+                                    <option value="1">TelMax</option>
+                                  </select>
+                                </div>
+                                <div class="col-12">
+                                  <label for="formFile" class="form-label">Fotografia</label>
+                                  <input class="form-control" type="file" name="foto" id="fotoInvMaterial">
+                                </div>
+                                <div class="col-12">
+                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" name="descripcion" id="descripcionInvMaterial">
+                                </div>
+                                <div class="col-12">
+                                    <label for="marca" class="form-label">Marca</label>
+                                    <input type="text" name="marca" class="form-control" id="marca">
+                                </div>
+                                <div class="col-12">
+                                  <label for="stock" class="form-label">Stock</label>
+                                  <input type="number" name="stock" class="form-control" id="stockInvMaterial">
+                              </div>
+                                <div class="col-12">
+                                    <label for="precio" class="form-label">Precio</label>
+                                    <input type="number" name="precio" class="form-control" id="precioInvMaterial">
+                                </div>
+                                <div class="row justify-content-center my-3">
+                                  <div class="col-5">
+                                    <a class="btn btn-danger btn-block" onclick="guardarInventario(this,'Material')" style="display: block !important">Guardar</a>
+                                    <a class="btn btn-success btn-block" onclick="confirmarModificarInventario(this,'Material')" style="display: none !important;">Modificar</a>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade min-vh-50" id="cardInventarioMaterial" role="tabpanel" aria-labelledby="cardInventarioMat-tab">
+                            <h1>MATERIALES</h1>
+                          </div>
+                        </div>
+                      </div>
+                      <!--Herramientas-->
+                      <div class="tab-pane fade show" id="tabContentInventarioHerramientas" role="tabpanel"
+                      aria-labelledby="inventarioMateriaPrimaTab">
+                        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                          <li class="nav-item" role=" presentation">
+                            <button class="nav-link nav-link-mg-1 active" id="ingresarHerramienta-tab" data-bs-toggle="tab" data-bs-target="#ingresarHerramienta" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link nav-link-mg-1" id="cardInventarioHerramienta-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioHerramienta" type="button" role="tab" aria-controls="cardInventario" aria-selected="false"
+                            onclick="refrescarCardsInventario('Herramienta')">Registros Herramientas</button>
+                          </li>
+                        </ul>
+                        <div class="tab-content min-vh-50" id="myTabContent">
+                          <div class="tab-pane fade show active" id="ingresarHerramienta" role="tabpanel" aria-labelledby="ingresarHerramienta-tab">
+                            <div class="container">
+                              <form id="formInventarioHerramienta" class="row g-3" enctype="multipart/form-data">
+                                <input type="hidden" name="id" id="idInventarioHerramienta">
+                                <div class="col-12">
+                                  <label for="selectProveedor" class="form-label">Proveedor</label>
+                                  <select class="form-select" name="proveedor" id="selectProveedorInvHerramienta">
+                                    <option value="1">TelMax</option>
+                                  </select>
+                                </div>
+                                <div class="col-12">
+                                  <label for="formFile" class="form-label">Fotografia</label>
+                                  <input class="form-control" type="file" name="foto" id="fotoInvHerramienta">
+                                </div>
+                                <div class="col-12">
+                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" name="descripcion" id="descripcionInvHerramienta">
+                                </div>
+                                <div class="col-12">
+                                    <label for="marca" class="form-label">Marca</label>
+                                    <input type="text" name="marca" class="form-control" id="marcaInvHerramienta">
+                                </div>
+                                <div class="col-12">
+                                  <label for="stock" class="form-label">Stock</label>
+                                  <input type="number" name="stock" class="form-control" id="stockInvHerramienta">
+                                </div>
+                                <div class="row justify-content-center my-3">
+                                  <div class="col-5">
+                                    <a class="btn btn-danger btn-block" onclick="guardarInventario(this,'Herramienta')" style="display: block !important">Guardar</a>
+                                    <a class="btn btn-success btn-block" onclick="confirmarModificarInventario(this,'Herramienta')" style="display: none !important;">Modificar</a>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade min-vh-50" id="cardInventarioHerramienta" role="tabpanel" aria-labelledby="cardInventarioHerramienta-tab">
+                            <h1>HERRAMIENTA</h1>
+                          </div>
+                        </div>
+                      </div>
+                      <!--General-->
+                      <div class="tab-pane fade show" id="tabContentInventarioGeneral" role="tabpanel"
+                      aria-labelledby="inventarioMateriaPrimaTab">
+                        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                          <li class="nav-item" role=" presentation">
+                            <button class="nav-link nav-link-mg-1 active" id="ingresarGeneral-tab" data-bs-toggle="tab" data-bs-target="#ingresarGeneral" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link nav-link-mg-1" id="cardInventarioGeneral-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioGeneral" type="button" role="tab" aria-controls="cardInventario" aria-selected="false"
+                            onclick="refrescarCardsInventario('General')">Registros Inventario General</button>
+                          </li>
+                        </ul>
+                        <div class="tab-content min-vh-50" id="myTabContent">
+                          <div class="tab-pane fade show active" id="ingresarGeneral" role="tabpanel" aria-labelledby="ingresarGeneral-tab">
+                            <div class="container">
+                              <form id="formInventarioGeneral" class="row g-3" enctype="multipart/form-data">
+                                <input type="hidden" name="id" id="idInventarioGeneral">
+                                <div class="col-12">
+                                  <label for="formFile" class="form-label">Fotografia</label>
+                                  <input class="form-control" type="file" name="foto" id="fotoInvGeneral">
+                                </div>
+                                <div class="col-12">
+                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" name="descripcion" id="descripcionInvGeneral">
+                                </div>
+                                <div class="col-12">
+                                  <label for="stock" class="form-label">Stock</label>
+                                  <input type="number" name="stock" class="form-control" id="stockInvGeneral">
+                                </div>
+                                <div class="row justify-content-center my-3">
+                                  <div class="col-5">
+                                    <a class="btn btn-danger btn-block" onclick="guardarInventario(this,'General')" style="display: block !important">Guardar</a>
+                                    <a class="btn btn-success btn-block" onclick="confirmarModificarInventario(this,'General')" style="display: none !important;">Modificar</a>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                          <div class="tab-pane fade min-vh-50" id="cardInventarioGeneral" role="tabpanel" aria-labelledby="cardInventarioPrima-tab">
+                            <h1>GENERAL</h1>
+                          </div>
+                        </div>
+                      </div>
                   </div>
-                  <div class="tab-pane fade" id="registro" role="tabpanel" aria-labelledby="registro-tab">...</div>
-                </div>
+              </div>
               </div>
             </main>
         </div>
@@ -91,5 +334,12 @@
     </body>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/controladores/CRUD.js"></script>
+    <script src="js/controladores/categorias.js"></script>
+    <script src="js/controladores/inventario.js"></script>
+    <script>
+    </script>
 </body>
 </html>

@@ -1,28 +1,18 @@
 <?php
-include_once('class-conexion.php');
-include_once('interface-crud.php');
-include_once('trait-acciones.php');
-class Inventario extends Conexion implements CRUD{
-    use Acciones;
-    private $descripcion;
+include_once('abstract-inventario.php');
+class InventarioPrima extends Inventario{
     private $categoria;
     private $talla;
     private $proveedor;
-    private $color;
-    private $precio;
-    private $stock;
-    private $cnn;
-    private $db;
+    private $color; 
     
     public function __construct($descripcion,$categoria,$proveedor,$talla,$color,$precio,$stock)
     {
-        $this->setDescripcion($descripcion);
+        parent::__construct($descripcion,$precio,$stock);
         $this->setCategoria($categoria);
         $this->setTalla($talla);
         $this->setProveedor($proveedor);
         $this->setColor($color);
-        $this->setPrecio($precio);
-        $this->setStock($stock);
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();
     }
@@ -102,25 +92,6 @@ class Inventario extends Conexion implements CRUD{
         );
     }
 
-    /**
-     * Get the value of descripcion
-     */ 
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * Set the value of descripcion
-     *
-     * @return  self
-     */ 
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
     
     /**
      * Get the value of categoria
@@ -218,46 +189,6 @@ class Inventario extends Conexion implements CRUD{
     public function setColor($color)
     {
         $this->color = $color;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of precio
-     */ 
-    public function getPrecio()
-    {
-        return $this->precio;
-    }
-
-    /**
-     * Set the value of precio
-     *
-     * @return  self
-     */ 
-    public function setPrecio($precio)
-    {
-        $this->precio = $precio;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of stock
-     */ 
-    public function getStock()
-    {
-        return $this->stock;
-    }
-
-    /**
-     * Set the value of stock
-     *
-     * @return  self
-     */ 
-    public function setStock($stock)
-    {
-        $this->stock = $stock;
 
         return $this;
     }

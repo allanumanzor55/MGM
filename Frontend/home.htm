@@ -26,7 +26,7 @@
                               <a class="nav-link btn-mg-1 bi" aria-current="page" href="inventario.htm ">Inventario</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link btn-mg-1 bi" aria-current="page" href="#">Empleados</a>
+                                <a class="nav-link btn-mg-1 bi" aria-current="page" href="empleados.htm">Empleados</a>
                               </li>
                             <li class="nav-item">
                               <a class="nav-link btn-mg-1 bi" href="#">Clientes</a>
@@ -42,32 +42,32 @@
                                     <a class="nav-link btn-mg-1 fs-3 bi bi-person-circle" data-bs-toggle="offcanvas" href="#perfilCanvas" role="button" aria-controls="perfilCanvas"></a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link btn-mg-1 fs-3 bi bi-gear" href="setting.htm"></a>
+                                  <a href="#" class="nav-link btn-mg-1 fs-3 bi bi-gear" onclick="accederConfiguraciones(this)"></a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </nav>
             </header>
-            <main class="row align-items-center vw-100 vh-100 ms-5 me-0">
-                <div class="row" style="height: 15% !important;"></div>
-                <div class="row py-4 mx-auto" style="height: 85% !important;">
-                    <div class="col-3 bg-light h-100 mx-1">
-                        
-                    </div>
-                    <div class="col-3 h-100 mx-1">
-                        <div class="row h-50 bg-light mb-1">
+            <main class="row align-items-center vw-100 vh-100 ms-3 ps-5 pe-0">
+              <div class="row" style="height: 15% !important;"></div>
+              <div class="row py-4 mx-auto" style="height: 85% !important;">
+                  <div class="col-3 bg-light h-100 mx-1">
+                      
+                  </div>
+                  <div class="col-3 h-100 mx-1">
+                      <div class="row h-50 bg-light mb-1">
 
-                        </div>
-                        <div class="row h-50 bg-light">
+                      </div>
+                      <div class="row h-50 bg-light">
 
-                        </div>
-                    </div>
-                    <div class="col-5 h-100 mx-1 bg-light">
+                      </div>
+                  </div>
+                  <div class="col-5 h-100 mx-1 bg-light">
 
-                    </div>
-                </div>
-            </main>
+                  </div>
+              </div>
+          </main>
         </div>
         <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="perfilCanvas" aria-labelledby="perfilCanvasLabel">
             <div class="offcanvas-header">
@@ -82,5 +82,7 @@
     </body>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/controladores/CRUD.js"></script>
 </body>
 </html>

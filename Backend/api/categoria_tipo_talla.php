@@ -46,6 +46,8 @@
                     echo json_encode(Categoria::obtener($_GET['id'],$cnn),true);
                 }elseif(isset($_GET['valor'])){//buscar
                     echo json_encode(Categoria::buscar($_GET['valor'],$cnn),true);
+                }elseif(isset($_GET['tipo']) && $_GET['tipo']!="undefined"){//obtener registros por tipo
+                    echo json_encode(Categoria::obtenerPorTipo(intval($_GET['tipo']),$cnn),true);
                 }else{//obtener todos
                     echo json_encode(Categoria::obtenerTodos($cnn),true);
                 }
@@ -53,7 +55,7 @@
             case 'PUT'://modificar
                 $_PUT = json_decode(file_get_contents("php://input"), TRUE);
                 $categoria = new Categoria($_PUT['tipo'],$_PUT['estilo']);
-                echo $categoria->modificar($_GET['id']);
+                echo $categoria->modificar($_PUT['id']);
             break;
             case 'DELETE'://eliminar
                 echo Categoria::eliminar($_GET['id'],$cnn);

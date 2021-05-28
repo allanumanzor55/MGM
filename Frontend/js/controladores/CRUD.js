@@ -1,23 +1,55 @@
 let datos;
-function obtenerDatos(idForm){
-    datos = new FormData(document.getElementById(idForm))    
+function obtenerDatos(idForm) {
+    datos = new FormData(document.getElementById(idForm))
 }
-
-async function guardar(btn,url,datosPost){
-    btn.style.disabled=true
+//clase se usara para empleados y categorias(que abarcan estilo, talla y tipo), tipo se usa para filtrar datos por algun tipo
+/**
+ * Funcion que guardar un objeto en la base de datos
+ * @param {HTMLObjectElement} btn instancia del boton que se presiono al ejecutar la accion
+ * @param {String} url  url de la direccion donde se hara la peticion
+ * @param {JSON} datosPost  json con los parametros que puedes agregar, puede ser id, clase, tipo, etc... se usa para configurar la peticion
+ * @returns Json con el mensaje de exito o error
+ * @async
+ */
+async function guardar(btn, url, datosPost) {
+    btn.style.disabled = true
     obtenerDatos(datosPost.idForm)
-    const {data} = await axios.post(url+`?clase=${datosPost.clase}`,datos)
-    btn.style.disabled=false;
-    return data;
+    try{
+        const { data } = await axios.post(url + `?clase=${datosPost.clase}`, datos)
+        if (data.centinela == "true") { limpiarFormulario(datosPost.idForm) }
+        mostrarMensaje(data)
+        btn.style.disabled = false;
+    }catch(e){
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
+    }
 }
-
-async function obtener(url,datosGet){
-    const {data} = await axios.get(url+`?id=${datosGet.id}&clase=${datosGet.clase}`);
-    return data;
+//clase se usara para empleados y categorias(que abarcan estilo, talla y tipo), tipo se usa para filtrar datos por algun tipo
+/**
+ * Funcion que obtiene los datos de un objeto
+ * @param {String} url  url de la direccion donde se hara la peticion
+ * @param {JSON} datosGet  json con los parametros que puedes agregar, puede ser id, clase, tipo, etc... se usa para configurar la peticion
+ * @returns Arreglo de Jsons con la informacion de el o los registro(s) obtenidos
+ * @async
+ */
+async function obtener(url, datosGet) {
+    try{
+        const { data } = await axios.get(url + `?id=${datosGet.id}&clase=${datosGet.clase}&tipo=${datosGet.tipo}&valor=${datosGet.valor}`);
+        return data;
+    }catch(e){
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
+        return null;
+    }
 }
-
-async function eliminar(btn,url,datosDelete){
-    btn.style.disabled=true
+/**
+ * Funcion que elimina un objeto en la base de datos
+ * @param {HTMLObjectElement} btn instancia del boton que se presiono al ejecutar la accion
+ * @param {String} url  url de la direccion donde se hara la peticion
+ * @param {JSON} datosDelete  json con los parametros que puedes agregar, puede ser id, clase, tipo, etc... se usa para configurar la peticion
+ * @returns Json con el mensaje de exito o error
+ * @async
+ */
+async function eliminar(btn, url, datosDelete) {
+    btn.style.disabled = true
     const result = await Swal.fire({
         title: 'Estas seguro?',
         text: "No podras revertir esto!!",
@@ -28,39 +60,120 @@ async function eliminar(btn,url,datosDelete){
         confirmButtonText: 'Si, seguro!!'
     })
     if (result.isConfirmed) {
-        const {data} = await axios.delete(url+`?id=${datosDelete.id}&clase=${datosDelete.clase}`)
-        btn.style.disabled=false
-        return data
+        try{
+            const { data } = await axios.delete(url + `?id=${datosDelete.id}&clase=${datosDelete.clase}`)
+            mostrarMensaje(data)
+            btn.style.disabled = false
+        }catch(e){
+            Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
+            btn.style.disabled = false
+        }
+        
     }
 }
-async function modificar(btn,url,datosPut){
-    btn.style.disabled=true
+/**
+ * Funcion que modifica un objeto en la base de datos
+ * @param {HTMLObjectElement} btn instancia del boton que se presiono al ejecutar la accion
+ * @param {String} url  url de la direccion donde se hara la peticion
+ * @param {JSON} datosPur  json con los parametros que puedes agregar, puede ser id, clase, tipo, etc... se usa para configurar la peticion
+ * @returns Json con el mensaje de exito o error
+ * @async
+ */
+async function modificar(btn, url, datosPut) {
+    btn.style.disabled = true
     obtenerDatos(datosPut.idForm)
-    const {data} = await axios.put(url+`?clase=${datosPut.clase}`,JSON.stringify(Object.fromEntries(datos)))
-    btn.style.disabled=false
-    return data;
-}
-
-function intercalarBotones(idForm,centinela){
-    let btnGuardar = document.querySelector(`form#${idForm} input[type='button'].btn.btn-danger`)
-    let btnModificar = document.querySelector(`form#${idForm} input[type='button'].btn.btn-success`)
-    if(!centinela){
-        btnGuardar.style.display="none";
-        btnGuardar.style.disabled=true;
-        btnModificar.style.display="block";
-        btnModificar.style.display=false;
-    }else{
-        btnGuardar.style.display="block";
-        btnGuardar.style.disabled=false;
-        btnModificar.style.display="none";
-        btnModificar.style.display=true; 
+    try{
+        const { data } = await axios.put(url + `?clase=${datosPut.clase}`, JSON.stringify(Object.fromEntries(datos)))
+        console.log(data);
+        if (data.centinela == "true") { limpiarFormulario(datosPut.idForm) }
+        mostrarMensaje(data)
+        btn.style.disabled = false
+    }catch(e){
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
+        btn.style.disabled = false
     }
 }
-
-function limpiarFormulario(idForm){
-    let form = document.querySelectorAll(`form#${idForm} input[type='text']`)
+/**
+ * Muestra el mensaje de exito o error de una peticion
+ * @param {JSON} data json del mensaje de respuesta a peticion 
+ * @returns SweetAlert con el mensaje
+ */
+function mostrarMensaje(data) {
+    if (data.centinela === "true") {
+        Swal.fire({ icon: 'success', title: data.mensaje })
+    } else {
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: data.mensaje })
+    }
+}
+/**
+ * Intercala 2 botones, en especifico el de guardar y modificar
+ * @param {String} idForm instancia del boton que se presiono al ejecutar la accion
+ * @param {Boolean} centinela  booleana que indica cual de los 2 botones se interclaara
+ */
+function intercalarBotones(idForm, centinela) {
+    let btnGuardar = document.querySelector(`form#${idForm} a.btn.btn-danger`)
+    let btnModificar = document.querySelector(`form#${idForm} a.btn.btn-success`)
+    if (btnGuardar != null && btnModificar != null) {
+        if (!centinela) {
+            btnGuardar.style.display = "none";
+            btnModificar.style.display = "block";
+        } else {
+            btnGuardar.style.display = "block";
+            btnModificar.style.display = "none";
+        }
+    }
+}
+/**
+ * @param {String} idForm id del formulario 
+ * funcion que limpia todos los controles de un formulario
+ */
+function limpiarFormulario(idForm) {
+    let form = document.getElementById(idForm).querySelectorAll(`input[type='text'], input[type='number'], input[type='checkbox'],input[type='email'],textarea`)
     form.forEach(input=>{
-        input.value = ""
+        input.value="" 
     })
-    form[0].focus()
+}
+/**
+ * Validamos que todos los controles del formulario esten llenos
+ * @param {String} idForm id del formulario 
+ * @returns centinela que informa si algun campo esta vacio
+ */
+function validarCamposNivel1(idForm) {
+    let centinelaText = true
+    document.getElementById(idForm).querySelectorAll(`input[type='text'], input[type='number'],input[type='email']`).forEach(node => {
+        if (node.value == "") {
+            centinelaText = false
+        }
+    })
+    return centinelaText
+}
+/**
+ * 
+ * @param {HTMLObjectElement} btn instancia del objeto que se presiono
+ * Nos valida el acceso a configuraciones
+ */
+async function accederConfiguraciones(btn) {
+    const  response = await Swal.fire({
+        title: 'Ingrese La Contraseña Maestra',
+        input: 'password',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Ingresar',
+        showLoaderOnConfirm: true,
+        preConfirm: (login) => {
+            if(login==="1234"){
+                return true
+            }else{
+                Swal.showValidationMessage(`Contraseña Incorrecta`)
+            }
+        }//,
+        //allowOutsideClick: () => !Swal.isLoading()
+    })
+    if(response.isConfirmed){
+        if(response.value==true){
+            window.location="setting.htm";
+        }
+    }
 }

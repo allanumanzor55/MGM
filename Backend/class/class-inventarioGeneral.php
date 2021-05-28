@@ -1,19 +1,16 @@
 <?php
-include_once('interface-crud.php');
-include_once('abstract-modelo.php');
-class Categoria extends Modelo implements CRUD{
-    private $tipo;
-    private $estilo;
-    public function __construct($tipo,$estilo)
+include_once('abstract-inventario.php');
+class InventarioGeneral extends Inventario{
+    public function __construct($descripcion,$stock)
     {
-        parent::__construct0();
-        $this->setTipo($tipo);
-        $this->setEstilo($estilo);
+        parent::__construct($descripcion,0,$stock);
+        $this->db = new Conexion();
+        $this->cnn = $this->db->getConexion();
     }
-
+    
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL agregarCategoria(:tipo,:estilo)");
+            $query = $this->cnn->prepare("CALL agregarInvGeneral(:descripcion,:stock);");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -22,7 +19,7 @@ class Categoria extends Modelo implements CRUD{
     }
     static public function obtener($id,$cnn){
         try{
-            $query = $cnn->prepare("CALL obtenerCategoria(:id)");
+            $query = $cnn->prepare("CALL obtenerInvGeneral(:id)");
             $query->execute(array("id"=>$id));
             $result = $query->fetch(PDO::FETCH_ASSOC);
             return $result;
@@ -30,21 +27,9 @@ class Categoria extends Modelo implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
-
-    static public function obtenerPorTipo($tipo,$cnn){
-        try{
-            $query = $cnn->prepare("CALL obtenerCategoriasPorTipo(:tipo)");
-            $query->execute(array("tipo"=>$tipo));
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $result;
-        }catch(Exception $e){
-            return Acciones::error_message($e,false);
-        }
-    }
-
     static public function obtenerTodos($cnn){
         try{
-            $query = $cnn->prepare("CALL obtenerCategorias()");
+            $query = $cnn->prepare("CALL obtenerInvGenerales()");
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -52,9 +37,10 @@ class Categoria extends Modelo implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
+
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarCategoria(:tipo,:estilo,:id)");
+            $query = $this->cnn->prepare("CALL modificarInvGeneral(:descripcion,:stock,:id);");
             $datos = $this->obtenerDatos();
             $datos["id"]=$id;
             $query->execute($datos);
@@ -65,7 +51,7 @@ class Categoria extends Modelo implements CRUD{
     }
     static public function eliminar($id,$cnn){
         try{
-            $query = $cnn->prepare("CALL eliminarCategoria(:id)");
+            $query = $cnn->prepare("CALL eliminarInvGeneral(:id)");
             $query->execute(array("id"=>$id));
             return Acciones::error_message("eliminado",true);
         }catch(Exception $e){
@@ -74,7 +60,7 @@ class Categoria extends Modelo implements CRUD{
     }
     static public function buscar($valor,$cnn){
         try {
-            $query = $cnn->prepare("CALL buscarCategoria(:valor)");
+            $query = $cnn->prepare("CALL buscarInvGeneral(:valor)");
             $query->execute(array("valor"=>$valor));
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
@@ -82,42 +68,13 @@ class Categoria extends Modelo implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
+
     public function obtenerDatos()
     {
         return array(
-            "tipo"=>$this->getTipo(),
-            "estilo"=>$this->getEstilo()
+            "descripcion"=>$this->getDescripcion(),
+            "stock"=>$this->getStock()
         );
-    }
-    
-    public function getTipo()
-    {
-        return $this->tipo; 
-    }
-
-    public function setTipo($tipo)
-    {
-        $this->tipo=$tipo;
-    }
-
-    public function getMaterial()
-    {
-        return $this->material; 
-    }
-
-    public function setMaterial($material)
-    {
-        $this->material=$material;
-    }
-
-    public function getEstilo()
-    {
-        return $this->estilo; 
-    }
-
-    public function setEstilo($estilo)
-    {
-        $this->estilo=$estilo;
     }
 }
 ?>
