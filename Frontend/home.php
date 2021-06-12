@@ -5,31 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mario Graphics</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="css/landing-styles.css">
 </head>
 <body id="bg-landing" class="container-fluid px-0">
     <div class="container-fluid  bg-opacity min-vh-100 min-mw-100 mx-0 px-0">
         <header class="row">
             <nav id="navbar-lp" class="navbar navbar-expand navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-light bg-light py-0 fixed-top">
-                  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link btn-mg-1 fs-3 bi bi-list" data-bs-toggle="offcanvas" href="#offcanvasScrolling" role="button" aria-controls="offcanvasExample"></a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link btn-mg-1 fs-4 bi bi-search mt-1"></a>
-                      </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-mg-1 fs-3 bi bi-list" data-bs-toggle="offcanvas" href="#offcanvasScrolling" role="button" aria-controls="offcanvasExample"></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link btn-mg-1 fs-4 bi bi-search mt-1"></a>
+                        </li>
                     </ul>
                     <div class="d-flex" id="navbarTogglerDemo03">
-                            <a class="navbar-brand navbar-mg-1 pt-2" href="#">MGraphics Memories</a>
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a href="login.htm" class="nav-link btn-mg-1 fs-3 bi bi-people"></a>
-                                </li>
-                            </ul>
+                        <a class="navbar-brand navbar-mg-1 pt-2" href="#">MGraphics Memories</a>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a href="login.php" class="nav-link btn-mg-1 fs-3 bi bi-people"></a>
+                            </li>
+                        </ul>
                     </div>
-                  </div>
+                </div>
             </nav>
         </header>
         <main class="row align-items-center vh-100 wh-100 m-0">
@@ -62,25 +62,25 @@
                                     <div class="form-check">
                                         <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria1" checked>
                                         <label class="form-check-label" for="categoria1">
-                                        Camisas
+                                            Camisas
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria2" >
+                                        <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria2">
                                         <label class="form-check-label" for="categoria2">
-                                        Gorras
+                                            Gorras
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria2" >
+                                        <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria2">
                                         <label class="form-check-label" for="categoria3">
-                                        Tazas
+                                            Tazas
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria2" >
+                                        <input class="form-check-input radio-mg-1" type="radio" name="categorias" id="categoria2">
                                         <label class="form-check-label" for="categoria4">
-                                        Llaveros
+                                            Llaveros
                                         </label>
                                     </div>
                                 </div>
@@ -91,25 +91,25 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="materiales" id="material1">
                                         <label class="form-check-label" for="material1">
-                                        Algodon
+                                            Algodon
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="materiales" id="material2" >
+                                        <input class="form-check-input" type="radio" name="materiales" id="material2">
                                         <label class="form-check-label" for="material2">
-                                        Seda
+                                            Seda
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="materiales" id="material2" >
+                                        <input class="form-check-input" type="radio" name="materiales" id="material2">
                                         <label class="form-check-label" for="material3">
-                                        Lino
+                                            Lino
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="materiales" id="material2" >
+                                        <input class="form-check-input" type="radio" name="materiales" id="material2">
                                         <label class="form-check-label" for="material4">
-                                        Policoton
+                                            Policoton
                                         </label>
                                     </div>
                                 </div>
@@ -134,8 +134,8 @@
                         <div class="card h-100">
                             <img src="img/camisa.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
-                              <h5 class="card-title">Producto</h5>
-                              <p class="card-text">Descripcion</p>
+                                <h5 class="card-title">Producto</h5>
+                                <p class="card-text">Descripcion</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-mg-2 fs-4 bi bi-fullscreen"></a>
@@ -147,8 +147,8 @@
                         <div class="card h-100">
                             <img src="img/camisa.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
-                              <h5 class="card-title">Producto</h5>
-                              <p class="card-text">Descripcion</p>
+                                <h5 class="card-title">Producto</h5>
+                                <p class="card-text">Descripcion</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-mg-2 fs-4 bi bi-fullscreen"></a>
@@ -160,8 +160,8 @@
                         <div class="card h-100">
                             <img src="img/camisa.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
-                              <h5 class="card-title">Producto</h5>
-                              <p class="card-text">Descripcion</p>
+                                <h5 class="card-title">Producto</h5>
+                                <p class="card-text">Descripcion</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-mg-2 fs-4 bi bi-fullscreen"></a>
@@ -212,8 +212,8 @@
                         <div class="card h-100">
                             <img src="img/camisa.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
-                              <h5 class="card-title">Producto</h5>
-                              <p class="card-text">Descripcion</p>
+                                <h5 class="card-title">Producto</h5>
+                                <p class="card-text">Descripcion</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-mg-2 fs-4 bi bi-fullscreen"></a>
@@ -225,17 +225,9 @@
             </div>
         </div>
     </div>
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title bi bi-list" id="offcanvasScrollingLabel">Menu</h5>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <p>Soy un menu lateral en desarrollo, asi que no tengo mucha funcion, pero a poco no soy guay</p>
-        </div>
-    </div>
+    <footer>
+        <?php include_once('footer.php'); ?>
+    </footer>
+    <?php include_once('canvas.php');?>
 </body>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 </html>

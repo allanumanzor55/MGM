@@ -13,7 +13,7 @@ switch($_SERVER['REQUEST_METHOD']){
     case 'POST'://guardar
         //$_POST = json_decode(file_get_contents("php://input"), TRUE);
         if($_GET['clase']=="Prima" ){//Guardar Inventario Prima
-            $inventario= new InventarioPrima($_POST['descripcion'],$_POST['categoria'],$_POST['proveedor'],
+            $inventario= new InventarioPrima($_POST['descripcion'],$_POST['estilo'],$_POST['proveedor'],
                                     $_POST['talla'],$_POST['color'],floatval($_POST['precio']),
                                     intval($_POST['stock']));
         
@@ -68,7 +68,7 @@ switch($_SERVER['REQUEST_METHOD']){
     case 'PUT'://modificar
         $_PUT = json_decode(file_get_contents("php://input"), TRUE);
         if($_GET['clase']=="Prima"){//Guardar Inventario Prima
-            $inventario= new InventarioPrima($_PUT['descripcion'],$_PUT['categoria'],$_PUT['proveedor'],
+            $inventario= new InventarioPrima($_PUT['descripcion'],$_PUT['estilo'],$_PUT['proveedor'],
                                     $_PUT['talla'],$_PUT['color'],floatval($_PUT['precio']),
                                     intval($_PUT['stock']));
         

@@ -43,3 +43,20 @@ AS
 SELECT  inventario.idInventarioGeneral as "idInventario",inventario.descripcion, inventario.stock
 FROM inventario_general inventario
 WHERE inventario.estado=1;
+
+CREATE OR REPLACE VIEW vw_ficha_producto
+AS 
+SELECT ficha.idFichaProducto, ficha.descripcion as "descripcionFicha", ficha.idMateriaPrima, 
+prima.descripcion as "descripcionMateriaPrima", prima.tipo, prima.material, prima.estilo, prima.talla, prima.color,
+prima.empresa as "proveedor", prima.precio as "precioPrima", prima.stock, ficha.precio
+FROM ficha_producto ficha
+JOIN vw_inventario prima ON ficha.idMateriaPrima = prima.idInventario
+WHERE ficha.estado = 1;
+
+CREATE OR REPLACE VIEW vw_materiales_ficha_producto
+AS 
+SELECT ficha.idFichaProducto, ficha.idMaterial, material.descripcion , material.marca, material.empresa,
+material.precio , material.stock, ficha.cantidad
+FROM ficha_producto_materiales ficha
+JOIN vw_inventario_materiales material ON ficha.idMaterial = material.idInventario
+WHERE ficha.estado = 1;

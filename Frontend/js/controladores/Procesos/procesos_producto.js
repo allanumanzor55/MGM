@@ -1,0 +1,3 @@
+function agregarProcesoProducto(idProceso,idFicha){
+    
+}

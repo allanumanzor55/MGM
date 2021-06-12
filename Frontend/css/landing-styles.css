@@ -1,5 +1,6 @@
 
 #bg-landing{
+    width: auto !important;
     background-image: url('../img/back-5.jpg') !important;
     background-attachment: fixed;
     background-size: 50%;
@@ -17,6 +18,7 @@ body#bg-landing::-webkit-scrollbar{
 #navbar-lp.bg-light{
     background-color: rgba(255,255,255, 0.8) !important;
 }
+
 .btn-mg-1{
     transition-property: all, background, left !important;
     transition-duration: 0.2s !important;
@@ -26,7 +28,7 @@ body#bg-landing::-webkit-scrollbar{
     -o-transition-duration: 0.2s !important;
 }
 
-.nav-link.btn-mg-1.bi:hover{
+.nav-link.btn-mg-1:hover{
     background: -webkit-linear-gradient(yellow,red) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;

@@ -16,7 +16,7 @@
             case 'GET'://visualizar
                 if(isset($_GET['id']) && $_GET['id']!="undefined"){//obtener un registro
                     echo json_encode(Tipo::obtener($_GET['id'],$cnn),true);
-                }elseif(isset($_GET['valor'])){//buscar
+                }elseif(isset($_GET['valor']) && $_GET['valor']!="undefined"){//buscar
                     echo json_encode(Tipo::buscar($_GET['valor'],$cnn),true);
                 }else{//obtener todos
                     echo json_encode(Tipo::obtenerTodos($cnn),true);
@@ -44,7 +44,7 @@
             case 'GET'://visualizar
                 if(isset($_GET['id']) && $_GET['id']!="undefined"){//obtener un registro
                     echo json_encode(Categoria::obtener($_GET['id'],$cnn),true);
-                }elseif(isset($_GET['valor'])){//buscar
+                }elseif(isset($_GET['valor']) && $_GET['valor']!="undefined"){//buscar
                     echo json_encode(Categoria::buscar($_GET['valor'],$cnn),true);
                 }elseif(isset($_GET['tipo']) && $_GET['tipo']!="undefined"){//obtener registros por tipo
                     echo json_encode(Categoria::obtenerPorTipo(intval($_GET['tipo']),$cnn),true);
@@ -70,7 +70,7 @@
             case 'GET'://visualizar
                 if(isset($_GET['id']) && $_GET['id']!="undefined"){//obtener un registro
                     echo json_encode(Talla::obtener($_GET['id'],$cnn),true);
-                }elseif(isset($_GET['valor'])){//buscar
+                }elseif(isset($_GET['valor']) && $_GET['valor']!="undefined"){//buscar
                     echo json_encode(Talla::buscar($_GET['valor'],$cnn),true);
                 }else{//obtener todos
                     echo json_encode(Talla::obtenerTodos($cnn),true);

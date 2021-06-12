@@ -47,9 +47,8 @@ class Cliente extends Persona{
     }
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarCliente(:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad);");
+            $query = $this->cnn->prepare("CALL modificarCliente(:tipoCliente,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad,:id);");
             $datos = $this->obtenerDatos();
-            unset($datos['tipoCliente']);
             $datos["id"]=$id;
             $query->execute($datos);
             return Acciones::error_message("modificado",true);

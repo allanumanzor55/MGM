@@ -23,11 +23,12 @@ BEGIN
     SELECT * FROM clientes WHERE idCliente = _id AND estado = 1;
 END/
 
-CREATE PROCEDURE modificarCliente(IN _dni TINYTEXT,IN _nombre TINYTEXT, IN _primerApellido TINYTEXT, 
+CREATE PROCEDURE modificarCliente(IN _tipoCliente INT,IN _dni TINYTEXT,IN _nombre TINYTEXT, IN _primerApellido TINYTEXT, 
 IN _segundoApellido TINYTEXT,IN _direccion TINYTEXT, IN _correo TINYTEXT, IN _celular TINYTEXT, 
 IN _telefono TINYTEXT, IN _edad VARCHAR(3),IN _id INT)
 BEGIN 
     UPDATE clientes SET 
+        tipoCliente = _tipoCliente,
         dni = _dni,
         nombre = _nombre,
         primerApellido = _primerApellido,

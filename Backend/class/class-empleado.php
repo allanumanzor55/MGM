@@ -80,8 +80,8 @@ class Empleado extends Persona{
     }
     static public function buscar($valor,$cnn){
         try {
-            $query = $cnn->prepare("CALL buscarEmpleado(:valor)");
-            $query->execute(array("valor"=>$valor));
+            $query = $cnn->prepare("CALL buscarEmpleado(:valor,:tipo)");
+            $query->execute(array("valor"=>$valor,"tipo"=>$_GET['tipo']));
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){

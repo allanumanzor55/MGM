@@ -11,9 +11,9 @@ switch($_SERVER['REQUEST_METHOD']){
         echo $pedido->guardar();
     break;
     case 'GET'://visualizar
-        if(isset($_GET['id'])){//obtener un registro
+        if(isset($_GET['id']) && $_GET['id']!="undefined"){//obtener un registro
             echo json_encode(Pedido::obtener($_GET['id'],$cnn),true);
-        }elseif(isset($_GET['valor'])){//buscar
+        }elseif(isset($_GET['valor']) && $_GET['valor']!="undefined"){//buscar
             echo json_encode(Pedido::buscar($_GET['valor'],$cnn),true);
         }else{//obtener todos
             echo json_encode(Pedido::obtenerTodos($cnn),true);

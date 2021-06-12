@@ -1,16 +1,60 @@
 const URL_EMPLEADO = '../Backend/api/empleado.php'
 const D_EMPLEADO = { idForm: "formEmpleado" }
+let tipoEmpleado=""
+let idCardEmpleado=""
 async function guardarEmpleado(btn) {
     await guardar(btn, URL_EMPLEADO, D_EMPLEADO)
 }
 
 async function refrescarCardEmpleados(tipo, idCard) {
-    const datos = await obtener(URL_EMPLEADO, { tipo: tipo })
+    tipoEmpleado=tipo
+    idCardEmpleado=idCard
+    const datos = await obtener(URL_EMPLEADO, { tipo: tipoEmpleado })
+    rellenarCardsEmpleado(datos,idCardEmpleado,tipoEmpleado)
+}
+
+async function modificarEmpleadoPorTipo(btn, idCard, tipo, id) {
+    tipoEmpleado=tipo
+    idCardEmpleado=idCard
+    const datos = await obtener(URL_EMPLEADO,{tipo:tipoEmpleado,id:id})
+    intercalarBotones(D_EMPLEADO.idForm,false)
+    document.querySelector(idCardEmpleado).classList.remove('active','show')
+    document.querySelector(`#ingresarEmpleado`).classList.add('active','show')
+    document.querySelector(`#ingresarEmpleadoTab`).classList.add('active')
+    document.querySelector(idCardEmpleado.slice(0,-7)).classList.remove('active')
+    rellenarFormulario(datos)
+    console.log(datos);
+}   
+
+async function confirmarModificarEmpleado(btn) {
+    await modificar(btn,URL_EMPLEADO,{idForm:D_EMPLEADO.idForm})
+    intercalarBotones(D_EMPLEADO.idForm,true)
+}
+async function buscarEmpleado(valor){
+    if(valor!="" && tipoEmpleado!="" && idCardEmpleado!=""){
+        const datos = await obtener(URL_EMPLEADO,{valor:valor,tipo:tipoEmpleado})
+        rellenarCardsEmpleado(datos,idCardEmpleado,tipoEmpleado)
+    }else{
+        if(tipoEmpleado!="" && idCardEmpleado!=""){
+            refrescarCardEmpleados(tipoEmpleado,idCardEmpleado)
+        }
+    }
+}
+
+
+async function eliminarEmpleadoPorTipo(btn, idCard, tipo, id) {
+    tipoEmpleado = tipo
+    idCardEmpleado = idCard
+    await eliminar(btn, URL_EMPLEADO, { id: id })
+    refrescarCardEmpleados(tipo, idCard)
+}
+
+function rellenarCardsEmpleado(datos,idCard,tipo){
     let content = `<div class="row pb-2">`
     if (Array.isArray(datos)) {
         datos.forEach(empleado => {
             content +=
-                `<div class="col col-sm-4 col-md-3 col-lg-2">
+                `<div class="col col-sm-4 col-md-3 col-lg-3">
                 <div class="card h-100 p-1">
                     <img src="../Frontend/img/perfil.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -21,14 +65,14 @@ async function refrescarCardEmpleados(tipo, idCard) {
                         </p>
                     </div>
                     <div class="d-flex justify-content-between p-2">
-                        <a href="#" class="btn btn-outline-warning fs-5 bi bi-plus"
+                        <a href="#" class="btn btn-outline-warning    zmdi  zmdi-plus"
                         data-bs-toggle="modal" data-bs-target="#empleadoModal" 
                         onmouseover="this.style.color='white'" onmouseout="this.style.color='#ffc107'"
                         onclick="mostrarDatosEmpleado(${empleado.idEmpleado})"></a>
                         <div>
-                            <a href="#" class="btn btn-outline-success fs-5 bi bi-arrow-clockwise"
+                            <a title="Actualizar" href="#" class="btn btn-outline-success    zmdi  zmdi-refresh"
                             onclick="modificarEmpleadoPorTipo(this,'${idCard}',${tipo},${empleado.idEmpleado})"></a>
-                            <a href="#" class="btn btn-outline-danger fs-5 bi bi-trash"
+                            <a title="Eliminar" href="#" class="btn btn-outline-danger    zmdi  zmdi-delete"
                             onclick="eliminarEmpleadoPorTipo(this,'${idCard}',${tipo},${empleado.idEmpleado})"></a>
                         </div>
                     </div>
@@ -42,21 +86,6 @@ async function refrescarCardEmpleados(tipo, idCard) {
     }
 }
 
-async function modificarEmpleadoPorTipo(btn, idCard, tipo, id) {
-    const datos = await obtener(URL_EMPLEADO,{tipo:tipo,id:id})
-    intercalarBotones(D_EMPLEADO.idForm,false)
-    document.querySelector(idCard).classList.remove('active','show')
-    document.querySelector(`#ingresarEmpleado`).classList.add('active','show')
-    document.querySelector(`#ingresarEmpleadoTab`).classList.add('active')
-    document.querySelector(idCard.slice(0,-7)).classList.remove('active')
-    rellenarFormulario(datos)
-    console.log(datos);
-}
-
-async function confirmarModificarEmpleado(btn) {
-    await modificar(btn,URL_EMPLEADO,{idForm:D_EMPLEADO.idForm})
-    intercalarBotones(D_EMPLEADO.idForm,true)
-}
 
 function rellenarFormulario(datos){
     let form = document.getElementById(`formEmpleado`).querySelectorAll('input,select,textarea')
@@ -73,11 +102,6 @@ function rellenarFormulario(datos){
     form[9].value=datos.celular
     form[10].value=datos.telefono
     form[11].value=datos.sueldo
-}
-
-async function eliminarEmpleadoPorTipo(btn, idCard, tipo, id) {
-    await eliminar(btn, URL_EMPLEADO, { id: id })
-    refrescarCardEmpleados(tipo, idCard)
 }
 
 async function mostrarDatosEmpleado(id) {

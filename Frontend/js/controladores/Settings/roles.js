@@ -36,27 +36,29 @@ async function confirmarModificarRol(btn){
 async function refrescarTablaRol(){
     const datos = await obtener(URL_ROL,{clase:D_ROL.clase})
     document.querySelector('table#tableRol tbody').innerHTML=``;
-    datos.forEach(function(rol,index){
-        document.querySelector('table#tableRol tbody').innerHTML+=//html
-        `<tr>
-            <td>${rol.rol}</td>
-            <td>${rol.empleados}</td>
-            <td>${rol.clientes}</td>
-            <td>${rol.inventario}</td>
-            <td>${rol.ventas}</td>
-            <td>${rol.configuracion}</td>
-            <td>
-                <a class="btn btn-success" onclick="modificarRol(this,${rol.idRol})">
-                    <i class="bi bi-arrow-clockwise"></i>
-                </a>
-            </td>
-            <td>
-                <a class="btn btn-danger" onclick="eliminarRol(this,${rol.idRol})">
-                    <i class="bi bi-trash"></i>
-                </a>
-            </td>
-        <tr>`
-    })
+    if(Array.isArray(datos)){
+        datos.forEach(function(rol,index){
+            document.querySelector('table#tableRol tbody').innerHTML+=//html
+            `<tr>
+                <td>${rol.rol}</td>
+                <td>${rol.empleados}</td>
+                <td>${rol.clientes}</td>
+                <td>${rol.inventario}</td>
+                <td>${rol.ventas}</td>
+                <td>${rol.configuracion}</td>
+                <td>
+                    <a title="Actualizar" class="btn btn-success" onclick="modificarRol(this,${rol.idRol})">
+                        <i class=" zmdi  zmdi-refresh"></i>
+                    </a>
+                </td>
+                <td>
+                    <a title="Eliminar" class="btn btn-danger" onclick="eliminarRol(this,${rol.idRol})">
+                        <i class=" zmdi  zmdi-delete"></i>
+                    </a>
+                </td>
+            <tr>`
+        })
+    }
 }
 
 async function rellenarSelectRols(){

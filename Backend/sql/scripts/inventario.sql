@@ -9,16 +9,19 @@ DROP PROCEDURE IF EXISTS obtenerMaterial;
 DROP PROCEDURE IF EXISTS obtenerMateriales;
 DROP PROCEDURE IF EXISTS modificarMaterial;
 DROP PROCEDURE IF EXISTS eliminarMaterial;
+DROP PROCEDURE IF EXISTS buscarMaterial;
 DROP PROCEDURE IF EXISTS agregarHerramienta;
 DROP PROCEDURE IF EXISTS obtenerHerramienta;
 DROP PROCEDURE IF EXISTS obtenerHerramientas;
 DROP PROCEDURE IF EXISTS modificarHerramienta;
 DROP PROCEDURE IF EXISTS eliminarHerramienta;
+DROP PROCEDURE IF EXISTS buscarHerramienta;
 DROP PROCEDURE IF EXISTS agregarInvGeneral;
 DROP PROCEDURE IF EXISTS obtenerInvGeneral;
 DROP PROCEDURE IF EXISTS obtenerInvGenerales;
 DROP PROCEDURE IF EXISTS modificarInvGeneral;
 DROP PROCEDURE IF EXISTS eliminarInvGeneral;
+DROP PROCEDURE IF EXISTS buscarInvGeneral;
 /**INVENTARIO MATERIA PRIMA **/
 DELIMITER /
 CREATE PROCEDURE agregarProducto(IN _descripcion TINYTEXT, IN _categoria INT, IN _proveedor INT, IN _talla INT,
@@ -98,6 +101,12 @@ BEGIN
     WHERE idInventarioMaterial = _id AND estado = 1;
 END/
 
+CREATE PROCEDURE buscarMaterial(IN _valor TINYTEXT)
+BEGIN 
+    SELECT * FROM vw_inventario_materiales WHERE 
+    (descripcion LIKE CONCAT('%',_valor,'%') OR marca LIKE CONCAT('%',_valor,'%') OR stock LIKE CONCAT('%',_valor,'%'));
+END/
+
 /** INVENTARIO HERRAMIENTAS **/
 
 CREATE PROCEDURE agregarHerramienta(IN _descripcion TINYTEXT, IN _marca TINYTEXT, IN _proveedor INT, IN _stock INT)
@@ -132,6 +141,12 @@ BEGIN
     WHERE idInventarioHerramienta = _id AND estado = 1;
 END/
 
+
+CREATE PROCEDURE buscarHerramienta(IN _valor TINYTEXT)
+BEGIN 
+    SELECT * FROM vw_inventario_herramientas WHERE 
+    (descripcion LIKE CONCAT('%',_valor,'%') OR marca LIKE CONCAT('%',_valor,'%') OR stock LIKE CONCAT('%',_valor,'%'));
+END/
 /** INVENTARIO GENERAL **/
 
 CREATE PROCEDURE agregarInvGeneral(IN _descripcion TINYTEXT, IN _stock INT)
@@ -162,4 +177,9 @@ BEGIN
         descripcion = _descripcion,
         stock = _stock
     WHERE idInventarioGeneral = _id AND estado = 1;
+END/
+CREATE PROCEDURE buscarInvGeneral(IN _valor TINYTEXT)
+BEGIN 
+    SELECT * FROM vw_inventario_general WHERE 
+    (descripcion LIKE CONCAT('%',_valor,'%') OR stock LIKE CONCAT('%',_valor,'%'));
 END/

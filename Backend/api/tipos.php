@@ -39,7 +39,7 @@
             case 'GET'://visualizar
                 if(isset($_GET['id']) && $_GET['id']!="undefined"){//obtener un registro
                     echo json_encode(TipoEmpleado::obtener($_GET['id'],$cnn),true);
-                }elseif(isset($_GET['valor'])){//buscar
+                }elseif(isset($_GET['valor']) && $_GET['valor']!="undefined"){//buscar
                     echo json_encode(TipoEmpleado::buscar($_GET['valor'],$cnn),true);
                 }else{//obtener todos
                     echo json_encode(TipoEmpleado::obtenerTodos($cnn),true);

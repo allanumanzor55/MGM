@@ -1,6 +1,6 @@
-let datos;
+let datosForm
 function obtenerDatos(idForm) {
-    datos = new FormData(document.getElementById(idForm))
+    datosForm = new FormData(document.getElementById(idForm))
 }
 //clase se usara para empleados y categorias(que abarcan estilo, talla y tipo), tipo se usa para filtrar datos por algun tipo
 /**
@@ -12,15 +12,16 @@ function obtenerDatos(idForm) {
  * @async
  */
 async function guardar(btn, url, datosPost) {
-    btn.style.disabled = true
+    btn.disabled = true
     obtenerDatos(datosPost.idForm)
     try{
-        const { data } = await axios.post(url + `?clase=${datosPost.clase}`, datos)
+        const { data } = await axios.post(url + `?clase=${datosPost.clase}`, datosForm)
         if (data.centinela == "true") { limpiarFormulario(datosPost.idForm) }
         mostrarMensaje(data)
-        btn.style.disabled = false;
+        btn.disabled = false;
     }catch(e){
-        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message})
+        console.log("error");
     }
 }
 //clase se usara para empleados y categorias(que abarcan estilo, talla y tipo), tipo se usa para filtrar datos por algun tipo
@@ -31,12 +32,12 @@ async function guardar(btn, url, datosPost) {
  * @returns Arreglo de Jsons con la informacion de el o los registro(s) obtenidos
  * @async
  */
-async function obtener(url, datosGet) {
+async function obtener(url,datosGet) {
     try{
-        const { data } = await axios.get(url + `?id=${datosGet.id}&clase=${datosGet.clase}&tipo=${datosGet.tipo}&valor=${datosGet.valor}`);
+        const { data } = await axios.get(`${url}?id=${datosGet.id}&clase=${datosGet.clase}&tipo=${datosGet.tipo}&valor=${datosGet.valor}`);
         return data;
     }catch(e){
-        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message})
         return null;
     }
 }
@@ -49,13 +50,13 @@ async function obtener(url, datosGet) {
  * @async
  */
 async function eliminar(btn, url, datosDelete) {
-    btn.style.disabled = true
+    btn.disabled = true
     const result = await Swal.fire({
         title: 'Estas seguro?',
         text: "No podras revertir esto!!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#ff6347',
         cancelButtonColor: '#d33f',
         confirmButtonText: 'Si, seguro!!'
     })
@@ -63,10 +64,10 @@ async function eliminar(btn, url, datosDelete) {
         try{
             const { data } = await axios.delete(url + `?id=${datosDelete.id}&clase=${datosDelete.clase}`)
             mostrarMensaje(data)
-            btn.style.disabled = false
+            btn.disabled = false
         }catch(e){
-            Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
-            btn.style.disabled = false
+            Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message })
+            btn.disabled = false
         }
         
     }
@@ -80,17 +81,17 @@ async function eliminar(btn, url, datosDelete) {
  * @async
  */
 async function modificar(btn, url, datosPut) {
-    btn.style.disabled = true
-    obtenerDatos(datosPut.idForm)
     try{
-        const { data } = await axios.put(url + `?clase=${datosPut.clase}`, JSON.stringify(Object.fromEntries(datos)))
-        console.log(data);
-        if (data.centinela == "true") { limpiarFormulario(datosPut.idForm) }
+        btn.disabled = true
+        obtenerDatos(datosPut.idForm)
+        const { data } = await axios.put(url + `?clase=${datosPut.clase}`, JSON.stringify(Object.fromEntries(datosForm)))
+        if (data.centinela == "true") { limpiarFormulario(datosPut.idForm)}
         mostrarMensaje(data)
-        btn.style.disabled = false
+        btn.disabled = false
     }catch(e){
-        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.getMessage() })
-        btn.style.disabled = false
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message})
+        console.log(e);
+        btn.disabled = false
     }
 }
 /**
@@ -100,8 +101,10 @@ async function modificar(btn, url, datosPut) {
  */
 function mostrarMensaje(data) {
     if (data.centinela === "true") {
+        console.log(data);
         Swal.fire({ icon: 'success', title: data.mensaje })
     } else {
+        console.error(data);
         Swal.fire({ icon: 'error', title: "Algo salio mal...", text: data.mensaje })
     }
 }
@@ -111,8 +114,8 @@ function mostrarMensaje(data) {
  * @param {Boolean} centinela  booleana que indica cual de los 2 botones se interclaara
  */
 function intercalarBotones(idForm, centinela) {
-    let btnGuardar = document.querySelector(`form#${idForm} a.btn.btn-danger`)
-    let btnModificar = document.querySelector(`form#${idForm} a.btn.btn-success`)
+    let btnGuardar = document.querySelector(`form#${idForm} a.btn.btn-outline-danger`)
+    let btnModificar = document.querySelector(`form#${idForm} a.btn.btn-outline-success`)
     if (btnGuardar != null && btnModificar != null) {
         if (!centinela) {
             btnGuardar.style.display = "none";
@@ -159,6 +162,7 @@ async function accederConfiguraciones(btn) {
         inputAttributes: {
             autocapitalize: 'off'
         },
+        backdrop:true,
         showCancelButton: true,
         confirmButtonText: 'Ingresar',
         showLoaderOnConfirm: true,
@@ -173,7 +177,7 @@ async function accederConfiguraciones(btn) {
     })
     if(response.isConfirmed){
         if(response.value==true){
-            window.location="setting.htm";
+            window.location="setting.php";
         }
     }
 }

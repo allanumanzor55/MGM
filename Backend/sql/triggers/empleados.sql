@@ -20,6 +20,6 @@ BEGIN
     ELSE 
         SET permiso=4; 
     END IF;
-    INSERT INTO usuarios VALUES(usuario,AES_ENCRYPT(p,CONCAT(usuario,permiso,usuario)),null,permiso);
+    INSERT INTO usuarios(usuario,password,token,idRol) VALUES(usuario,AES_ENCRYPT(HEX(p),CONCAT(usuario,permiso,usuario)),null,permiso);
     SET NEW.usuario := usuario;
 END*

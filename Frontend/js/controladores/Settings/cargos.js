@@ -29,22 +29,24 @@ async function confirmarModificarCargo(btn){
 async function refrescarTablaCargo(){
     const datos = await obtener(URL_CARGO,{clase:D_CARGO.clase})
     document.querySelector('table#tableCargo tbody').innerHTML=``;
-    datos.forEach(function(cargo,index){
-        document.querySelector('table#tableCargo tbody').innerHTML+=//html
-        `<tr>
-            <td>${cargo.descripcion}</td>
-            <td>
-                <a class="btn btn-success" onclick="modificarCargo(this,${cargo.idTipoEmpleado})">
-                    <i class="bi bi-arrow-clockwise"></i>
-                </a>
-            </td>
-            <td>
-                <a class="btn btn-danger" onclick="eliminarCargo(this,${cargo.idTipoEmpleado})">
-                    <i class="bi bi-trash"></i>
-                </a>
-            </td>
-        <tr>`
-    })
+    if(Array.isArray(datos)){
+        datos.forEach(function(cargo,index){
+            document.querySelector('table#tableCargo tbody').innerHTML+=//html
+            `<tr>
+                <td>${cargo.descripcion}</td>
+                <td>
+                    <a title="Actualizar" class="btn btn-success" onclick="modificarCargo(this,${cargo.idTipoEmpleado})">
+                        <i class=" zmdi  zmdi-refresh"></i>
+                    </a>
+                </td>
+                <td>
+                    <a title="Eliminar" class="btn btn-danger" onclick="eliminarCargo(this,${cargo.idTipoEmpleado})">
+                        <i class=" zmdi  zmdi-delete"></i>
+                    </a>
+                </td>
+            <tr>`
+        })
+    }
 }
 
 async function rellenarSelectCargos(){
@@ -85,6 +87,10 @@ async function crearTabsCargos(){
             </div>
             `
         })
+        tab+=
+        `<li class="nav-item col" role="presentation">
+                <input class="form-control type="search" onkeyup="buscarEmpleado(this.value)" placeholder="Buscar">
+        </li>`
         document.getElementById('pills-tabEmpleado').innerHTML+=tab
         document.getElementById('pills-tabContentEmpleado').innerHTML+=tabContents
     }

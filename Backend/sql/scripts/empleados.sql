@@ -12,7 +12,6 @@ IN _nombre TINYTEXT, IN _primerApellido TINYTEXT, IN _segundoApellido TINYTEXT,
 IN _direccion TINYTEXT, IN _correo TINYTEXT, IN _celular TINYTEXT, IN _telefono TINYTEXT,
 IN _sueldo DECIMAL(11,2))
 BEGIN 
-    DECLARE permiso INT;
     INSERT INTO 
     empleados(tipoEmpleado, nombre, dni , primerApellido, segundoApellido,direccion, correo, celular, telefono, sueldo) 
     VALUES(_tipoEmpleado, _nombre, _dni, _primerApellido, _segundoApellido, _direccion, _correo, _celular, _telefono, _sueldo); 
@@ -57,9 +56,9 @@ BEGIN
     UPDATE empleados SET estado = 0 WHERE idEmpleado = _id AND estado =1;
 END/
 
-CREATE PROCEDURE buscarEmpleado(IN _valor TINYTEXT)
+CREATE PROCEDURE buscarEmpleado(IN _valor TINYTEXT,IN _tipo TINYTEXT)
 BEGIN 
     SELECT * FROM empleados 
-    WHERE estado=1 AND 
+    WHERE estado=1 AND tipoEmpleado = _tipo AND 
     (nombre LIKE CONCAT('%',_valor,'%') OR primerApellido LIKE CONCAT('%',_valor,'%') OR segundoApellido LIKE CONCAT('%',_valor,'%'));
 END/

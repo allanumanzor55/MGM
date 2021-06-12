@@ -1,9 +1,6 @@
 const URL_CTL = '../Backend/api/categoria_tipo_talla.php'
 const D_CATEGORIA =[{idForm:"formCategoria",clase:"tipo"},{idForm:"formEstilo",clase:"categoria"},{idForm:"formTalla",clase:"talla"}]
-rellenarSelect()
-rellenarSelectEstilo()
-rellenarSelectTalla()
-intercalarBotones("formCategoria",true)
+
 //CATEGORIAS/TIPOS
 async function guardarCategoria(btn){
     await guardar(btn,URL_CTL,D_CATEGORIA[0])
@@ -40,6 +37,7 @@ async function confirmarModificarCategoria(btn){
 async function refrescarTablaCategoria(){
     const datos = await obtener(URL_CTL,{clase:D_CATEGORIA[0].clase})
     document.querySelector('table#tableCategoria tbody').innerHTML=``
+    console.log(datos);
     if(Array.isArray(datos)){
         datos.forEach(function(categoria,index){
             document.querySelector('table#tableCategoria tbody').innerHTML+=//html
@@ -47,13 +45,13 @@ async function refrescarTablaCategoria(){
                 <td>${categoria.descripcion}</td>
                 <td>${categoria.material}</td>
                 <td>
-                    <a class="btn btn-success" onclick="modificarCategoria(this,${categoria.idTipo})">
-                        <i class="bi bi-arrow-clockwise"></i>
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarCategoria(this,${categoria.idTipo})">
+                        <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
                 <td>
-                    <a class="btn btn-danger" onclick="eliminarCategoria(this,${categoria.idTipo})">
-                        <i class="bi bi-trash"></i>
+                    <a title="Eliminar" class="btn btn-outline-danger" onclick="eliminarCategoria(this,${categoria.idTipo})">
+                        <i class=" zmdi  zmdi-delete"></i>
                     </a>
                 </td>
             <tr>`
@@ -123,13 +121,13 @@ async function refrescarTablaEstilo(){
                 <td>${estilo.material}</td>
                 <td>${estilo.estilo}</td>
                 <td>
-                    <a class="btn btn-success" onclick="modificarEstilo(this,${estilo.idCategoria})">
-                        <i class="bi bi-arrow-clockwise"></i>
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarEstilo(this,${estilo.idCategoria})">
+                        <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
                 <td>
-                    <a class="btn btn-danger" onclick="eliminarEstilo(this,${estilo.idCategoria})">
-                        <i class="bi bi-trash"></i>
+                    <a title="Eliminar" class="btn btn-outline-danger" onclick="eliminarEstilo(this,${estilo.idCategoria})">
+                        <i class=" zmdi  zmdi-delete"></i>
                     </a>
                 </td>
             <tr>`
@@ -144,11 +142,26 @@ async function refrescarTablaEstilo(){
     }
 }
 
-async function rellenarSelectEstilo(tipo){
+async function rellenarSelectEstilo(idTipo,tipo){
     let datos
+    let tipoSelect
+    if(typeof idTipo!="undefined"){
+        if(tipo.includes("|")){
+            tipo = tipo.replace(" ","").split("|")
+            tipoSelect=tipo[0]
+        }else{
+            tipoSelect=tipo
+        }
+        if((tipoSelect.toLowerCase()=="camisa" || tipoSelect.toLowerCase()=="pantalon")){
+            document.getElementById('divTalla').style.display='block'
+        }else{
+            document.getElementById('divTalla').style.display='none'
+        }
+    }
+
     if(!(document.getElementById('selectEstilo') === null)){
-        if(!(typeof tipo === "undefined")){
-            datos = await obtener(URL_CTL,{clase:D_CATEGORIA[1].clase,tipo:tipo})
+        if(!(typeof idTipo === "undefined")){
+            datos = await obtener(URL_CTL,{clase:D_CATEGORIA[1].clase,tipo:idTipo})
         }
         document.getElementById('selectEstilo').innerHTML=``
         if(Array.isArray(datos) && datos.length>0){
@@ -205,13 +218,13 @@ async function refrescarTablaTalla(){
             `<tr>
                 <td>${talla.descripcion}</td>
                 <td>
-                    <a class="btn btn-success" onclick="modificarTalla(this,${talla.idTalla})">
-                        <i class="bi bi-arrow-clockwise"></i>
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarTalla(this,${talla.idTalla})">
+                        <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
                 <td>
-                    <a class="btn btn-danger" onclick="eliminarTalla(this,${talla.idTalla})">
-                        <i class="bi bi-trash"></i>
+                    <a title="Eliminar" class="btn btn-outline-danger" onclick="eliminarTalla(this,${talla.idTalla})">
+                        <i class=" zmdi  zmdi-delete"></i>
                     </a>
                 </td>
             <tr>`
