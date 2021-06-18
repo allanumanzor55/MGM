@@ -32,12 +32,12 @@
               <button class="nav-link nav-link-mg-2" id="v-pills-tallas-tab" data-bs-toggle="pill"
                 data-bs-target="#v-pills-tallas" type="button" role="tab" aria-controls="v-pills-tallas"
                 aria-selected="false">Tallas</button>
-              <button class="nav-link nav-link-mg-2" id="v-pills-cargos-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-cargos" type="button" role="tab" aria-controls="v-pills-cargos"
-                aria-selected="false">Cargos</button>
               <button class="nav-link nav-link-mg-2" id="v-pills-roles-tab" data-bs-toggle="pill"
               data-bs-target="#v-pills-roles" type="button" role="tab" aria-controls="v-pills-roles"
               aria-selected="false">Roles</button>
+              <button class="nav-link nav-link-mg-2" id="v-pills-cargos-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-cargos" type="button" role="tab" aria-controls="v-pills-cargos"
+                aria-selected="false">Cargos</button>
               <button class="nav-link nav-link-mg-2" id="v-pills-procesos-tab" data-bs-toggle="pill"
               data-bs-target="#v-pills-procesos" type="button" role="tab" aria-controls="v-pills-procesos"
               aria-selected="false">Procesos</button>
@@ -153,37 +153,6 @@
                   </div>
                 </div>
               </div>
-              
-              <div class="tab-pane fade min-h-100" id="v-pills-cargos" role="tabpanel" aria-labelledby="v-pills-cargos-tab">
-                <form class="row g-3 align-items-center" id="formCargo">
-                  <input type="hidden" name="id" id="idCargo">
-                  <div class="col-4">
-                    <div class="input-group">
-                      <input type="text" class="form-control" id="descripcionTip" name="descripcion" placeholder="Cargo">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <a type="button" class="btn btn-outline-danger" onclick="guardarCargo(this)" style="display:block !important;">Guardar</a>
-                    <a type="button" class="btn btn-outline-success" onclick="confirmarModificarCargo(this)" value="modificar" style="display: none !important;">Modificar</a>
-                  </div>
-                </form>
-                <hr class="mx-auto my-3">
-                <div class="row">
-                  <div class="table-responsive">
-                    <table class="table table-hover text-center" id="tableCargo">
-                      <thead>
-                        <tr>
-                          <th scope="col">Cargo</th>
-                          <th scope="col">Modificar</th>
-                          <th scope="col">Eliminar</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
 
               <div class="tab-pane fade min-h-100" id="v-pills-roles" role="tabpanel" aria-labelledby="v-pill-roles-tab">
                 <form class="row g-3 align-items-center" id="formRol">
@@ -192,6 +161,7 @@
                     <div class="col-12 input-group mb-2">
                       <input type="text" class="form-control" id="rol" name="rol" placeholder="Rol">
                     </div>
+                    
                     <div class="col-12 input-group">
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="1" id="chkEmpleado" name="empleados">
@@ -256,6 +226,41 @@
                 </div>
               </div>
 
+              <div class="tab-pane fade min-h-100" id="v-pills-cargos" role="tabpanel" aria-labelledby="v-pills-cargos-tab">
+                <form class="row g-3 align-items-center" id="formCargo">
+                  <input type="hidden" name="id" id="idCargo">
+                  <div class="col-4">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="descripcionTip" name="descripcion" placeholder="Cargo">
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <select class="form-select" name="rol" id="selectRoles">
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <a type="button" class="btn btn-outline-danger" onclick="guardarCargo(this)" style="display:block !important;">Guardar</a>
+                    <a type="button" class="btn btn-outline-success" onclick="confirmarModificarCargo(this)" value="modificar" style="display: none !important;">Modificar</a>
+                  </div>
+                </form>
+                <hr class="mx-auto my-3">
+                <div class="row">
+                  <div class="table-responsive">
+                    <table class="table table-hover text-center" id="tableCargo">
+                      <thead>
+                        <tr>
+                          <th scope="col">Cargo</th>
+                          <th scope="col">Modificar</th>
+                          <th scope="col">Eliminar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
               <div class="tab-pane fade min-h-100" id="v-pills-procesos" role="tabpanel" aria-labelledby="v-pill-procesos-tab">
                 <form class="row g-3 align-items-center" id="formProceso">
                   <div class="col-9">
@@ -308,6 +313,7 @@
         rellenarSelect()
         rellenarSelectEstilo()
         rellenarSelectTalla()
+        rellenarSelectRoles()
         intercalarBotones("formCategoria",true)
       </script>
     </footer>

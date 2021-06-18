@@ -13,7 +13,7 @@ switch($_POST['accion']){
         
     break; 
     case 'PERMISOS':
-        
+        echo json_encode(Login::obtenerPermisos($cnn));
     break;
     case 'LOGOUT':
         Login::logout($cnn);

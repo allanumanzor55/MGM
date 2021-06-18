@@ -144,15 +144,6 @@
             </div>
         </div>
     </div>
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="perfilCanvas" aria-labelledby="perfilCanvasLabel">
-        <div class="offcanvas-header">
-            <h5 id="perfilCanvasLabel">Perfil</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            ...
-        </div>
-    </div>
     <footer>
         <?php include_once('footer.php'); ?>
         <script src="js/controladores/CRUD.js"></script>

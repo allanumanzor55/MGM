@@ -14,9 +14,11 @@ async function modificarCargo(btn,id){
     btn.style.disabled=true;
     const datos = await obtener(URL_CARGO,{id:id,clase:D_CARGO.clase})
     btn.style.disabled=false;
-    let form = document.querySelectorAll("form#formCargo input")
+    let form = document.getElementById('formCargo').querySelectorAll("input,select")
+    console.log(form)
     form[0].value=datos.idTipoEmpleado
     form[1].value=datos.descripcion 
+    form[2].value=datos.idRol
     intercalarBotones(D_CARGO.idForm,false);
 }
 

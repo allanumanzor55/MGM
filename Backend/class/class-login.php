@@ -64,5 +64,13 @@ class Login extends Conexion{
         setcookie('idUser',"",3600, "/");
         setcookie('token',"",3600, "/");
     }
+
+    public static function obtenerPermisos($cnn)
+    {
+        $query = $cnn->prepare("CALL obtenerPermisos(?);");
+        $query->execute(array($_COOKIE['idUser']));
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
 ?>

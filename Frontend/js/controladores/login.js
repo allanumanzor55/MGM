@@ -18,6 +18,7 @@ async function login(btn) {
             title: 'Error',
             text: data.mensaje,
         });
+        console.log(data);
     }
     btn.disabled = false
 }
@@ -64,4 +65,11 @@ async function perfil(){
     document.getElementById('perfilCelular').value = datos.celular
     document.getElementById('perfilTelefono').value = datos.telefono
     document.getElementById('perfilDireccion').value = datos.direccion
+}
+
+async function navbar(){
+    datosPermiso = new FormData()
+    datosPermiso.append("accion", "PERMISOS")
+    const {data} = await axios.post(URL_LOGIN,datosPermiso)
+    console.log(data)
 }

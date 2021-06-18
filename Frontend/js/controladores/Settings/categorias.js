@@ -37,7 +37,6 @@ async function confirmarModificarCategoria(btn){
 async function refrescarTablaCategoria(){
     const datos = await obtener(URL_CTL,{clase:D_CATEGORIA[0].clase})
     document.querySelector('table#tableCategoria tbody').innerHTML=``
-    console.log(datos);
     if(Array.isArray(datos)){
         datos.forEach(function(categoria,index){
             document.querySelector('table#tableCategoria tbody').innerHTML+=//html

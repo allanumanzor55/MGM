@@ -3,6 +3,7 @@ DROP PROCEDURE IF EXISTS comprobarPassword;
 DROP PROCEDURE IF EXISTS login;
 DROP PROCEDURE IF EXISTS comprobarLogin;
 DROP PROCEDURE IF EXISTS logout;
+DROP PROCEDURE IF EXISTS obtenerPermisos;
 DELIMITER /
 CREATE PROCEDURE comprobarUser(IN _user TINYTEXT, OUT id INT)
 BEGIN
@@ -18,7 +19,7 @@ END/
 CREATE PROCEDURE comprobarPassword(IN id INT, IN _password TINYTEXT,OUT validado BOOLEAN)
 BEGIN
     DECLARE pass TINYTEXT;
-    SELECT CONVERT(UNHEX(AES_DECRYPT(usuarios.password,CONCAT(usuarios.usuario,usuarios.idRol,usuarios.usuario))) USING utf8) INTO pass
+    SELECT CONVERT(UNHEX(AES_DECRYPT(usuarios.password,usuarios.usuario)) USING utf8) INTO pass
     FROM usuarios WHERE idUsuario=id;
     IF _password = pass THEN
         SET validado := TRUE;
@@ -46,4 +47,12 @@ END/
 CREATE PROCEDURE logout(IN id INT)
 BEGIN
     UPDATE usuarios SET token = "" WHERE idUsuario = id;
+END/
+
+CREATE PROCEDURE obtenerPermisos(IN id INT)
+BEGIN
+    SELECT rol.idRol,rol.rol, rol.empleados, rol.clientes, rol.inventario, rol.inventarioFinal, rol.fichaProducto,
+    rol.ventas, rol.configuracion FROM roles rol 
+    JOIN vw_usuarios us ON us.idRol = rol.idRol
+    WHERE us.idUsuario = id;
 END/

@@ -33,7 +33,7 @@
         include_once('../class/class-tipoEmpleado.php');
         switch($_SERVER['REQUEST_METHOD']){
             case 'POST'://guardar
-                $tipoEmpleado = new TipoEmpleado($_POST['descripcion']);
+                $tipoEmpleado = new TipoEmpleado($_POST['descripcion'],$_POST['rol']);
                 echo $tipoEmpleado->guardar();
             break;
             case 'GET'://visualizar
@@ -47,7 +47,7 @@
             break; 
             case 'PUT'://modificar
                 $_PUT = json_decode(file_get_contents("php://input"), TRUE);
-                $tipoEmpleado = new TipoEmpleado($_PUT['descripcion']);
+                $tipoEmpleado = new TipoEmpleado($_PUT['descripcion'],$_PUT['rol']);
                 echo $tipoEmpleado->modificar($_PUT['id']);
             break;
             case 'DELETE'://eliminar

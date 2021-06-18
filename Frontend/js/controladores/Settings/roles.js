@@ -61,19 +61,19 @@ async function refrescarTablaRol(){
     }
 }
 
-async function rellenarSelectRols(){
-    const datos = await obtener(URL_ROL,{clase:D_ROL.clase})
-    if(Array.isArray(datos)){
-        datos.forEach(dato=>{
-            var option = document.createElement("option")
-            option.value = dato.idTipoEmpleado
-            option.text = dato.descripcion
-            document.getElementById('selectTipoEmpleado').appendChild(option)
-        })
-    }else{
+async function rellenarSelectRoles(){
+    const datos = await obtener(URL_ROL,{})
+    if(Array.isArray(datos) && datos.length<1){
         var option = document.createElement("option")
         option.value = 0
-        option.text = "Sin Roles"
-        document.getElementById('selectTipoEmpleado').appendChild(option)
+        option.text = "Sin Roles Creados"
+        document.getElementById('selectRoles').appendChild(option)
+    }else if(Array.isArray(datos)){
+        datos.forEach(dato=>{
+            var option = document.createElement("option")
+            option.value = dato.idRol
+            option.text = dato.rol 
+            document.getElementById('selectRoles').appendChild(option)
+        })
     }
 }

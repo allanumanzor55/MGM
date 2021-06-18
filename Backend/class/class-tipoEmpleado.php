@@ -1,15 +1,16 @@
 <?php
 include_once('abstract-modelo.php');
 class TipoEmpleado extends Modelo{
-
-    public function __construct($descripcion)
+    private $rol;
+    public function __construct($descripcion,$rol)
     {
         parent::__construct($descripcion);
+        $this->setRol($rol);
     }
 
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL agregarTipoEmpleado(:descripcion)");
+            $query = $this->cnn->prepare("CALL agregarTipoEmpleado(:descripcion,:rol)");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -39,7 +40,7 @@ class TipoEmpleado extends Modelo{
     }
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarTipoEmpleado(:descripcion,:id)");
+            $query = $this->cnn->prepare("CALL modificarTipoEmpleado(:descripcion,:rol,:id)");
             $datos = $this->obtenerDatos();
             $datos["id"]=$id;
             $query->execute($datos);
@@ -62,25 +63,26 @@ class TipoEmpleado extends Modelo{
     }
     public function obtenerDatos(){
         return array(
-            "descripcion" => $this->getDescripcion()
+            "descripcion" => $this->getDescripcion(),
+            "rol"=>$this->getRol()
         );
     }
     /**
-     *  Get the value of descripcion
+     *  Get the value of rol
      */ 
-    public function getDescripcion()
+    public function getRol()
     {
-        return $this->descripcion;
+        return $this->rol;
     }
 
     /**
-     *  Set the value of descripcion
+     *  Set the value of rol
      *
      * @return  self
      */ 
-    public function setDescripcion($descripcion)
+    public function setRol($rol)
     {
-        $this->descripcion = $descripcion;
+        $this->rol = $rol;
 
         return $this;
     }

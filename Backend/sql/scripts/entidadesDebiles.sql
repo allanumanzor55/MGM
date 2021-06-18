@@ -181,9 +181,9 @@ BEGIN
     WHERE inventario_proveedores.idProveedor=_id AND inventario_proveedores.estado=1;
 END/
 
-CREATE PROCEDURE agregarTipoEmpleado(IN _descripcion TINYTEXT)
+CREATE PROCEDURE agregarTipoEmpleado(IN _descripcion TINYTEXT, IN _rol INT)
 BEGIN
-    INSERT INTO tipo_empleado(descripcion) VALUES (_descripcion);
+    INSERT INTO tipo_empleado(descripcion,idRol) VALUES (_descripcion, _rol);
 END/
 
 CREATE PROCEDURE obtenerTipoEmpleados()
@@ -196,9 +196,9 @@ BEGIN
     SELECT * FROM tipo_empleado WHERE idTipoEmpleado = _id AND estado = 1;
 END/
 
-CREATE PROCEDURE modificarTipoEmpleado(IN _descripcion TINYTEXT, IN _id INT)
+CREATE PROCEDURE modificarTipoEmpleado(IN _descripcion TINYTEXT, IN _rol INT, IN _id INT)
 BEGIN
-    UPDATE tipo_empleado SET descripcion = _descripcion WHERE idTipoEmpleado = _id AND estado = 1;
+    UPDATE tipo_empleado SET descripcion = _descripcion, idRol = _rol WHERE idTipoEmpleado = _id AND estado = 1;
 END/
 
 CREATE PROCEDURE eliminarTipoEmpleado( IN _id INT)
