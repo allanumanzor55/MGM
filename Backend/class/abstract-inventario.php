@@ -17,6 +17,18 @@ abstract class Inventario extends Conexion implements CRUD{
         $this->setStock($stock);
     }
     
+    static public function modificarStock($id,$stock,$tipoInventario){
+        try{
+            $db = new Conexion();
+            $cnn = $db->getConexion();
+            $query = $cnn->prepare('CALL modificarStock(?,?,?);');
+            $query->execute(Array($id,intval($stock),$tipoInventario));
+            $query->closeCursor();
+            return Acciones::error_message("(Stock) Modificado",true);
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
     /**
      * Get the value of descripcion
      */ 

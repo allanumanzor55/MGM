@@ -1,54 +1,48 @@
-DROP PROCEDURE IF EXISTS guardarCliente;
-DROP PROCEDURE IF EXISTS obtenerCliente;
-DROP PROCEDURE IF EXISTS obtenerClientes;
-DROP PROCEDURE IF EXISTS eliminarCliente;
-DROP PROCEDURE IF EXISTS modificarCliente;
-DROP PROCEDURE IF EXISTS buscarCliente;
 DELIMITER /
-CREATE PROCEDURE guardarCliente(IN _tipoCliente INT, IN _dni TINYTEXT,
-IN _nombre TINYTEXT, IN _primerApellido TINYTEXT, IN _segundoApellido TINYTEXT,
-IN _direccion TINYTEXT, IN _correo TINYTEXT, IN _celular TINYTEXT, IN _telefono TINYTEXT, IN _edad VARCHAR(3))
+CREATE OR REPLACE PROCEDURE guardarCliente(IN TipoCliente INT, IN Dni TINYTEXT,
+IN Nombre TINYTEXT, IN PrimerApellido TINYTEXT, IN SegundoApellido TINYTEXT,
+IN Direccion TINYTEXT, IN Correo TINYTEXT, IN Celular TINYTEXT, IN Telefono TINYTEXT, IN Edad VARCHAR(3))
 BEGIN
     INSERT INTO clientes (tipoCliente,dni, nombre, primerApellido, segundoApellido,direccion, correo, celular, telefono,edad) 
-    VALUES (_tipoCliente,_dni, _nombre, _primerApellido, _segundoApellido, _direccion, _correo, _celular, _telefono,_edad); 
+    VALUES (TipoCliente,Dni, Nombre, PrimerApellido, SegundoApellido, Direccion, Correo, Celular, Telefono,Edad); 
 END/
 
-CREATE PROCEDURE obtenerClientes()
+CREATE OR REPLACE PROCEDURE obtenerClientes()
 BEGIN   
     SELECT * FROM clientes WHERE estado = 1;
 END/
 
-CREATE PROCEDURE obtenerCliente(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerCliente(IN Id INT)
 BEGIN
-    SELECT * FROM clientes WHERE idCliente = _id AND estado = 1;
+    SELECT * FROM clientes WHERE idCliente = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE modificarCliente(IN _tipoCliente INT,IN _dni TINYTEXT,IN _nombre TINYTEXT, IN _primerApellido TINYTEXT, 
-IN _segundoApellido TINYTEXT,IN _direccion TINYTEXT, IN _correo TINYTEXT, IN _celular TINYTEXT, 
-IN _telefono TINYTEXT, IN _edad VARCHAR(3),IN _id INT)
+CREATE OR REPLACE PROCEDURE modificarCliente(IN TipoCliente INT,IN Dni TINYTEXT,IN Nombre TINYTEXT, IN PrimerApellido TINYTEXT, 
+IN SegundoApellido TINYTEXT,IN Direccion TINYTEXT, IN Correo TINYTEXT, IN Celular TINYTEXT, 
+IN Telefono TINYTEXT, IN Edad VARCHAR(3),IN Id INT)
 BEGIN 
     UPDATE clientes SET 
-        tipoCliente = _tipoCliente,
-        dni = _dni,
-        nombre = _nombre,
-        primerApellido = _primerApellido,
-        segundoApellido = _segundoApellido,
-        direccion = _direccion,
-        correo = _correo,
-        celular = _celular,
-        telefono = _telefono,
-        edad = _edad
-    WHERE idCliente  = _id AND estado = 1;
+        tipoCliente = TipoCliente,
+        dni = Dni,
+        nombre = Nombre,
+        primerApellido = PrimerApellido,
+        segundoApellido = SegundoApellido,
+        direccion = Direccion,
+        correo = Correo,
+        celular = Celular,
+        telefono = Telefono,
+        edad = Edad
+    WHERE idCliente  = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE eliminarCliente(IN _id INT )
+CREATE OR REPLACE PROCEDURE eliminarCliente(IN Id INT )
 BEGIN
-    UPDATE clientes SET estado = 0 WHERE idCliente = _id AND estado = 1;
+    UPDATE clientes SET estado = 0 WHERE idCliente = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE buscarCliente(IN _valor TINYTEXT)
+CREATE OR REPLACE PROCEDURE buscarCliente(IN Valor TINYTEXT)
 BEGIN 
     SELECT * FROM clientes
     WHERE estado=1 AND 
-    (nombre LIKE CONCAT('%',_valor,'%') OR primerApellido LIKE CONCAT('%',_valor,'%') OR segundoApellido LIKE CONCAT('%',_valor,'%'));
+    (nombre LIKE CONCAT('%',Valor,'%') OR primerApellido LIKE CONCAT('%',Valor,'%') OR segundoApellido LIKE CONCAT('%',Valor,'%'));
 END/

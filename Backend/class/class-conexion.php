@@ -16,7 +16,7 @@ class Conexion {
             $this->conexion->setAttribute( PDO::ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $this->conexion->exec("SET CHARACTER SET utf8");
             return $this->conexion;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo "Error".$e->getMessage();
         } finally {
             $this->conexion=null;

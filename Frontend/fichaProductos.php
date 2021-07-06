@@ -1,13 +1,8 @@
 <?php include_once('validation.php');?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="css/landing-styles.css">
+    <?php include_once('head.php');?>
     <title>FichaProducto</title>
 </head>
 <body id="bg-landing" class="container-fluid p-0">
@@ -145,7 +140,6 @@
         </div>
     </div>
     <footer>
-        <?php include_once('footer.php'); ?>
         <script src="js/controladores/CRUD.js"></script>
         <script src="js/controladores/Settings/categorias.js"></script>
         <script src="js/controladores/inventario.js"></script>

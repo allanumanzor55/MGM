@@ -1,58 +1,61 @@
-DROP PROCEDURE IF EXISTS comprobarUser;
-DROP PROCEDURE IF EXISTS comprobarPassword;
-DROP PROCEDURE IF EXISTS login;
-DROP PROCEDURE IF EXISTS comprobarLogin;
-DROP PROCEDURE IF EXISTS logout;
-DROP PROCEDURE IF EXISTS obtenerPermisos;
 DELIMITER /
-CREATE PROCEDURE comprobarUser(IN _user TINYTEXT, OUT id INT)
+DROP PROCEDURE IF EXISTS comprobarUser;
+CREATE OR REPLACE PROCEDURE comprobarUser(IN Usuario TINYTEXT)
 BEGIN
     DECLARE n INT;
-    SELECT COUNT(*) INTO n FROM vw_usuarios WHERE usuario = _user;
+    SELECT COUNT(*) INTO n FROM vw_usuarios WHERE usuario = Usuario;
     IF n>0 THEN
-        SELECT idUsuario INTO id FROM vw_usuarios WHERE usuario = _user;
+        SELECT idUsuario as "idUser",id,TipoUsuario FROM vw_usuarios WHERE usuario = Usuario;
     ELSE 
-        SET id:=0;
+        SELECT 0 as "idUser";
     END IF;
 END/
+DROP PROCEDURE IF EXISTS obtenerId;
+CREATE PROCEDURE obtenerId(IN Us TINYTEXT)
+BEGIN 
+DECLARE ID INT;
+    SELECT id INTO ID FROM vw_usuarios WHERE usuario = Us;
+    SELECT idUsuario FROM vw_usuarios WHERE id = ID;
+END/
 
-CREATE PROCEDURE comprobarPassword(IN id INT, IN _password TINYTEXT,OUT validado BOOLEAN)
+CREATE OR REPLACE PROCEDURE comprobarPassword(IN id INT, IN Contra TINYTEXT,OUT Validado BOOLEAN)
 BEGIN
     DECLARE pass TINYTEXT;
     SELECT CONVERT(UNHEX(AES_DECRYPT(usuarios.password,usuarios.usuario)) USING utf8) INTO pass
     FROM usuarios WHERE idUsuario=id;
-    IF _password = pass THEN
-        SET validado := TRUE;
+    IF Contra = pass THEN
+        SET Validado := TRUE;
     ELSE
-        SET validado := FALSE;
+        SET Validado := FALSE;
     END IF;
 END/
 
-CREATE PROCEDURE login(IN id INT, IN _token TEXT)
+CREATE OR REPLACE PROCEDURE login(IN id INT, IN _token TEXT)
 BEGIN
     UPDATE usuarios SET token=_token WHERE idUsuario = id;
 END/ 
 
-CREATE PROCEDURE comprobarLogin(IN _token TINYTEXT, OUT validado BOOLEAN)
+CREATE OR REPLACE PROCEDURE comprobarLogin(IN _token TINYTEXT, OUT Validado BOOLEAN)
 BEGIN
     DECLARE n INT;
     SELECT COUNT(*) INTO n FROM usuarios WHERE token = _token;
     IF n > 0 THEN
-        SET validado = TRUE;
+        SET Validado = TRUE;
     ELSE 
-        SET validado = FALSE;
+        SET Validado = FALSE;
     END IF;
 END/
 
-CREATE PROCEDURE logout(IN id INT)
+CREATE OR REPLACE PROCEDURE logout(IN Id INT)
 BEGIN
-    UPDATE usuarios SET token = "" WHERE idUsuario = id;
+    UPDATE usuarios SET token = "" WHERE idUsuario = Id;
 END/
 
-CREATE PROCEDURE obtenerPermisos(IN id INT)
+CREATE OR REPLACE PROCEDURE obtenerPermisos(IN Id INT)
 BEGIN
-    SELECT rol.idRol,rol.rol, rol.empleados, rol.clientes, rol.inventario, rol.inventarioFinal, rol.fichaProducto,
-    rol.ventas, rol.configuracion FROM roles rol 
+    SELECT rol.idRol,rol.empleados,rol.clientes,rol.inventario,rol.guiaRemision,
+    rol.bodegas,rol.catalogo,rol.cotizacion,rol.configuracion
+    FROM roles rol 
     JOIN vw_usuarios us ON us.idRol = rol.idRol
-    WHERE us.idUsuario = id;
+    WHERE us.idUsuario = Id;
 END/

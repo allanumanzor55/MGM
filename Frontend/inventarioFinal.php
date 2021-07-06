@@ -3,11 +3,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="css/landing-styles.css">
+    <?php include_once('head.php');?>
     <title>Inventario Final</title>
 </head>
 
@@ -62,7 +58,6 @@
         </div>
     </div>
     <footer>
-        <?php include_once('footer.php') ?>
         <script src="js/controladores/CRUD.js"></script>
         <script src="js/controladores/FichaProducto/funcionesSecundarias.js"></script>
         <script src="js/controladores/FichaProducto/productoGestor.js"></script>

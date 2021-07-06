@@ -1,243 +1,214 @@
-DROP PROCEDURE IF EXISTS agregarCategoria; 
-DROP PROCEDURE IF EXISTS obtenerCategoria;
-DROP PROCEDURE IF EXISTS obtenerCategorias;
-DROP PROCEDURE IF EXISTS obtenerCategoriasPorTipo;
-DROP PROCEDURE IF EXISTS eliminarCategoria;
-DROP PROCEDURE IF EXISTS modificarCategoria;
-DROP PROCEDURE IF EXISTS buscarCategoria;
-DROP PROCEDURE IF EXISTS agregarTipo;
-DROP PROCEDURE IF EXISTS obtenerTipo;
-DROP PROCEDURE IF EXISTS obtenerTipos;
-DROP PROCEDURE IF EXISTS eliminarTipo;
-DROP PROCEDURE IF EXISTS modificarTipo;
-DROP PROCEDURE IF EXISTS buscarTipo;
-DROP PROCEDURE IF EXISTS agregarTalla;
-DROP PROCEDURE IF EXISTS obtenerTalla;
-DROP PROCEDURE IF EXISTS obtenerTallas;
-DROP PROCEDURE IF EXISTS eliminarTalla;
-DROP PROCEDURE IF EXISTS modificarTalla;
-DROP PROCEDURE IF EXISTS buscarTalla;
-DROP PROCEDURE IF EXISTS agregarProveedor;
-DROP PROCEDURE IF EXISTS eliminarProveedor;
-DROP PROCEDURE IF EXISTS agregarRol;
-DROP PROCEDURE IF EXISTS obtenerRoles;
-DROP PROCEDURE IF EXISTS obtenerRol;
-DROP PROCEDURE IF EXISTS modificarRol;
-DROP PROCEDURE IF EXISTS eliminarRol;
-DROP PROCEDURE IF EXISTS agregarTipoEmpleado;
-DROP PROCEDURE IF EXISTS obtenerTipoEmpleados;
-DROP PROCEDURE IF EXISTS obtenerTipoEmpleado;
-DROP PROCEDURE IF EXISTS modificarTipoEmpleado;
-DROP PROCEDURE IF EXISTS eliminarTipoEmpleado;
 DELIMITER /
-/**CATEGORIAS**/
-CREATE PROCEDURE agregarCategoria(IN _tipo INT, IN _estilo TINYTEXT)
+CREATE OR REPLACE PROCEDURE agregarCategoria(IN Tipo INT, IN Estilo TINYTEXT)
 BEGIN
-    INSERT INTO inventario_categorias(idTipo,estilo) VALUES (_tipo,_estilo);
+    INSERT INTO inventario_categorias(idTipo,estilo) VALUES (Tipo,Estilo);
 END/
 
-CREATE PROCEDURE obtenerCategorias()
+CREATE OR REPLACE PROCEDURE obtenerCategorias()
 BEGIN
     SELECT * FROM vw_categorias;
 END/
 
-CREATE PROCEDURE obtenerCategoria(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerCategoria(IN Id INT)
 BEGIN
-    SELECT * FROM vw_categorias WHERE idCategoria=_id;
+    SELECT * FROM vw_categorias WHERE idCategoria=Id;
 END/
 
-CREATE PROCEDURE obtenerCategoriasPorTipo(IN _tipo INT)
+CREATE OR REPLACE PROCEDURE obtenerCategoriasPorTipo(IN Tipo INT)
 BEGIN
-    SELECT idCategoria,estilo FROM vw_categorias WHERE idTipo=_tipo;
+    SELECT idCategoria,estilo FROM vw_categorias WHERE idTipo=Tipo;
 END/
 
-CREATE PROCEDURE eliminarCategoria(IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarCategoria(IN Id INT)
 BEGIN
-    UPDATE inventario_categorias SET estado = 0 WHERE idCategoria = _id;
+    UPDATE inventario_categorias SET estado = 0 WHERE idCategoria = Id;
     UPDATE inventario_categorias
     JOIN inventario_materia_prima inventario ON inventario_categorias.idCategoria = inventario.idCategoria 
     SET 
     inventario_categorias.estado = 0,
     inventario.estado=0 
-    WHERE inventario_categorias.idCategoria = _id;
+    WHERE inventario_categorias.idCategoria = Id;
 END/
 
-CREATE PROCEDURE modificarCategoria(IN _tipo INT, IN _estilo TINYTEXT, IN _id INT)
+CREATE OR REPLACE PROCEDURE modificarCategoria(IN Tipo INT, IN Estilo TINYTEXT, IN Id INT)
 BEGIN
     UPDATE inventario_categorias SET 
-        idTipo = _tipo,
-        estilo = _estilo
-    WHERE idCategoria = _id AND estado = 1;
+        idTipo = Tipo,
+        estilo = Estilo
+    WHERE idCategoria = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE buscarCategoria(IN _valor TINYTEXT)
+CREATE OR REPLACE PROCEDURE buscarCategoria(IN Valor TINYTEXT)
 BEGIN 
     SELECT * FROM inventario_categorias 
     WHERE estado=1 AND 
-    (descripcion LIKE CONCAT('%',_valor,'%'));
+    (descripcion LIKE CONCAT('%',Valor,'%'));
 END/
-/** TIPOS**/
-CREATE PROCEDURE agregarTipo(IN _descripcion TINYTEXT, IN _material TINYTEXT)
+CREATE OR REPLACE PROCEDURE agregarTipo(IN Descripcion TINYTEXT, IN Material TINYTEXT)
 BEGIN 
-    INSERT INTO categoria_tipos(descripcion,material) VALUES (_descripcion,_material);
+    INSERT INTO categoria_tipos(descripcion,material) VALUES (Descripcion,Material);
 END/
 
 
-CREATE PROCEDURE obtenerTipos()
+CREATE OR REPLACE PROCEDURE obtenerTipos()
 BEGIN
     SELECT * FROM categoria_tipos WHERE estado = 1;
 END/
 
-CREATE PROCEDURE obtenerTipo(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerTipo(IN Id INT)
 BEGIN
-    SELECT * FROM categoria_tipos WHERE estado = 1 AND idTipo=_id;
+    SELECT * FROM categoria_tipos WHERE estado = 1 AND idTipo=Id;
 END/
 
-CREATE PROCEDURE eliminarTipo(IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarTipo(IN Id INT)
 BEGIN
-    UPDATE categoria_tipos SET estado = 0 WHERE idTipo = _id;
+    UPDATE categoria_tipos SET estado = 0 WHERE idTipo = Id;
     
     UPDATE categoria_tipos 
     JOIN inventario_categorias ON categoria_tipos.idTipo = inventario_categorias.idTipo
     SET 
     categoria_tipos.estado=0,
     inventario_categorias.estado = 0
-    WHERE categoria_tipos.idTipo = _id AND inventario_categorias.idTipo = _id;
+    WHERE categoria_tipos.idTipo = Id AND inventario_categorias.idTipo = Id;
     
     UPDATE inventario_materia_prima 
     JOIN inventario_categorias ON inventario_materia_prima.idCategoria = inventario_categorias.idCategoria
     SET
     inventario_materia_prima.estado=0
-    WHERE inventario_categorias.idTipo=_id;
+    WHERE inventario_categorias.idTipo=Id;
 END/
 
-CREATE PROCEDURE modificarTipo(IN _descripcion TINYTEXT, IN _material TINYTEXT, IN _id INT)
+CREATE OR REPLACE PROCEDURE modificarTipo(IN Descripcion TINYTEXT, IN Material TINYTEXT, IN Id INT)
 BEGIN
     UPDATE categoria_tipos SET 
-    descripcion = _descripcion,  
-    material = _material
-    WHERE idTipo = _id AND estado = 1;
+    descripcion = Descripcion,  
+    material = Material
+    WHERE idTipo = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE buscarTipo(IN _valor TINYTEXT)
+CREATE OR REPLACE PROCEDURE buscarTipo(IN Valor TINYTEXT)
 BEGIN 
     SELECT * FROM categoria_tipos 
     WHERE estado=1 AND 
-    (descripcion LIKE CONCAT('%',_valor,'%'));
+    (descripcion LIKE CONCAT('%',Valor,'%'));
 END/
 
-/** TALLAS**/
-CREATE PROCEDURE agregarTalla(IN _descripcion TINYTEXT)
+CREATE OR REPLACE PROCEDURE agregarTalla(IN Descripcion TINYTEXT)
 BEGIN 
-    INSERT INTO inventario_tallas(descripcion) VALUES (_descripcion);
+    INSERT INTO inventario_tallas(descripcion) VALUES (Descripcion);
 END/
 
 
-CREATE PROCEDURE obtenerTallas()
+CREATE OR REPLACE PROCEDURE obtenerTallas()
 BEGIN
     SELECT * FROM inventario_tallas WHERE estado = 1;
 END/
 
-CREATE PROCEDURE obtenerTalla(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerTalla(IN Id INT)
 BEGIN
-    SELECT * FROM inventario_tallas WHERE estado = 1 AND idTalla=_id;
+    SELECT * FROM inventario_tallas WHERE estado = 1 AND idTalla=Id;
 END/
 
-CREATE PROCEDURE eliminarTalla(IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarTalla(IN Id INT)
 BEGIN
-    UPDATE inventario_tallas SET estado = 0 WHERE idTalla = _id;
+    UPDATE inventario_tallas SET estado = 0 WHERE idTalla = Id;
     UPDATE inventario_tallas
     JOIN inventario_materia_prima inventario ON inventario_tallas.idTalla = inventario.idTalla
     SET inventario_tallas.estado = 0,inventario.estado=0 
-    WHERE inventario_tallas.idTalla = _id AND inventario_tallas.estado = 1;
+    WHERE inventario_tallas.idTalla = Id AND inventario_tallas.estado = 1;
 END/
 
-CREATE PROCEDURE modificarTalla(IN _descripcion TINYTEXT, IN _id INT)
+CREATE OR REPLACE PROCEDURE modificarTalla(IN Descripcion TINYTEXT, IN Id INT)
 BEGIN
     UPDATE inventario_tallas SET 
-    descripcion = _descripcion
-    WHERE idTalla = _id AND estado = 1;
+    descripcion = Descripcion
+    WHERE idTalla = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE buscarTalla(IN _valor TINYTEXT)
+CREATE OR REPLACE PROCEDURE buscarTalla(IN Valor TINYTEXT)
 BEGIN 
     SELECT * FROM inventario_tallas 
     WHERE estado=1 AND 
-    (descripcion LIKE CONCAT('%',_valor,'%'));
+    (descripcion LIKE CONCAT('%',Valor,'%'));
 END/
-/**PROVEEDORES**/
-CREATE PROCEDURE agregarProveedor(IN _empresa TINYTEXT, IN _correo TINYTEXT,IN _telefono TINYTEXT, 
+CREATE OR REPLACE PROCEDURE agregarProveedor(IN _empresa TINYTEXT, IN _correo TINYTEXT,IN _telefono TINYTEXT, 
 IN _contacto TINYTEXT, IN _correoContacto TINYTEXT, IN _telefonoContacto TINYTEXT)
 BEGIN
     INSERT INTO inventario_proveedores(empresa,direccion,correo,telefono,nombreContacto,correoContacto, telefonoContacto)
     VALUES(_empresa,_direccion,_correo,_telefono,_contacto, _correoContacto, _telefonoContacto);
 END/
 
-CREATE PROCEDURE eliminarProveedor(IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarProveedor(IN Id INT)
 BEGIN
     UPDATE inventario_proveedores
     JOIN inventario ON inventario_proveedores.idProveedor = inventario.idProveedor
     SET inventario_proveedores.estado=0,inventario.estado=0
-    WHERE inventario_proveedores.idProveedor=_id AND inventario_proveedores.estado=1;
+    WHERE inventario_proveedores.idProveedor=Id AND inventario_proveedores.estado=1;
 END/
 
-CREATE PROCEDURE agregarTipoEmpleado(IN _descripcion TINYTEXT, IN _rol INT)
+CREATE OR REPLACE PROCEDURE agregarTipoEmpleado(IN Descripcion TINYTEXT, IN Rol INT)
 BEGIN
-    INSERT INTO tipo_empleado(descripcion,idRol) VALUES (_descripcion, _rol);
+    INSERT INTO tipo_empleado(descripcion,idRol) VALUES (Descripcion, Rol);
 END/
 
-CREATE PROCEDURE obtenerTipoEmpleados()
+CREATE OR REPLACE PROCEDURE obtenerTipoEmpleados()
 BEGIN
     SELECT * FROM tipo_empleado WHERE estado = 1;
 END/
 
-CREATE PROCEDURE obtenerTipoEmpleado(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerTipoEmpleado(IN Id INT)
 BEGIN
-    SELECT * FROM tipo_empleado WHERE idTipoEmpleado = _id AND estado = 1;
+    SELECT * FROM tipo_empleado WHERE idTipoEmpleado = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE modificarTipoEmpleado(IN _descripcion TINYTEXT, IN _rol INT, IN _id INT)
+CREATE OR REPLACE PROCEDURE modificarTipoEmpleado(IN Descripcion TINYTEXT, IN Rol INT, IN Id INT)
 BEGIN
-    UPDATE tipo_empleado SET descripcion = _descripcion, idRol = _rol WHERE idTipoEmpleado = _id AND estado = 1;
+    UPDATE tipo_empleado SET descripcion = Descripcion, idRol = Rol WHERE idTipoEmpleado = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE eliminarTipoEmpleado( IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarTipoEmpleado( IN Id INT)
 BEGIN
-    UPDATE tipo_empleado SET estado = 0 WHERE idTipoEmpleado = _id AND estado = 1;
+    UPDATE tipo_empleado SET estado = 0 WHERE idTipoEmpleado = Id AND estado = 1;
 END/
 
-/**ROLES**/
-CREATE PROCEDURE agregarRol(IN _rol TINYTEXT, IN _empleados BOOLEAN, IN _clientes BOOLEAN, IN _inventario BOOLEAN, IN _ventas BOOLEAN, IN _configuracion BOOLEAN)
+CREATE OR REPLACE PROCEDURE agregarRol(IN Rol TINYTEXT, IN Descripcion TINYTEXT, 
+IN Empleado INT, IN Cliente INT, IN Inventario INT, IN GuiaRemision INT, IN Bodega INT, IN Catalogo INT, IN Cotizacion INT,
+IN Configuracion INT)
 BEGIN
-    INSERT INTO roles(rol,empleados,clientes,inventario,ventas,configuracion)
-    VALUES (_rol,_empleados,_clientes,_inventario,_ventas,_configuracion);
+    INSERT INTO roles(rol,descripcion,empleados,clientes,inventario,guiaRemision,bodegas,catalogo,cotizacion,configuracion)
+    VALUES (Rol,Descripcion,Empleado,Cliente,Inventario,GuiaRemision,Bodega,Catalogo,Cotizacion,Configuracion);
 END/
 
-CREATE PROCEDURE obtenerRoles()
+CREATE OR REPLACE PROCEDURE obtenerRoles()
 BEGIN
     SELECT * FROM roles WHERE estado = 1;
 END/
 
 
-CREATE PROCEDURE obtenerRol(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerRol(IN Id INT)
 BEGIN
-    SELECT * FROM roles WHERE idRol = _id AND estado = 1;
+    SELECT * FROM roles WHERE idRol = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE modificarRol(IN _rol TINYTEXT, IN _empleados BOOLEAN, IN _clientes BOOLEAN, IN _inventario BOOLEAN, IN _ventas BOOLEAN, IN _configuracion BOOLEAN, IN _id INT)
+CREATE OR REPLACE PROCEDURE modificarRol(IN Rol TINYTEXT, IN Descripcion TINYTEXT, 
+IN Empleado INT, IN Cliente INT, IN Inventario INT, IN GuiaRemision INT, IN Bodega INT, IN Catalogo INT, IN Cotizacion INT,
+IN Configuracion INT, IN Id INT)
 BEGIN
-    UPDATE roles 
-    SET 
-        rol = _rol,
-        empleados = _empleados,
-        clientes = _clientes,
-        inventario = _inventario,
-        ventas = _ventas,
-        configuracion = _configuracion
-    WHERE idRol = _id AND estado = 1;
+    UPDATE roles SET 
+        rol = Rol,
+        descripcion = Descripcion,
+        empleados = Empleado,
+        clientes = Cliente,
+        inventario = Inventario,
+        guiaRemision = GuiaRemision,
+        bodegas = Bodega,
+        catalogo = Catalogo,
+        cotizacion = Cotizacion,
+        configuracion = Configuracion
+    WHERE idRol = Id AND estado = 1;
 END/
 
-CREATE PROCEDURE eliminarRol( IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarRol( IN Id INT)
 BEGIN
-    UPDATE roles SET estado = 0 WHERE idRol = _id AND estado = 1;
+    UPDATE roles SET estado = 0 WHERE idRol = Id AND estado = 1;
 END/

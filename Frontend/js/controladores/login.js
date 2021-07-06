@@ -54,10 +54,19 @@ function getCookie(c_name) {
     return "";
 }
 
-async function perfil(){
-    const datos = await obtener('../Backend/api/empleado.php',{clase:""})
+async function perfil() {
+    tipoUsuario = getCookie('tipoUsuario')
+    let datos
+    if (tipoUsuario == "EMPLEADO") {
+        datos = await obtener('../Backend/api/empleado.php', { clase: "" })
+    } else if (tipoUsuario == "CLIENTE") {
+        datos = await obtener('../Backend/api/cliente.php', { clase: "" })
+    }
     form = document.getElementById('formPerfil').querySelectorAll('input,textarea')
-    form.forEach(el=>{el.disabled=true;el.style.border='none'})
+    form.forEach(el => {
+        el.disabled = true;
+        el.style.border = 'none'
+    })
     document.getElementById('perfilDNI').value = datos.dni
     document.getElementById('perfilUsuario').value = datos.usuario
     document.getElementById('perfilNombres').value = datos.nombre
@@ -67,9 +76,9 @@ async function perfil(){
     document.getElementById('perfilDireccion').value = datos.direccion
 }
 
-async function navbar(){
+async function navbar() {
     datosPermiso = new FormData()
     datosPermiso.append("accion", "PERMISOS")
-    const {data} = await axios.post(URL_LOGIN,datosPermiso)
+    const { data } = await axios.post(URL_LOGIN, datosPermiso)
     console.log(data)
 }

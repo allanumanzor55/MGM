@@ -1,17 +1,21 @@
 <?php
 include_once('abstract-inventario.php');
 class InventarioGeneral extends Inventario{
-    public function __construct($descripcion,$stock)
+    private $bodega;
+    public function __construct($descripcion,$stock,$bodega)
     {
         parent::__construct($descripcion,0,$stock);
+        $this->setBodega($bodega);
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();
     }
     
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL agregarInvGeneral(:descripcion,:stock);");
-            $query->execute($this->obtenerDatos());
+            $query = $this->cnn->prepare("CALL agregarInvGeneral(:descripcion,:stock,:bodega);");
+            $datos = $this->obtenerDatos();
+            $datos['bodega'] = $this->getBodega();
+            $query->execute($datos);
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
             return Acciones::error_message($e,false);
@@ -31,6 +35,17 @@ class InventarioGeneral extends Inventario{
         try{
             $query = $cnn->prepare("CALL obtenerInvGenerales()");
             $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
+
+    static public function obtenerPorBodega($cnn,$bodega){
+        try{
+            $query = $cnn->prepare("CALL obtenerInvGeneralesPorBodega(?)");
+            $query->execute(array($bodega));
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         }catch(Exception $e){
@@ -69,12 +84,40 @@ class InventarioGeneral extends Inventario{
         }
     }
 
+    static public function buscarPorBodega($valor,$bodega,$cnn){
+        try {
+            $query = $cnn->prepare("CALL buscarInvGeneralPorBodega(?,?)");
+            $query->execute(array($valor,$bodega));
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
+
     public function obtenerDatos()
     {
         return array(
             "descripcion"=>$this->getDescripcion(),
             "stock"=>$this->getStock()
         );
+    }
+    
+    public function getBodega()
+    {
+        return $this->bodega;
+    }
+
+    /**
+     * Set the value of bodega
+     *
+     * @return  self
+     */ 
+    public function setBodega($bodega)
+    {
+        $this->bodega = $bodega;
+
+        return $this;
     }
 }
 ?>

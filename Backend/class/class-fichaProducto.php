@@ -16,7 +16,7 @@ class FichaProducto extends Inventario{
         try{
             $query = $this->cnn->prepare("CALL agregarFichaProducto(:descripcion,:materiaPrima,:precio,@idFichaProducto);");
             $query->execute($this->obtenerDatos());
-            $result = $this->cnn->query("SELECT @idFichaProducto as idFichaProducto")->fetch(PDO::FETCH_ASSOC);
+            $result = $this->cnn->query("SELECT @idFichaProducto as idFichaProducto ")->fetch(PDO::FETCH_ASSOC);
             try{
                 foreach($this->materiales as $material){
                     $nProducto=array_merge($result,$material);

@@ -5,22 +5,27 @@ class InventarioPrima extends Inventario{
     private $talla;
     private $proveedor;
     private $color; 
-    
-    public function __construct($descripcion,$categoria,$proveedor,$talla,$color,$precio,$stock)
+    private $bodega;
+    private $puntoReorden;
+    public function __construct($descripcion,$categoria,$proveedor,$talla,$color,$precio,$stock,$puntoReorden,$bodega)
     {
         parent::__construct($descripcion,$precio,$stock);
         $this->setCategoria($categoria);
         $this->setTalla($talla);
         $this->setProveedor($proveedor);
         $this->setColor($color);
+        $this->setBodega($bodega);
+        $this->setPuntoReorden($puntoReorden);
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();
     }
     
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL agregarProducto(:descripcion,:categoria,:proveedor,:talla,:color,:stock,:precio);");
-            $query->execute($this->obtenerDatos());
+            $query = $this->cnn->prepare("CALL agregarProducto(:descripcion,:categoria,:proveedor,:talla,:color,:stock,:precio,:puntoReorden,:bodega);");
+            $datos = $this->obtenerDatos();
+            $datos['bodega'] = $this->getBodega();
+            $query->execute($datos);
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
             return Acciones::error_message($e,false);
@@ -47,9 +52,20 @@ class InventarioPrima extends Inventario{
         }
     }
 
+    static public function obtenerPorBodega($cnn,$bodega){
+        try{
+            $query = $cnn->prepare("CALL obtenerInvPrimasPorBodega(?)");
+            $query->execute(array($bodega));
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
+
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarProducto(:descripcion,:categoria,:proveedor,:talla,:color,:stock,:precio,:id);");
+            $query = $this->cnn->prepare("CALL modificarProducto(:descripcion,:categoria,:proveedor,:talla,:color,:stock,:precio,:puntoReorden,:id);");
             $datos = $this->obtenerDatos();
             unset($datos['tipoProducto']);
             $datos["id"]=$id;
@@ -79,6 +95,17 @@ class InventarioPrima extends Inventario{
         }
     }
 
+    static public function buscarPorBodega($valor,$bodega,$cnn){
+        try {
+            $query = $cnn->prepare("CALL buscarInvPrimaPorBodega(?,?)");
+            $query->execute(array($valor,$bodega));
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
+
     public function obtenerDatos()
     {
         return array(
@@ -88,7 +115,8 @@ class InventarioPrima extends Inventario{
             "talla"=>$this->getTalla(),
             "color"=>$this->getColor(),
             "stock"=>$this->getStock(),
-            "precio"=>$this->getPrecio()
+            "precio"=>$this->getPrecio(),
+            "puntoReorden"=>$this->getPuntoReorden()
         );
     }
 
@@ -189,6 +217,40 @@ class InventarioPrima extends Inventario{
     public function setColor($color)
     {
         $this->color = $color;
+
+        return $this;
+    }
+    
+    public function getBodega()
+    {
+        return $this->bodega;
+    }
+
+    /**
+     * Set the value of bodega
+     *
+     * @return  self
+     */ 
+    public function setBodega($bodega)
+    {
+        $this->bodega = $bodega;
+
+        return $this;
+    }
+
+    public function getPuntoReorden()
+    {
+        return $this->puntoReorden;
+    }
+
+    /**
+     * Set the value of puntoReorden
+     *
+     * @return  self
+     */ 
+    public function setPuntoReorden($puntoReorden)
+    {
+        $this->puntoReorden = $puntoReorden;
 
         return $this;
     }

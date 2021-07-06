@@ -1,12 +1,9 @@
+<?php include_once('validation.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include_once('head.php');?>
     <title>Mario Graphics</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="css/landing-styles.css">
 </head>
 <body id="bg-landing" class="container-fluid px-0">
     <div class="container-fluid  bg-opacity min-vh-100 min-mw-100 mx-0 px-0">
@@ -225,9 +222,6 @@
             </div>
         </div>
     </div>
-    <footer>
-        <?php include_once('footer.php'); ?>
-    </footer>
     <?php include_once('canvas.php');?>
 </body>
 </html>

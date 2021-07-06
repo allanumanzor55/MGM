@@ -5,20 +5,28 @@ include_once('../class/class-conexion.php');
 class Roles extends Conexion implements CRUD{
     use Acciones;
     private $rol;
+    private $descripcion;
     private $empleados;
     private $clientes;
     private $inventario;
-    private $ventas;
+    private $guiaRemision;
+    private $bodega;
+    private $catalogo;
+    private $cotizacion;
     private $configuracion;
     private $db;
     private $cnn;
-    public function __construct($rol,$empleados,$clientes,$inventario,$ventas,$configuracion)
+    public function __construct($rol,$descripcion,$empleados,$clientes,$inventario,$guiaRemision,$bodega,$catalogo,$cotizacion,$configuracion)
     {
         $this->rol = $rol;
+        $this->descripcion = $descripcion;
         $this->empleados = $empleados;
         $this->clientes = $clientes;
         $this->inventario = $inventario;
-        $this->ventas = $ventas;
+        $this->guiaRemision = $guiaRemision;
+        $this->bodega = $bodega;
+        $this->catalogo = $catalogo;
+        $this->cotizacion = $cotizacion;
         $this->configuracion = $configuracion;  
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();  
@@ -26,7 +34,8 @@ class Roles extends Conexion implements CRUD{
 
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL agregarRol(:rol,:empleados,:clientes,:inventario,:ventas,:configuracion)");
+            $query = $this->cnn
+            ->prepare("CALL agregarRol(:rol,:descripcion,:empleados,:clientes,:inventario,:guiaRemision,:bodega,:catalogo,:cotizacion,:configuracion)");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -56,7 +65,8 @@ class Roles extends Conexion implements CRUD{
     }
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarRol(:rol,:empleados,:clientes,:inventario,:ventas,:configuracion,:id)");
+            $query = $this->cnn
+            ->prepare("CALL modificarRol(:rol,:descripcion,:empleados,:clientes,:inventario,:guiaRemision,:bodega,:catalogo,:cotizacion,:configuracion,:id);");
             $datos = $this->obtenerDatos();
             $datos["id"]=$id;
             $query->execute($datos);
@@ -89,10 +99,14 @@ class Roles extends Conexion implements CRUD{
     {
         return array(
             "rol" =>$this->rol,
+            "descripcion" =>$this->descripcion,
             "empleados" =>$this->empleados,
             "clientes" =>$this->clientes,
             "inventario" =>$this->inventario,
-            "ventas" =>$this->ventas,
+            "guiaRemision" =>$this->guiaRemision,
+            "bodega" =>$this->bodega,
+            "catalogo" =>$this->catalogo,
+            "cotizacion" =>$this->cotizacion,
             "configuracion" =>$this->configuracion
         );
     }

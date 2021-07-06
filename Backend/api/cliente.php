@@ -17,6 +17,11 @@ switch($_SERVER['REQUEST_METHOD']){
             echo json_encode(Cliente::obtener($_GET['id'],$cnn),true);
         }elseif(isset($_GET['valor']) && $_GET['valor']!="undefined"){//buscar
             echo json_encode(Cliente::buscar($_GET['valor'],$cnn),true);
+        }elseif(isset($_GET['clase']) && $_GET['clase']!="undefined" && 
+                isset($_COOKIE['idUser']) && $_COOKIE['idUser']!="undefined"){
+            $idUs = $_COOKIE['idUser'];
+            $result = $cnn->query("SELECT id FROM vw_usuarios WHERE idUsuario=$idUs")->fetch(PDO::FETCH_ASSOC);
+            echo json_encode(Cliente::obtener($result['id'],$cnn),true);
         }else{//obtener todos
             echo json_encode(Cliente::obtenerTodos($cnn),true);
         }

@@ -1,4 +1,5 @@
 let datosForm
+
 function obtenerDatos(idForm) {
     datosForm = new FormData(document.getElementById(idForm))
 }
@@ -14,13 +15,13 @@ function obtenerDatos(idForm) {
 async function guardar(btn, url, datosPost) {
     btn.disabled = true
     obtenerDatos(datosPost.idForm)
-    try{
+    try {
         const { data } = await axios.post(url + `?clase=${datosPost.clase}`, datosForm)
         if (data.centinela == "true") { limpiarFormulario(datosPost.idForm) }
         mostrarMensaje(data)
         btn.disabled = false;
-    }catch(e){
-        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message})
+    } catch (e) {
+        Swal.fire({ icon: 'error', title: "Algo salio mal... al guardar", text: e.message })
         console.log("error");
     }
 }
@@ -29,15 +30,17 @@ async function guardar(btn, url, datosPost) {
  * Funcion que obtiene los datos de un objeto
  * @param {String} url  url de la direccion donde se hara la peticion
  * @param {JSON} datosGet  json con los parametros que puedes agregar, puede ser id, clase, tipo, etc... se usa para configurar la peticion
+ *          clase: clasificacion (empleados y clientes, talla,cat o estilo, materia prima, material, general)
+ *          tipo: filtrar datos por un tipo especifico (bodega, tipo de empleado, etc...)
  * @returns Arreglo de Jsons con la informacion de el o los registro(s) obtenidos
  * @async
  */
-async function obtener(url,datosGet) {
-    try{
+async function obtener(url, datosGet) {
+    try {
         const { data } = await axios.get(`${url}?id=${datosGet.id}&clase=${datosGet.clase}&tipo=${datosGet.tipo}&valor=${datosGet.valor}`);
         return data;
-    }catch(e){
-        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message})
+    } catch (e) {
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message })
         return null;
     }
 }
@@ -61,15 +64,15 @@ async function eliminar(btn, url, datosDelete) {
         confirmButtonText: 'Si, seguro!!'
     })
     if (result.isConfirmed) {
-        try{
+        try {
             const { data } = await axios.delete(url + `?id=${datosDelete.id}&clase=${datosDelete.clase}`)
             mostrarMensaje(data)
             btn.disabled = false
-        }catch(e){
+        } catch (e) {
             Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message })
             btn.disabled = false
         }
-        
+
     }
 }
 /**
@@ -81,15 +84,15 @@ async function eliminar(btn, url, datosDelete) {
  * @async
  */
 async function modificar(btn, url, datosPut) {
-    try{
+    try {
         btn.disabled = true
         obtenerDatos(datosPut.idForm)
         const { data } = await axios.put(url + `?clase=${datosPut.clase}`, JSON.stringify(Object.fromEntries(datosForm)))
-        if (data.centinela == "true") { limpiarFormulario(datosPut.idForm)}
+        if (data.centinela == "true") { limpiarFormulario(datosPut.idForm) }
         mostrarMensaje(data)
         btn.disabled = false
-    }catch(e){
-        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message})
+    } catch (e) {
+        Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message })
         console.log(e);
         btn.disabled = false
     }
@@ -101,11 +104,10 @@ async function modificar(btn, url, datosPut) {
  */
 function mostrarMensaje(data) {
     if (data.centinela === "true") {
-        console.log(data);
         Swal.fire({ icon: 'success', title: data.mensaje })
     } else {
-        console.error(data);
         Swal.fire({ icon: 'error', title: "Algo salio mal...", text: data.mensaje })
+        console.error(data)
     }
 }
 /**
@@ -114,7 +116,7 @@ function mostrarMensaje(data) {
  * @param {Boolean} centinela  booleana que indica cual de los 2 botones se interclaara
  */
 function intercalarBotones(idForm, centinela) {
-    let btnGuardar = document.querySelector(`form#${idForm} a.btn.btn-outline-danger`)
+    let btnGuardar = document.querySelector(`form#${idForm} a.btn.btn-outline-warning`)
     let btnModificar = document.querySelector(`form#${idForm} a.btn.btn-outline-success`)
     if (btnGuardar != null && btnModificar != null) {
         if (!centinela) {
@@ -131,9 +133,17 @@ function intercalarBotones(idForm, centinela) {
  * funcion que limpia todos los controles de un formulario
  */
 function limpiarFormulario(idForm) {
-    let form = document.getElementById(idForm).querySelectorAll(`input[type='text'], input[type='number'], input[type='checkbox'],input[type='email'],textarea`)
-    form.forEach(input=>{
-        input.value="" 
+    let form = document.getElementById(idForm).querySelectorAll(`input, textarea, select`)
+    form.forEach(input => {
+        if (input.type === "checkbox") {
+            input.disabled = false
+            input.checked = false
+
+        } else if (input.type === "hidden") {
+            input.value = "0"
+        } else {
+            input.value = ""
+        }
     })
 }
 /**
@@ -156,28 +166,35 @@ function validarCamposNivel1(idForm) {
  * Nos valida el acceso a configuraciones
  */
 async function accederConfiguraciones(btn) {
-    const  response = await Swal.fire({
+    const response = await Swal.fire({
         title: 'Ingrese La Contraseña Maestra',
         input: 'password',
         inputAttributes: {
             autocapitalize: 'off'
         },
-        backdrop:true,
+        backdrop: true,
         showCancelButton: true,
         confirmButtonText: 'Ingresar',
         showLoaderOnConfirm: true,
         preConfirm: (login) => {
-            if(login==="1234"){
-                return true
-            }else{
-                Swal.showValidationMessage(`Contraseña Incorrecta`)
-            }
-        }//,
-        //allowOutsideClick: () => !Swal.isLoading()
+                if (login === "1234") {
+                    return true
+                } else {
+                    Swal.showValidationMessage(`Contraseña Incorrecta`)
+                }
+            } //,
+            //allowOutsideClick: () => !Swal.isLoading()
     })
-    if(response.isConfirmed){
-        if(response.value==true){
-            window.location="setting.php";
+    if (response.isConfirmed) {
+        if (response.value == true) {
+            window.location = "setting.php";
         }
     }
+}
+
+function mostrarTab(tabMostrar, tabOcultar) {
+    document.getElementById(tabMostrar).classList.add('show', 'active')
+    document.getElementById(tabMostrar).classList.remove('fade')
+    document.getElementById(tabOcultar).classList.add('fade')
+    document.getElementById(tabOcultar).classList.remove('show', 'active')
 }

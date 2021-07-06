@@ -6,41 +6,42 @@ async function guardarCliente(btn) {
 
 async function refrescarCardClientes() {
     const datos = await obtener(URL_CLIENTE, {})
+    console.log(datos)
     rellenarCardsCliente(datos)
 }
 
-async function modificarCliente(btn,id) {
-    const datos = await obtener(URL_CLIENTE,{id:id})
-    document.getElementById('clienteTabContent').classList.remove('active','show')
-    document.getElementById('ingresarCliente').classList.add('active','show')
+async function modificarCliente(btn, id) {
+    const datos = await obtener(URL_CLIENTE, { id: id })
+    document.getElementById('clienteTabContent').classList.remove('active', 'show')
+    document.getElementById('ingresarCliente').classList.add('active', 'show')
     document.getElementById('ingresarClienteTab').classList.add('active')
     document.getElementById('clienteTab').classList.remove('active')
-    intercalarBotones(D_CLIENTE.idForm,false)
+    intercalarBotones(D_CLIENTE.idForm, false)
     rellenarFormulario(datos)
-}   
+}
 
 async function confirmarModificarCliente(btn) {
-    await modificar(btn,URL_CLIENTE,{idForm:D_CLIENTE.idForm})
-    intercalarBotones(D_CLIENTE.idForm,true)
+    await modificar(btn, URL_CLIENTE, { idForm: D_CLIENTE.idForm })
+    intercalarBotones(D_CLIENTE.idForm, true)
 }
-async function buscarCliente(valor){
-    if(valor!="" && tipoCliente!="" && idCardCliente!=""){
-        const datos = await obtener(URL_CLIENTE,{valor:valor,tipo:tipoCliente})
-        rellenarCardsCliente(datos,idCardCliente,tipoCliente)
-    }else{
-        if(tipoCliente!="" && idCardCliente!=""){
-            refrescarCardClientes(tipoCliente,idCardCliente)
+async function buscarCliente(valor) {
+    if (valor != "" && tipoCliente != "" && idCardCliente != "") {
+        const datos = await obtener(URL_CLIENTE, { valor: valor, tipo: tipoCliente })
+        rellenarCardsCliente(datos, idCardCliente, tipoCliente)
+    } else {
+        if (tipoCliente != "" && idCardCliente != "") {
+            refrescarCardClientes(tipoCliente, idCardCliente)
         }
     }
 }
 
 
-async function eliminarCliente(btn,id) {
+async function eliminarCliente(btn, id) {
     await eliminar(btn, URL_CLIENTE, { id: id })
     refrescarCardClientes()
 }
 
-function rellenarCardsCliente(datos){
+function rellenarCardsCliente(datos) {
     let content = `<div class="row pb-2">`
     if (Array.isArray(datos)) {
         datos.forEach(cliente => {
@@ -78,21 +79,21 @@ function rellenarCardsCliente(datos){
 }
 
 
-function rellenarFormulario(datos){
+function rellenarFormulario(datos) {
     let form = document.getElementById(`formCliente`).querySelectorAll('input,select,textarea')
     console.log(form);
-    form[0].value=datos.idCliente
-    form[1].value=datos.tipoCliente
-    //2
-    form[3].value=datos.dni
-    form[4].value=datos.nombre
-    form[5].value=datos.primerApellido
-    form[6].value=datos.segundoApellido
-    form[7].value=datos.direccion
-    form[8].value=datos.correo
-    form[9].value=datos.celular
-    form[10].value=datos.telefono
-    form[11].value=datos.edad
+    form[0].value = datos.idCliente
+    form[1].value = datos.tipoCliente
+        //2
+    form[3].value = datos.dni
+    form[4].value = datos.nombre
+    form[5].value = datos.primerApellido
+    form[6].value = datos.segundoApellido
+    form[7].value = datos.direccion
+    form[8].value = datos.correo
+    form[9].value = datos.celular
+    form[10].value = datos.telefono
+    form[11].value = datos.edad
 }
 
 async function mostrarDatosCliente(id) {
@@ -137,6 +138,6 @@ async function mostrarDatosCliente(id) {
                 </table>
             </div>
         </div>`
-    content+=`</div>`
-    document.querySelector('#datosCliente').innerHTML=content
+    content += `</div>`
+    document.querySelector('#datosCliente').innerHTML = content
 }

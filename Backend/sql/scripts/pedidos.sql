@@ -1,48 +1,41 @@
-DROP PROCEDURE IF EXISTS crearPedido;
-DROP PROCEDURE IF EXISTS agregarProductoPedido;
-DROP PROCEDURE IF EXISTS obtenerPedidos;
-DROP PROCEDURE IF EXISTS obtenerPedido;
-DROP PROCEDURE IF EXISTS obtenerProductosPedido;
-DROP PROCEDURE IF EXISTS eliminarPedido;
-DROP PROCEDURE IF EXISTS buscarPedido;
 DELIMITER /
-CREATE PROCEDURE crearPedido(IN _descripcion TINYTEXT,IN _cliente INT, IN _estadoPago TINYTEXT, OUT idPedido INT)
+CREATE OR REPLACE PROCEDURE crearPedido(IN Descripcion TINYTEXT,IN Cliente INT, IN EstadoPago TINYTEXT, OUT IdPedido INT)
 BEGIN
-    INSERT INTO pedidos(descripcion,idCliente,estadoPago) VALUES (_descripcion,_cliente,_estadoPago);
-    SELECT LAST_INSERT_ID() INTO idPedido;
+    INSERT INTO pedidos(descripcion,idCliente,estadoPago) VALUES (Descripcion,Cliente,EstadoPago);
+    SELECT LAST_INSERT_ID() INTO IdPedido;
 END/
 
-CREATE PROCEDURE agregarProductoPedido(IN _pedido INT, IN _producto INT, IN _cantidad INT)
+CREATE OR REPLACE PROCEDURE agregarProductoPedido(IN Pedido INT, IN Producto INT, IN Cantidad INT)
 BEGIN
     DECLARE _subtotal DECIMAL(9,2);
-    SELECT precio*_cantidad INTO _subtotal FROM inventario WHERE idInventario = _producto;
-    INSERT INTO pedidos_productos(idPedido,idProducto,cantidad,subtotal) 
-    VALUES(_pedido,_producto,_cantidad,_subtotal);
+    SELECT precio*Cantidad INTO _subtotal FROM inventario WHERE idInventario = Producto;
+    INSERT INTO pedidos_productos(IdPedido,idProducto,cantidad,subtotal) 
+    VALUES(Pedido,Producto,Cantidad,_subtotal);
 END/
 
-CREATE PROCEDURE obtenerPedidos()
+CREATE OR REPLACE PROCEDURE obtenerPedidos()
 BEGIN
     SELECT * FROM vw_pedidos;
 END/
 
-CREATE PROCEDURE obtenerPedido(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerPedido(IN Id INT)
 BEGIN
-    SELECT * FROM vw_pedidos WHERE idPedido = _id;
+    SELECT * FROM vw_pedidos WHERE IdPedido = Id;
 END/
 
-CREATE PROCEDURE obtenerProductosPedido(IN _id INT)
+CREATE OR REPLACE PROCEDURE obtenerProductosPedido(IN Id INT)
 BEGIN
-    SELECT * FROM vw_pedidos WHERE idPedido = _id;
+    SELECT * FROM vw_pedidos WHERE IdPedido = Id;
 END/
 
-CREATE PROCEDURE eliminarPedido(IN _id INT)
+CREATE OR REPLACE PROCEDURE eliminarPedido(IN Id INT)
 BEGIN
-    UPDATE pedidos SET estado = 0 WHERE idPedido = _id;
+    UPDATE pedidos SET estado = 0 WHERE IdPedido = Id;
 END/
 
-CREATE PROCEDURE buscarPedido(IN _valor TINYTEXT)
+CREATE OR REPLACE PROCEDURE buscarPedido(IN Valor TINYTEXT)
 BEGIN
     SELECT * FROM vw_pedidos
     WHERE estado=1 AND 
-    (fecha LIKE CONCAT('%',_valor,'%') OR nombre LIKE CONCAT('%',_valor,'%') OR descripcion LIKE CONCAT('%',_valor,'%'));
+    (fecha LIKE CONCAT('%',Valor,'%') OR nombre LIKE CONCAT('%',Valor,'%') OR descripcion LIKE CONCAT('%',Valor,'%'));
 END/

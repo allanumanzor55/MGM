@@ -7,12 +7,8 @@
     switch($_SERVER['REQUEST_METHOD']){
         case 'POST'://guardar
             //$_POST = json_decode(file_get_contents("php://input"), true); 
-            $_POST['empleados'] =(!isset($_POST['empleados']))?false:$_POST['empleados'];
-            $_POST['clientes'] =(!isset($_POST['clientes']))?false:$_POST['clientes'];
-            $_POST['inventario'] =(!isset($_POST['inventario']))?false:$_POST['inventario'];
-            $_POST['ventas'] =(!isset($_POST['ventas']))?false:$_POST['ventas'];
-            $_POST['configuracion'] =(!isset($_POST['configuracion']))?false:$_POST['configuracion'];
-            $rol = new Roles($_POST['rol'],boolval($_POST['empleados']),boolval($_POST['clientes']),boolval($_POST['inventario']),boolval($_POST['ventas']),boolval($_POST['configuracion']));
+            $rol = new Roles($_POST['rol'],$_POST['descripcion'],intval($_POST['empleado']),intval($_POST['cliente']),intval($_POST['inventario']),
+            intval($_POST['guiaRemision']),intval($_POST['bodega']),intval($_POST['catalogo']),intval($_POST['cotizacion']),intval($_POST['configuracion']));
             echo $rol->guardar();
         break;
         case 'GET'://visualizar
@@ -27,12 +23,8 @@
         case 'PUT'://modificar
             $_PUT = json_decode(file_get_contents("php://input"),true);
             if(isset($_PUT)){
-                $_PUT['empleados'] =(!isset($_PUT['empleados']))?false:$_PUT['empleados'];
-                $_PUT['clientes'] =(!isset($_PUT['clientes']))?false:$_PUT['clientes'];
-                $_PUT['inventario'] =(!isset($_PUT['inventario']))?false:$_PUT['inventario'];
-                $_PUT['ventas'] =(!isset($_PUT['ventas']))?false:$_PUT['ventas'];
-                $_PUT['configuracion'] =(!isset($_PUT['configuracion']))?false:$_PUT['configuracion'];
-                $rol = new Roles($_PUT['rol'],$_PUT['empleados'],$_PUT['clientes'],$_PUT['inventario'],$_PUT['ventas'],$_PUT['configuracion']);
+                $rol = new Roles($_PUT['rol'],$_PUT['descripcion'],intval($_PUT['empleado']),intval($_PUT['cliente']),intval($_PUT['inventario']),
+                intval($_PUT['guiaRemision']),intval($_PUT['bodega']),intval($_PUT['catalogo']),intval($_PUT['cotizacion']),intval($_PUT['configuracion']));
                 echo $rol->modificar($_PUT['id']);
             }else{
                 echo file_get_contents("php://input");

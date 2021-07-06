@@ -21,8 +21,8 @@ switch($_SERVER['REQUEST_METHOD']){
             echo json_encode(Empleado::obtenerPorTipo($cnn,$_GET['tipo']));
         }elseif(isset($_GET['clase']) && isset($_COOKIE['idUser']) && $_COOKIE['idUser']!="undefined"){
             $idUs = $_COOKIE['idUser'];
-            $result = $cnn->query("SELECT idEmpleado FROM vw_usuarios WHERE idUsuario=$idUs")->fetch(PDO::FETCH_ASSOC);
-            echo json_encode(Empleado::obtener($result['idEmpleado'],$cnn),true);
+            $result = $cnn->query("SELECT id FROM vw_usuarios WHERE idUsuario=$idUs")->fetch(PDO::FETCH_ASSOC);
+            echo json_encode(Empleado::obtener($result['id'],$cnn),true);
         }else{
             echo json_encode(Empleado::obtenerTodos($cnn),true);
         }

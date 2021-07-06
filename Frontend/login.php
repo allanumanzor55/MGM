@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+    <?php include_once('head.php');?>
     <link rel="stylesheet" href="css/login-styles.css">
+    <title>Login</title>
 </head>
 <body id="bg-login">
     <div id="gradient" class="container-fluid min-vh-100 m-0 p-0">
@@ -34,7 +31,7 @@
         </div>
     </div>
     <footer>
-        <?php include_once('footer.php'); ?>
+        
     </footer>
 </body>
 </html>
