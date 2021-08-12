@@ -219,7 +219,7 @@
                     <thead class="table-light" style="border: none !important;">
                       <tr>
                         <th scope="col" class="align-middle" rowspan="2">Rol</th>
-                        <th scope="col" class="align-middle" colspan="8">Permisos</th>
+                        <th scope="col" class="align-middle" colspan="9">Permisos</th>
                         <th scope="col" class="align-middle" rowspan="2">Modificar</th>
                         <th scope="col" class="align-middle" rowspan="2">Eliminar</th>
                       </tr>
@@ -231,6 +231,7 @@
                         <td scope="col" class="align-middle">Bodega</td>
                         <td scope="col" class="align-middle">Catalogo</td>
                         <td scope="col" class="align-middle">Cotizacion</td>
+                        <td scope="col" class="align-middle">Ordenes</td>
                         <td scope="col" class="align-middle">Configuracion</td>
                       </tr>
                     </thead>
@@ -315,6 +316,7 @@
               <input type="hidden" name="bodega" id="bodegas" value="0">
               <input type="hidden" name="catalogo" id="catalogo" value="0">
               <input type="hidden" name="cotizacion" id="cotizacion" value="0">
+              <input type="hidden" name="pedido" id="pedido" value="0">
               <input type="hidden" name="configuracion" id="configuracion" value="0">
             </form>
             <form id="formPermisos">
@@ -325,6 +327,7 @@
                     <th>Lectura</th>
                     <th>Edicion</th>
                     <th>Gestion</th>
+                    <th>Alta Gestion</th>
                   </tr>
                 </thead>
                 <tbody class="text-center">
@@ -348,6 +351,12 @@
                       onchange="intercalarPermiso(this,'empleados');otorgarPermiso(this,'empleados')" value="3">
                     </div>
                     </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="empleadosAdministrador" 
+                      onchange="intercalarPermiso(this,'empleados');otorgarPermiso(this,'empleados')" value="4">
+                    </div>
+                    </td>
                   </tr>
                   <tr>
                     <td>Clientes</td>
@@ -367,6 +376,12 @@
                     <div class="d-flex justify-content-center form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="clientesGestor" 
                       onchange="intercalarPermiso(this,'clientes');otorgarPermiso(this,'clientes')" value="3">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="clientesAdministrador" 
+                      onchange="intercalarPermiso(this,'clientes');otorgarPermiso(this,'clientes')" value="4">
                     </div>
                     </td>
                   </tr>
@@ -390,6 +405,12 @@
                       onchange="intercalarPermiso(this,'inventario');otorgarPermiso(this,'inventario')" value="3">
                     </div>
                     </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="inventarioAdministrador" 
+                      onchange="intercalarPermiso(this,'inventario');otorgarPermiso(this,'inventario')" value="4">
+                    </div>
+                    </td>
                   </tr>
                   <tr>
                     <td>Guia Remision</td>
@@ -409,6 +430,12 @@
                     <div class="d-flex justify-content-center form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="guiaRemisionGestor" 
                       onchange="intercalarPermiso(this,'guiaRemision');otorgarPermiso(this,'guiaRemision')" value="3">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="guiaRemisionAdministrador" 
+                      onchange="intercalarPermiso(this,'guiaRemision');otorgarPermiso(this,'guiaRemision')" value="4">
                     </div>
                     </td>
                   </tr>
@@ -432,6 +459,12 @@
                       onchange="intercalarPermiso(this,'bodegas');otorgarPermiso(this,'bodegas')" value="3">
                     </div>
                     </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="bodegasAdministrador" 
+                      onchange="intercalarPermiso(this,'bodegas');otorgarPermiso(this,'bodegas')" value="4">
+                    </div>
+                    </td>
                   </tr>
                   <tr>
                     <td>Catalogo</td>
@@ -451,6 +484,12 @@
                     <div class="d-flex justify-content-center form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="catalogoGestor" 
                       onchange="intercalarPermiso(this,'catalogo');otorgarPermiso(this,'catalogo')" value="3">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="catalogoAdministrador" 
+                      onchange="intercalarPermiso(this,'catalogo');otorgarPermiso(this,'catalogo')" value="4">
                     </div>
                     </td>
                   </tr>
@@ -474,12 +513,45 @@
                       onchange="intercalarPermiso(this,'cotizacion');otorgarPermiso(this,'cotizacion')" value="3">
                     </div>
                     </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="cotizacionAdministrador" 
+                      onchange="intercalarPermiso(this,'cotizacion');otorgarPermiso(this,'cotizacion')" value="4">
+                    </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Ordenes</td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="pedidoLector"
+                      value="1" onchange="otorgarPermiso(this,'pedido')">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="pedidoEditor"
+                      onchange="intercalarPermiso(this,'pedido');otorgarPermiso(this,'pedido')" value="2">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="pedidoGestor" 
+                      onchange="intercalarPermiso(this,'pedido');otorgarPermiso(this,'pedido')" value="3">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="pedidoAdministrador" 
+                      onchange="intercalarPermiso(this,'pedido');otorgarPermiso(this,'pedido')" value="4">
+                    </div>
+                    </td>
                   </tr>
                   <tr>
                     <td>Configuracion</td>
                     <td>
                     <div class="d-flex justify-content-center form-check form-switch">
-                      <input class="form-c  heck-input" type="checkbox" id="configuracionLector"
+                      <input class="form-check-input" type="checkbox" id="configuracionLector"
                       value="1" onchange="otorgarPermiso(this,'configuracion')">
                     </div>
                     </td>
@@ -493,6 +565,12 @@
                     <div class="d-flex justify-content-center form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="configuracionGestor" 
                       onchange="intercalarPermiso(this,'configuracion');otorgarPermiso(this,'configuracion')" value="3">
+                    </div>
+                    </td>
+                    <td>
+                    <div class="d-flex justify-content-center form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="configuracionAdministrador" 
+                      onchange="intercalarPermiso(this,'configuracion');otorgarPermiso(this,'configuracion')" value="4">
                     </div>
                     </td>
                   </tr>

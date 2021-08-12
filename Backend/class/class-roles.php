@@ -14,9 +14,10 @@ class Roles extends Conexion implements CRUD{
     private $catalogo;
     private $cotizacion;
     private $configuracion;
+    private $pedido;
     private $db;
     private $cnn;
-    public function __construct($rol,$descripcion,$empleados,$clientes,$inventario,$guiaRemision,$bodega,$catalogo,$cotizacion,$configuracion)
+    public function __construct($rol,$descripcion,$empleados,$clientes,$inventario,$guiaRemision,$bodega,$catalogo,$cotizacion,$pedido,$configuracion)
     {
         $this->rol = $rol;
         $this->descripcion = $descripcion;
@@ -27,6 +28,7 @@ class Roles extends Conexion implements CRUD{
         $this->bodega = $bodega;
         $this->catalogo = $catalogo;
         $this->cotizacion = $cotizacion;
+        $this->pedido = $pedido;
         $this->configuracion = $configuracion;  
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();  
@@ -35,7 +37,7 @@ class Roles extends Conexion implements CRUD{
     public function guardar(){
         try{
             $query = $this->cnn
-            ->prepare("CALL agregarRol(:rol,:descripcion,:empleados,:clientes,:inventario,:guiaRemision,:bodega,:catalogo,:cotizacion,:configuracion)");
+            ->prepare("CALL agregarRol(:rol,:descripcion,:empleados,:clientes,:inventario,:guiaRemision,:bodega,:catalogo,:cotizacion,:pedido,:configuracion)");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -66,7 +68,7 @@ class Roles extends Conexion implements CRUD{
     public function modificar($id){
         try{
             $query = $this->cnn
-            ->prepare("CALL modificarRol(:rol,:descripcion,:empleados,:clientes,:inventario,:guiaRemision,:bodega,:catalogo,:cotizacion,:configuracion,:id);");
+            ->prepare("CALL modificarRol(:rol,:descripcion,:empleados,:clientes,:inventario,:guiaRemision,:bodega,:catalogo,:cotizacion,:pedido,:configuracion,:id);");
             $datos = $this->obtenerDatos();
             $datos["id"]=$id;
             $query->execute($datos);
@@ -107,6 +109,7 @@ class Roles extends Conexion implements CRUD{
             "bodega" =>$this->bodega,
             "catalogo" =>$this->catalogo,
             "cotizacion" =>$this->cotizacion,
+            "pedido" =>$this->pedido,
             "configuracion" =>$this->configuracion
         );
     }

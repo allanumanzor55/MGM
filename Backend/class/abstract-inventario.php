@@ -1,8 +1,8 @@
 <?php
-include_once('class-conexion.php');
+include_once('class-fotografia.php');
 include_once('interface-crud.php');
 include_once('trait-acciones.php');
-abstract class Inventario extends Conexion implements CRUD{
+abstract class Inventario extends Fotografia implements CRUD{
     use Acciones;
     private $descripcion;
     private $precio;

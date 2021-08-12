@@ -144,7 +144,7 @@
         <script src="js/controladores/Settings/categorias.js"></script>
         <script src="js/controladores/inventario.js"></script>
         <script src="js/controladores/FichaProducto/funcionesSecundarias.js"></script>
-        <script src="js/controladores/FichaProducto/productoGestor.js"></script>
+        <script src="js/controladores/FichaProducto/productog.js"></script>
     </footer>
     <?php include_once('canvas.php');?>
 </body>

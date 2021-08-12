@@ -4,6 +4,7 @@ async function login(btn) {
     var datosLogin = new FormData(document.getElementById('formLogin'));
     datosLogin.append("accion", "LOGIN");
     const { data } = await axios.post(URL_LOGIN, datosLogin)
+    console.log(data);
     if (data.validado) {
         await Swal.fire({
             icon: 'success',
@@ -18,7 +19,6 @@ async function login(btn) {
             title: 'Error',
             text: data.mensaje,
         });
-        console.log(data);
     }
     btn.disabled = false
 }

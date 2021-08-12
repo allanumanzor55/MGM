@@ -68,33 +68,40 @@ async function rellenarSelectCargos() {
     }
 }
 
-async function crearTabsCargos() {
+async function crearTabsCargos(permiso) {
     const datos = await obtener(URL_CARGO, { clase: D_CARGO.clase })
     let tabContents = ``,
         tab = ``
+    let con = 1
+    let tipoAMostrar = 0
+    let idCard = ""
     if (Array.isArray(datos)) {
         datos.forEach(dato => {
             let desc = dato.descripcion.substr(0, 1).toUpperCase() + dato.descripcion.toLowerCase().substr(1)
+            tipoAMostrar = con == 1 ? dato.idTipoEmpleado : tipoAMostrar
+            idCard = con == 1 ? `#${desc}TabContent` : idCard
             tab +=
                 `<li class="nav-item" role="presentation">
-                <button class="nav-link nav-link-mg-2" id="${desc}Tab" data-bs-toggle="pill"
-                data-bs-target="#${desc}TabContent" type="button" role="tab"
-                aria-controls="${desc}" aria-selected="false"
-                onclick="refrescarCardEmpleados(${dato.idTipoEmpleado},this.dataset.bsTarget)">
+                <button class="nav-link nav-link-mg-2  ${con==1?'active':''}" id="${desc}Tab" data-bs-toggle="pill"
+                data-bs-target="${idCard}" type="button" role="tab"
+                aria-controls="${desc}" aria-selected="${con==1?'true':'false'}"
+                onclick="refrescarCardEmpleados(${dato.idTipoEmpleado},this.dataset.bsTarget,${permiso})">
                     ${desc}
                 </button>
             </li>`
             tabContents +=
-                `<div class="tab-pane fade" id="${desc}TabContent" role="tabpanel"
+                `<div class="tab-pane ${con==1?'show active':'fade'}" id="${desc}TabContent" role="tabpanel"
                 aria-labelledby="${desc}Tab">
             </div>
             `
+            con++
         })
         tab +=
             `<li class="nav-item col" role="presentation">
                 <input class="form-control type="search" onkeyup="buscarEmpleado(this.value)" placeholder="Buscar">
-        </li>`
+            </li>`
         document.getElementById('pills-tabEmpleado').innerHTML += tab
-        document.getElementById('pills-tabContentEmpleado').innerHTML += tabContents
+        document.getElementById('tabsCargos').innerHTML += tabContents
+        await refrescarCardEmpleados(tipoAMostrar, idCard, permiso)
     }
 }

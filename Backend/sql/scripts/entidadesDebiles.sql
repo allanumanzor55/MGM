@@ -173,10 +173,10 @@ END/
 
 CREATE OR REPLACE PROCEDURE agregarRol(IN Rol TINYTEXT, IN Descripcion TINYTEXT, 
 IN Empleado INT, IN Cliente INT, IN Inventario INT, IN GuiaRemision INT, IN Bodega INT, IN Catalogo INT, IN Cotizacion INT,
-IN Configuracion INT)
+IN Pedido INT, IN Configuracion INT)
 BEGIN
-    INSERT INTO roles(rol,descripcion,empleados,clientes,inventario,guiaRemision,bodegas,catalogo,cotizacion,configuracion)
-    VALUES (Rol,Descripcion,Empleado,Cliente,Inventario,GuiaRemision,Bodega,Catalogo,Cotizacion,Configuracion);
+    INSERT INTO roles(rol,descripcion,empleados,clientes,inventario,guiaRemision,bodegas,catalogo,cotizacion,pedido,configuracion)
+    VALUES (Rol,Descripcion,Empleado,Cliente,Inventario,GuiaRemision,Bodega,Catalogo,Cotizacion,Pedido,Configuracion);
 END/
 
 CREATE OR REPLACE PROCEDURE obtenerRoles()
@@ -192,7 +192,7 @@ END/
 
 CREATE OR REPLACE PROCEDURE modificarRol(IN Rol TINYTEXT, IN Descripcion TINYTEXT, 
 IN Empleado INT, IN Cliente INT, IN Inventario INT, IN GuiaRemision INT, IN Bodega INT, IN Catalogo INT, IN Cotizacion INT,
-IN Configuracion INT, IN Id INT)
+IN Pedido INT, IN Configuracion INT, IN Id INT)
 BEGIN
     UPDATE roles SET 
         rol = Rol,
@@ -204,6 +204,7 @@ BEGIN
         bodegas = Bodega,
         catalogo = Catalogo,
         cotizacion = Cotizacion,
+        pedido = Pedido,
         configuracion = Configuracion
     WHERE idRol = Id AND estado = 1;
 END/

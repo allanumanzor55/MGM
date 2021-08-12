@@ -3,22 +3,27 @@ include_once('abstract-persona.php');
 class Cliente extends Persona{
     private $tipoCliente;
     private $edad;
+    private $nombreEmpresa;
+    private $rtnEmpresa;
     private $db;
     private $cnn;
-    public function __construct($tipoCliente, $dni, $nombre, $primerApellido, $segundoApellido, 
-    $direccion, $correo, $celular, $telefono, $edad)
+    public function __construct($foto,$tipoCliente, $dni, $nombre, $primerApellido, $segundoApellido, 
+    $direccion, $correo, $celular, $telefono, $edad,$nombreEmpresa,$rtnEmpresa)
     {
-        parent::__construct($dni,$nombre,$primerApellido,$segundoApellido,$direccion,$correo,
+        parent::__construct($foto,$dni,$nombre,$primerApellido,$segundoApellido,$direccion,$correo,
         $celular,$telefono);
         $this->setTipoCliente($tipoCliente);
         $this->setEdad($edad);
+        $this->setNombreEmpresa($nombreEmpresa);
+        $this->setRtnEmpresa($rtnEmpresa);
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();
     }
 
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL guardarCliente(:tipoCliente,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad);");
+            $this->setIdFoto($this->getFoto()->guardarFotoUsuario());
+            $query = $this->cnn->prepare("CALL guardarCliente(:idFoto,:nombreEmpresa,:rtnEmpresa,:tipoCliente,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad)");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -47,8 +52,9 @@ class Cliente extends Persona{
     }
     public function modificar($id){
         try{
-            $query = $this->cnn->prepare("CALL modificarCliente(:tipoCliente,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad,:id);");
+            $query = $this->cnn->prepare("CALL modificarCliente(:nombreEmpresa,:rtnEmpresa,:tipoCliente,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:edad,:id);");
             $datos = $this->obtenerDatos();
+            unset($datos['idFoto']);
             $datos["id"]=$id;
             $query->execute($datos);
             return Acciones::error_message("modificado",true);
@@ -62,9 +68,7 @@ class Cliente extends Persona{
             $query->execute(array("id"=>$id));
             return Acciones::error_message("eliminado",true);
         }catch(Exception $e){
-            return '{"mensaje":"'.$e->getMessage().'"
-                    ,"trazo:":'.json_encode($e->getTrace(),true).'}
-                    ,"centinela":"false"}';          
+            return Acciones::error_message($e,false);          
         }
     }
     static public function buscar($valor,$cnn){
@@ -81,6 +85,9 @@ class Cliente extends Persona{
     public function obtenerDatos()
     {
         return array(
+            "idFoto"=>$this->getIdFoto(),
+            "nombreEmpresa"=>$this->getNombreEmpresa(),
+            "rtnEmpresa"=>$this->getRtnEmpresa(),
             "tipoCliente"=>$this->getTipoCliente(),
             "dni"=>$this->getDni(),
             "nombre"=>$this->getNombre(),
@@ -114,9 +121,6 @@ class Cliente extends Persona{
         return $this;
     }
 
-    /**
-     * Get the value of edad
-     */ 
     public function getEdad()
     {
         return $this->edad;
@@ -130,6 +134,40 @@ class Cliente extends Persona{
     public function setEdad($edad)
     {
         $this->edad = $edad;
+
+        return $this;
+    }
+
+    
+    public function getNombreEmpresa()
+    {
+        return $this->nombreEmpresa;
+    }
+
+    /**
+     * Set the value of nombreEmpresa
+     *
+     * @return  self
+     */ 
+    public function setNombreEmpresa($nombreEmpresa)
+    {
+        $this->nombreEmpresa = $nombreEmpresa;
+        return $this;
+    }
+
+    public function getRtnEmpresa()
+    {
+        return $this->rtnEmpresa;
+    }
+
+    /**
+     * Set the value of rtnEmpresa
+     *
+     * @return  self
+     */ 
+    public function setRtnEmpresa($rtnEmpresa)
+    {
+        $this->rtnEmpresa = $rtnEmpresa;
 
         return $this;
     }

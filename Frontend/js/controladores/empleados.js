@@ -1,62 +1,58 @@
 const URL_EMPLEADO = '../Backend/api/empleado.php'
 const D_EMPLEADO = { idForm: "formEmpleado" }
-let tipoEmpleado=""
-let idCardEmpleado=""
+let tipoEmpleado = ""
+let idCardEmpleado = ""
 async function guardarEmpleado(btn) {
     await guardar(btn, URL_EMPLEADO, D_EMPLEADO)
 }
 
-async function refrescarCardEmpleados(tipo, idCard) {
-    tipoEmpleado=tipo
-    idCardEmpleado=idCard
+async function refrescarCardEmpleados(tipoEmpleado, idCard, permiso) {
+    idCardEmpleado = idCard
     const datos = await obtener(URL_EMPLEADO, { tipo: tipoEmpleado })
-    rellenarCardsEmpleado(datos,idCardEmpleado,tipoEmpleado)
+    rellenarCardsEmpleado(datos, idCardEmpleado, tipoEmpleado, permiso)
 }
 
-async function modificarEmpleadoPorTipo(btn, idCard, tipo, id) {
-    tipoEmpleado=tipo
-    idCardEmpleado=idCard
-    const datos = await obtener(URL_EMPLEADO,{tipo:tipoEmpleado,id:id})
-    intercalarBotones(D_EMPLEADO.idForm,false)
-    document.querySelector(idCardEmpleado).classList.remove('active','show')
-    document.querySelector(`#ingresarEmpleado`).classList.add('active','show')
-    document.querySelector(`#ingresarEmpleadoTab`).classList.add('active')
-    document.querySelector(idCardEmpleado.slice(0,-7)).classList.remove('active')
+async function modificarEmpleadoPorTipo(btn, idCard, tipoEmpleado, id) {
+    idCardEmpleado = idCard
+    const datos = await obtener(URL_EMPLEADO, { tipo: tipoEmpleado, id: id })
+    intercalarBotones(D_EMPLEADO.idForm, false)
+    idCard = idCard.replace('#', '')
+    mostrarTab('ingresarEmpleado', 'tabsCargos')
+        //mostrarTab('ingresarEmpleado', idCard)
     rellenarFormulario(datos)
-    console.log(datos);
-}   
+}
 
 async function confirmarModificarEmpleado(btn) {
-    await modificar(btn,URL_EMPLEADO,{idForm:D_EMPLEADO.idForm})
-    intercalarBotones(D_EMPLEADO.idForm,true)
+    await modificar(btn, URL_EMPLEADO, { idForm: D_EMPLEADO.idForm })
+    intercalarBotones(D_EMPLEADO.idForm, true)
+    document.getElementsByClassName('nav-link nav-link-mg-2 active')[0].click()
 }
-async function buscarEmpleado(valor){
-    if(valor!="" && tipoEmpleado!="" && idCardEmpleado!=""){
-        const datos = await obtener(URL_EMPLEADO,{valor:valor,tipo:tipoEmpleado})
-        rellenarCardsEmpleado(datos,idCardEmpleado,tipoEmpleado)
-    }else{
-        if(tipoEmpleado!="" && idCardEmpleado!=""){
-            refrescarCardEmpleados(tipoEmpleado,idCardEmpleado)
+async function buscarEmpleado(valor) {
+    if (valor != "" && tipoEmpleado != "" && idCardEmpleado != "") {
+        const datos = await obtener(URL_EMPLEADO, { valor: valor, tipo: tipoEmpleado })
+        rellenarCardsEmpleado(datos, idCardEmpleado, tipoEmpleado)
+    } else {
+        if (tipoEmpleado != "" && idCardEmpleado != "") {
+            refrescarCardEmpleados(tipoEmpleado, idCardEmpleado)
         }
     }
 }
 
 
-async function eliminarEmpleadoPorTipo(btn, idCard, tipo, id) {
-    tipoEmpleado = tipo
+async function eliminarEmpleadoPorTipo(btn, idCard, tipoEmpleado, id) {
     idCardEmpleado = idCard
     await eliminar(btn, URL_EMPLEADO, { id: id })
-    refrescarCardEmpleados(tipo, idCard)
+    refrescarCardEmpleados(tipoEmpleado, idCard)
 }
 
-function rellenarCardsEmpleado(datos,idCard,tipo){
+function rellenarCardsEmpleado(datos, idCard, tipoEmpleado, permiso) {
     let content = `<div class="row pb-2">`
     if (Array.isArray(datos)) {
         datos.forEach(empleado => {
-            content +=
-                `<div class="col col-sm-4 col-md-3 col-lg-3">
+                    content +=
+                        `<div class="col col-sm-4 col-md-3 col-lg-3">
                 <div class="card h-100 p-1">
-                    <img src="../Frontend/img/perfil.jpg" class="card-img-top" alt="...">
+                    <img src="data:${empleado.formato};base64, ${empleado.fotografia}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h6 class="card-title">${(empleado.nombre + " " + empleado.primerApellido).toUpperCase()}</h6>
                         <p class="card-text">
@@ -69,12 +65,14 @@ function rellenarCardsEmpleado(datos,idCard,tipo){
                         data-bs-toggle="modal" data-bs-target="#empleadoModal" 
                         onmouseover="this.style.color='white'" onmouseout="this.style.color='#ffc107'"
                         onclick="mostrarDatosEmpleado(${empleado.idEmpleado})"></a>
-                        <div>
+                        ${permiso==3 || permiso==4 || permiso==4?
+                        `<div>
                             <a title="Actualizar" href="#" class="btn btn-outline-success    zmdi  zmdi-refresh"
-                            onclick="modificarEmpleadoPorTipo(this,'${idCard}',${tipo},${empleado.idEmpleado})"></a>
+                            onclick="modificarEmpleadoPorTipo(this,'${idCard}',${tipoEmpleado},${empleado.idEmpleado})"></a>
                             <a title="Eliminar" href="#" class="btn btn-outline-danger    zmdi  zmdi-delete"
-                            onclick="eliminarEmpleadoPorTipo(this,'${idCard}',${tipo},${empleado.idEmpleado})"></a>
-                        </div>
+                            onclick="eliminarEmpleadoPorTipo(this,'${idCard}',${tipoEmpleado},${empleado.idEmpleado})"></a>
+                        </div>`:
+                        ''}
                     </div>
                 </div>
             </div>`;
@@ -87,21 +85,21 @@ function rellenarCardsEmpleado(datos,idCard,tipo){
 }
 
 
-function rellenarFormulario(datos){
+function rellenarFormulario(datos) {
     let form = document.getElementById(`formEmpleado`).querySelectorAll('input,select,textarea')
     console.log(form);
-    form[0].value=datos.idEmpleado
-    form[1].value=datos.tipoEmpleado
-    //2
-    form[3].value=datos.dni
-    form[4].value=datos.nombre
-    form[5].value=datos.primerApellido
-    form[6].value=datos.segundoApellido
-    form[7].value=datos.direccion
-    form[8].value=datos.correo
-    form[9].value=datos.celular
-    form[10].value=datos.telefono
-    form[11].value=datos.sueldo
+    form[0].value = datos.idEmpleado
+    form[1].value = datos.tipoEmpleado
+        //2
+    form[3].value = datos.dni
+    form[4].value = datos.nombre
+    form[5].value = datos.primerApellido
+    form[6].value = datos.segundoApellido
+    form[7].value = datos.direccion
+    form[8].value = datos.correo
+    form[9].value = datos.celular
+    form[10].value = datos.telefono
+    form[11].value = datos.sueldo
 }
 
 async function mostrarDatosEmpleado(id) {
@@ -109,7 +107,7 @@ async function mostrarDatosEmpleado(id) {
     let content = `<div class="row justify-content-center align-items-center">`
     content +=
         `<div class="col-5">
-            <img src="img/perfil.jpg" class="img-fluid" alt="" srcset="">
+            <img src="data:${datos.formato};base64, ${datos.fotografia}" class="img-fluid" alt="" srcset="">
         </div>
         <div class="col-6">
             <div class="table-responsive">
@@ -146,6 +144,6 @@ async function mostrarDatosEmpleado(id) {
                 </table>
             </div>
         </div>`
-    content+=`</div>`
-    document.querySelector('#datosEmpleado').innerHTML=content
+    content += `</div>`
+    document.querySelector('#datosEmpleado').innerHTML = content
 }

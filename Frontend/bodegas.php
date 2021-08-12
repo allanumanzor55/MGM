@@ -29,7 +29,20 @@
                                     <span class="display-6" style="font-size: xx-large !important;">
                                     Bodegas
                                     </span>
-                                    <a href="#" class="btn btn-outline-success" onclick="mostrarTab('tabIngresar','tabBodegas')"><i class="zmdi zmdi-plus"></i></a>
+                                    <?php
+                                    include_once('../Backend/class/class-conexion.php');
+                                    include_once('../Backend/class/class-login.php');
+                                    $db = new Conexion();
+                                    $cnn = $db->getConexion();
+                                    $p = intval(Login::obtenerPermiso($cnn,'bodegas'));
+                                    echo 
+                                    Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                                    '<a href="#" class="btn btn-outline-success"
+                                    onclick="mostrarTab(\'tabIngresar\',\'tabBodegas\')">
+                                    <i class="zmdi zmdi-plus"></i>
+                                    </a>':
+                                    '';
+                                    ?>
                                 </div>
                                 <hr>
                                 <div class="row gx-1" id="cardBodegas">
@@ -76,7 +89,16 @@
         <script src="js/controladores/CRUD.js"></script>
         <script src="js/controladores/bodega.js"></script>
         <script>
-            refrescarCardsBodega()
+            refrescarCardsBodega(
+                <?php
+                    include_once('../Backend/class/class-conexion.php');
+                    include_once('../Backend/class/class-login.php');
+                    $db = new Conexion();
+                    $cnn = $db->getConexion();
+                    $p = Login::obtenerPermiso($cnn,'bodegas');
+                    echo Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+                ?>
+            )
         </script>
     </footer>
     <?php include_once('canvas.php'); ?>

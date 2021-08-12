@@ -4,16 +4,16 @@ async function guardarBodega(btn) {
     await guardar(btn, URL_BODEGA, D_BODEGA)
     await refrescarCardsBodega()
 }
-async function refrescarCardsBodega() {
+async function refrescarCardsBodega(permiso) {
     const datos = await obtener(URL_BODEGA, {})
-    rellenarCardsBodega(datos)
+    rellenarCardsBodega(datos, permiso)
 }
 
-function rellenarCardsBodega(datos) {
+function rellenarCardsBodega(datos, permiso) {
     let content = ``
     datos.forEach(bodega => {
-        content +=
-            `<div class="col-12 col-sm-6 col-md-6 col-lg-3 mt-2" style="max-height: 10rem !important;">
+                content +=
+                    `<div class="col-12 col-sm-6 col-md-6 col-lg-3 mt-2" style="max-height: 10rem !important;">
                 <div class="card border-secondary">
                     <div class="card-body">
                         <div style="min-height:3rem !important;">
@@ -27,8 +27,10 @@ function rellenarCardsBodega(datos) {
                                 <a title="ver inventario" 
                                 href="inventario.php?idBodega=${bodega.idBodega}"
                                 class="btn btn-outline-warning"><i class="zmdi zmdi-square-right"></i></a>
-                                <a title="actualizar" onclick="modificarBodega(${bodega.idBodega})"
-                                class="btn btn-outline-success"><i class="zmdi zmdi-refresh"></i></a>
+                                ${permiso==3 || permiso==4?
+                                `<a title="actualizar" onclick="modificarBodega(${bodega.idBodega})"
+                                class="btn btn-outline-success"><i class="zmdi zmdi-refresh"></i></a>`:
+                                ``}
                             </div>
                         </div>
                     </div>

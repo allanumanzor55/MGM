@@ -13,7 +13,7 @@
             <?php include_once('nav.php'); ?>
         </header>
         <div class="row" style="min-height: 9vh !important;"></div>
-        <main class="row px-5">
+        <main class="row px-5 min-vh-100">
             <div class="align-items-start bg-light min-vh-100 pt-2">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
@@ -25,14 +25,60 @@
                     <div class="tab-pane show active" id="tab-cotizacion" role="tabpanel" aria-labelledby="ingresarInventarioFinalTab">
                         <div class="d-flex justify-content-between my-2">
                             <span class="display-6" style="font-size: xx-large !important;">
-                                Estado De Cotizaciones
+                                Cotizaciones 
+                                <span id="titleCotizacion">Pendientes</span>
                             </span>
-                            <a title="Crear Cotizacion" href="#" onclick="mostrarTab('tab-ingresar','tab-cotizacion')" class="btn btn-outline-success">
-                                <i class="zmdi zmdi-plus"></i></a>
+                            <?php
+                                include_once('../Backend/class/class-conexion.php');
+                                include_once('../Backend/class/class-login.php');
+                                $db = new Conexion();
+                                $cnn = $db->getConexion();
+                                $p = intval(Login::obtenerPermiso($cnn,'cotizacion'));
+                                echo 
+                                Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                                '<a href="#" class="btn btn-outline-success"
+                                onclick="mostrarCliente(this)">
+                                <i class="zmdi zmdi-plus"></i>
+                                </a>':
+                                '';
+                            ?>
                         </div>
                         <hr>
+                        <div class="row justify-content-end mb-1">
+                            <div class="col-3">
+                                <select class="form-select"
+                                <?php
+                                    include_once('../Backend/class/class-conexion.php');
+                                    include_once('../Backend/class/class-login.php');
+                                    $db = new Conexion();
+                                    $cnn = $db->getConexion();
+                                    $p = Login::obtenerPermiso($cnn,'cotizacion');
+                                    $p = Login::verf_perm("g",$p)?$p:-1;
+                                    echo 'onchange="obtenerCotizacionesPorEstado('.$p.',this.value)"';
+                                ?>>
+                                    <option value="PENDIENTE">Pendientes</option>
+                                    <option value="APROBADA">Aprobadas</option>
+                                    <option value="RECHAZADA">Rechazadas</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="table-responsive">
-                            <table class="table table-responsive text-center" id="tableCotizacion"></table>
+                            <table class="table table-responsive table-hover text-center" id="tableCotizacion"></table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab-clientes">
+                        <div class="d-flex justify-content-between my-2">
+                            <span class="display-6" style="font-size: xx-large !important;">
+                                Seleccionar Cliente
+                            </span>
+                            <a title="Volver a registros" href="#" onclick="mostrarTab('tab-cotizacion','tab-clientes')" class="btn btn-outline-secondary">
+                                <i class="zmdi zmdi-arrow-left"></i></a>
+                        </div>
+                        <hr>
+                        <div class="container">
+                            <div class="row justify-content-center" id="cardsCliente">
+
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="tab-ingresar" role="tabpanel" aria-labelledby="InventarioFinalTab">
@@ -63,6 +109,7 @@
                                     <form id="formCotizacion" class="row g-3" enctype="multipart/form-data">
                                         <input type="hidden" name="id" id="idCotizacion">
                                         <input type="hidden" name="descripcionCotizacion" id="descripcionCotizacion">
+                                        <input type="hidden" name="cliente" id="idCliente">
                                         <input type="hidden" name="productos" id="productos">
                                     </form>
                                 </div>
@@ -73,8 +120,19 @@
                                         <hr>
                                         <div class="d-flex justify-content-end">
                                             <div class="col-3">
-                                                <a class="btn btn-outline-warning" onclick="generarCotizacion(this)" style="display: block !important;">
-                                                    <div class="d-none d-sm-none d-md-block"><i class="zmdi zmdi-shopping-cart"></i> Solicitar Cotizacion</div>
+                                                <a class="btn btn-outline-warning" 
+                                                <?php
+                                                    include_once('../Backend/class/class-conexion.php');
+                                                    include_once('../Backend/class/class-login.php');
+                                                    $db = new Conexion();
+                                                    $cnn = $db->getConexion();
+                                                    $p = Login::obtenerPermiso($cnn,'guiaRemision');
+                                                    $per = Login::verf_perm("g",$p)?$p:-1;
+                                                    echo 'onclick="generarCotizacion(this,'.$per.')"'; 
+                                                ?>
+                                                style="display: block !important;">
+                                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                                    <div class="d-none d-sm-none d-md-block"> Solicitar Cotizacion</div>
                                                 </a>
                                             </div>
                                         </div>
@@ -83,55 +141,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--div class="tab-pane fade" id="tab-ingresar2" role="tabpanel" aria-labelledby="InventarioFinalTab">
-                        <div class="d-flex justify-content-between my-2">
-                            <span class="display-6" style="font-size: xx-large !important;">
-                                Generar Cotizacion
-                            </span>
-                            <a title="Volver a registros" href="#" onclick="mostrarTab('tab-cotizacion','tab-ingresar')" class="btn btn-outline-success">
-                                <i class="zmdi zmdi-arrow-left"></i></a>
-                        </div>
-                        <hr>
-                        <form id="formCotizacion" class="row g-3" enctype="multipart/form-data">
-                            <input type="hidden" name="id" id="idCotizacion">
-                            <div class="col-12">
-                                <label for="descripcionCotizacion" class="form-label">Descripcion</label>
-                                <textarea name="descripcionCotizacion" id="descripcionCotizacion" cols="30" rows="5" class="form-control"></textarea>
-                            </div>
-                            <div class="col-12 mt-3" id="btnMateriaPrima">
-                                <a type="button" class="btn btn-outline-success" onclick="mostrarCatalogo()" style="display:block !important;">
-                                    Abrir Catalogo</a>
-                            </div>
-                            <input type="hidden" name="productos">
-                            <div class="row justify-content-center my-3">
-                                <div class="col-4">
-                                    <a class="btn btn-outline-danger" onclick="generarCotizacion(this)" style="display: block !important;">
-                                        <div class="d-none d-sm-none d-md-block">Consultar</div>
-                                        <div class="d-block d-sm-block d-md-none"><i class="zmdi zmdi-edit"></i></div>
-                                    </a>
-                                    <a class="btn btn-outline-success" onclick="confirmarModificarCotizacion(this)" style="display: none;">Modificar</a>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="row">
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Productos
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body p-0">
-                                            <div class="container p-0" id="acordionProducto">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div-->
                     <div class="tab-pane fade" id="tab-catalogo" role="tabpanel" aria-labelledby="ingresarInventarioFinalTab">
                         <div class="d-flex justify-content-between my-2">
                             <span class="display-6" style="font-size: xx-large !important;">
@@ -142,6 +151,18 @@
                         </div>
                         <hr>
                         <div class="row row-cols-1 row-cols-sm-2 row row-cols-md-3 row-cols-lg-4 g-4" id="cardsCatalogo">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab-productos" role="tabpanel">
+                        <div class="d-flex justify-content-between my-2">
+                            <span class="display-6" style="font-size: xx-large !important;">
+                                Productos Cotizados
+                            </span>
+                            <a title="Volver a registros" href="#" onclick="mostrarTab('tab-cotizacion','tab-productos')" class="btn btn-outline-secondary">
+                                <i class="zmdi zmdi-arrow-left"></i></a>
+                        </div>
+                        <hr>
+                        <div class="row row-cols-1 row-cols-sm-2 row row-cols-md-3 row-cols-lg-4 g-4" id="cardsProductosCotizados">
                         </div>
                     </div>
                 </div>
@@ -163,13 +184,24 @@
             </div>
         </div>
     </div>
-    <footer>
+    <footer hidden>
         <script src="js/controladores/CRUD.js"></script>
         <script src="js/controladores/catalogo.js"></script>
+        <script src="js/controladores/clientes.js"></script>|
         <script src="js/controladores/cotizacion.js"></script>
         <script>
             obtenerProductos()
-            refrescarTableCotizacion()
+            obtenerCotizacionesPorEstado(
+                <?php
+                    include_once('../Backend/class/class-conexion.php');
+                    include_once('../Backend/class/class-login.php');
+                    $db = new Conexion();
+                    $cnn = $db->getConexion();
+                    $p = Login::obtenerPermiso($cnn,'cotizacion');
+                    echo Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+                ?>,
+                "PENDIENTE"
+            )
             rellenarTableProductos()
         </script>
     </footer>

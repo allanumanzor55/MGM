@@ -19,32 +19,57 @@
                         <li class="breadcrumb-item active" aria-current="page">Clientes</li>
                     </ol>
                 </nav>
-                <div class="d-flex justify-content-between my-2">
-                    <span class="display-6" style="font-size: xx-large !important;">
-                        Clientes
-                    </span>
-                </div>
-                <hr>
                 <div class="align-items-start bg-light min-vh-100 pt-2">
-                    <ul class="nav nav-pills mb-3" id="pills-tabCliente" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link nav-link-mg-2 active" id="ingresarClienteTab" data-bs-toggle="pill" data-bs-target="#ingresarCliente" type="button" role="tab" aria-controls="ingresarCliente" aria-selected="true">Ingresar</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link nav-link-mg-2" id="clienteTab" data-bs-toggle="pill" data-bs-target="#clienteTabContent" type="button" role="tab" aria-controls="cliente" aria-selected="false" onclick="refrescarCardClientes('Cliente','#clienteTabContent')"">Clientes</button>
-                            </li>
-                    </ul>
                     <div class=" tab-content min-vh-50" id="pills-tabContentCliente">
-                        <div class="tab-pane fade show active" id="ingresarCliente" role="tabpanel" aria-labelledby="ingresarClienteTab">
+                        <div class="tab-pane fade" id="ingresarCliente" role="tabpanel" aria-labelledby="ingresarClienteTab">
+                            <div class="d-flex justify-content-between my-2">
+                                <span id="titleCliente" class="display-6" style="font-size: xx-large !important;">
+                                    Ingresar Cliente
+                                </span>
+                                <div>
+                                <a href="#" class="btn btn-outline-secondary"
+                                    onclick="mostrarTab('clienteTabContent','ingresarCliente')">
+                                    <i class="zmdi zmdi-arrow-left"></i></a>
+                                </div>
+                            </div>
+                            <hr>
                             <form id="formCliente" class="row g-3" enctype="multipart/form-data">
                                 <input type="hidden" name="id" id="idCliente">
                                 <div class="col-12">
                                     <label for="selectTipoCliente" class="form-label">Tipo Cliente</label>
-                                    <select class="form-select" name="tipoCliente" id="selectTipoCliente">
+                                    <select class="form-select" name="tipoCliente" id="selectTipoCliente" aria-placeholder="Select"
+                                    onchange="document.getElementById('checkEmpresa').hidden=false">
+                                        <option disabled selected>Selecciona el tipo de cliente</option>
                                         <option value="1">Al Detalle</option>
                                         <option value="2">Mayorista</option>
                                         <option value="3">Eventual</option>
                                     </select>
+                                </div>
+                                <div class="col-12" id="checkEmpresa" hidden>
+                                    <div class="d-flex mt-2">
+                                        <div class="me-3">
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                            Es empresa?
+                                            </label>
+                                            <input class="form-check-input" name="chkEmpresa" type="checkbox" id="chkEmpresa" 
+                                            onchange="esEmpresa(this.checked)" value="1">
+                                        </div>
+                                        <div id="checkRtn" hidden>
+                                            <label class="form-check-label" for="flexCheckChecked">
+                                            Tiene RTN?
+                                            </label>
+                                            <input class="form-check-input" name="chkRtn" type="checkbox" id="chkRtn" 
+                                            onchange="tieneRTN(this.checked)" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" hidden id="divNombreEmpresa">
+                                    <label for="rtnCliente" class="form-label">Empresa</label>
+                                    <input class="form-control" type="text" name="nombreEmpresa" id="nombreEmpresa">
+                                </div>
+                                <div class="col-12" hidden id="divRtn">
+                                    <label for="rtnCliente" class="form-label">RTN</label>
+                                    <input class="form-control" type="text" name="rtnEmpresa" id="rtnEmpresa">
                                 </div>
                                 <div class="col-12">
                                     <label for="formFile" class="form-label">Fotografia</label>
@@ -88,13 +113,59 @@
                                 </div>
                                 <div class="row justify-content-center my-3">
                                     <div class="col-4">
-                                        <a class="btn btn-outline-warning" onclick="guardarCliente(this)" style="display: block !important;">Guardar</a>
-                                        <a class="btn btn-outline-success" onclick="confirmarModificarCliente(this)" style="display: none;">Modificar</a>
+                                        <a class="btn btn-outline-warning" 
+                                        <?php
+                                            include_once('../Backend/class/class-conexion.php');
+                                            include_once('../Backend/class/class-login.php');
+                                            $db = new Conexion();
+                                            $cnn = $db->getConexion();
+                                            $p = Login::obtenerPermiso($cnn,'clientes');
+                                            $p = Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+                                            echo 'onclick="guardarCliente(this,'.$p.')"';
+                                        ?>
+                                        style="display: block !important;">Guardar</a>
+                                        <a class="btn btn-outline-success" 
+                                        onclick=
+                                        "confirmarModificarCliente(
+                                            this,
+                                            <?php
+                                                include_once('../Backend/class/class-conexion.php');
+                                                include_once('../Backend/class/class-login.php');
+                                                $db = new Conexion();
+                                                $cnn = $db->getConexion();
+                                                $p = Login::obtenerPermiso($cnn,'clientes');
+                                                echo Login::verf_perm('g',$p)?$p:-1;
+                                            ?>)"
+                                        style="display: none;">Modificar</a>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="tab-pane fade show active" id="clienteTabContent" role="tabpanel" aria-labelledby="ClienteTab">
+                            <div class="d-flex justify-content-between my-2">
+                                <span class="display-6" style="font-size: xx-large !important;">
+                                    Clientes
+                                </span>
+                                <div>
+                                <?php
+                                    include_once('../Backend/class/class-conexion.php');
+                                    include_once('../Backend/class/class-login.php');
+                                    $db = new Conexion();
+                                    $cnn = $db->getConexion();
+                                    $p = intval(Login::obtenerPermiso($cnn,'clientes'));
+                                    echo 
+                                    Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                                    '<a href="#" class="btn btn-outline-success"
+                                    onclick="mostrarTab(\'ingresarCliente\',\'clienteTabContent\')">
+                                    <i class="zmdi zmdi-plus"></i>
+                                    </a>':
+                                    '';
+                                ?>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="cardsCliente">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,6 +190,17 @@
     <footer>
         <script src="js/controladores/CRUD.js"></script>
         <script src="js/controladores/clientes.js"></script>
+        <script>
+        refrescarCardClientes('Cliente',
+                            <?php
+                                include_once('../Backend/class/class-conexion.php');
+                                include_once('../Backend/class/class-login.php');
+                                $db = new Conexion();
+                                $cnn = $db->getConexion();
+                                $p = Login::obtenerPermiso($cnn,'clientes');
+                                echo Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+                            ?>)
+        </script>
     </footer>
     <?php include_once('canvas.php');?>
 </body>

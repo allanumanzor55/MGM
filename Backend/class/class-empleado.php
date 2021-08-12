@@ -5,10 +5,10 @@ class Empleado extends Persona{
     private $tipoEmpleado;
     private $db;
     private $cnn;
-    public function __construct($tipoEmpleado, $dni, $nombre, $primerApellido, $segundoApellido, 
+    public function __construct($foto,$tipoEmpleado, $dni, $nombre, $primerApellido, $segundoApellido, 
     $direccion, $correo, $celular, $telefono, $sueldo)
     {
-        parent::__construct($dni,$nombre,$primerApellido,$segundoApellido,$direccion,$correo,
+        parent::__construct($foto,$dni,$nombre,$primerApellido,$segundoApellido,$direccion,$correo,
         $celular,$telefono);
         $this->setTipoEmpleado($tipoEmpleado);
         $this->setSueldo($sueldo);
@@ -18,7 +18,8 @@ class Empleado extends Persona{
 
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL guardarEmpleado(:tipoEmpleado,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:sueldo);");
+            $this->setIdFoto($this->getFoto()->guardarFotoUsuario());
+            $query = $this->cnn->prepare("CALL guardarEmpleado(:idFoto,:tipoEmpleado,:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:sueldo);");
             $query->execute($this->obtenerDatos());
             return Acciones::error_message("agregado",true);
         }catch(Exception $e){
@@ -61,6 +62,7 @@ class Empleado extends Persona{
         try{
             $query = $this->cnn->prepare("CALL modificarEmpleado(:dni,:nombre,:primerApellido,:segundoApellido,:direccion,:correo,:celular,:telefono,:sueldo,:id)");
             $datos = $this->obtenerDatos();
+            unset($datos['idFoto']);
             unset($datos['tipoEmpleado']);
             $datos["id"]=$id;
             $query->execute($datos);
@@ -92,6 +94,7 @@ class Empleado extends Persona{
     public function obtenerDatos()
     {
         return array(
+            "idFoto"=>$this->getIdFoto(),
             "tipoEmpleado"=>$this->getTipoEmpleado(),
             "dni"=>$this->getDni(),
             "nombre"=>$this->getNombre(),

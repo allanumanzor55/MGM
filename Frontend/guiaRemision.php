@@ -30,8 +30,20 @@
                             <span class="display-6" style="font-size: xx-large !important;">
                                 Guias de remisión
                             </span>
-                            <a title="Crear Guia De Remision" href="#" onclick="mostrarTab('tab-ingresar','tab-guias')" class="btn btn-outline-success">
-                            <i class="zmdi zmdi-plus"></i></a>
+                            <?php
+                                    include_once('../Backend/class/class-conexion.php');
+                                    include_once('../Backend/class/class-login.php');
+                                    $db = new Conexion();
+                                    $cnn = $db->getConexion();
+                                    $p = intval(Login::obtenerPermiso($cnn,'guiaRemision'));
+                                    echo 
+                                    Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                                    '<a title="Crear guia de remision" class="btn btn-outline-success"
+                                    onclick="mostrarTab(\'tab-ingresar\',\'tab-guias\')">
+                                    <i class="zmdi zmdi-plus"></i>
+                                    </a>':
+                                    '';
+                            ?>
                         </div>
                         <hr>
                         <div class="table-responsive">
@@ -63,7 +75,7 @@
                             <i class="zmdi zmdi-arrow-left"></i></a>
                         </div>
                         <hr>
-                        <div class="table-responsive" id="cardMaterialesGuia">
+                        <div class="table-responsive" id="cardMateriaPrimaGuia">
                         </div>
                     </div>
                     <div class="tab-pane fade min-h-100" id="tab-ingresar">
@@ -173,8 +185,10 @@
                             </a>
                         </div>
                         <div class="container-fluid">
-                            <div id="cardInventarioPrima"></div>
-                            <div id="cardInventarioMaterial"></div>
+                            <div id="cardInventarioPrima">
+                            </div>
+                            <div id="cardInventarioMaterial">
+                            </div>
                         </div>
                     </div>
                 </div>

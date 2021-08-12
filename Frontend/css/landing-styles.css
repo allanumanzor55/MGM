@@ -2,7 +2,7 @@
     width: auto !important;
     background-image: url('../img/back-5.jpg') !important;
     background-attachment: fixed;
-    background-size: 50%;
+    background-size: 35%;
 }
 
 body#bg-landing::-webkit-scrollbar {
@@ -11,6 +11,7 @@ body#bg-landing::-webkit-scrollbar {
 
 .bg-opacity {
     background-image: url('../img/back-13.webp') !important;
+    background-size: 100%;
     background-repeat: repeat !important;
 }
 

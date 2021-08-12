@@ -1,9 +1,12 @@
 <?php
+include_once('class-fotografia.php');
 include_once('class-conexion.php');
 include_once('interface-crud.php');
 include_once('trait-acciones.php');
 abstract class Persona extends Conexion implements CRUD{
     use Acciones;
+    private $foto;
+    private $idFoto;
     private $dni;
     private $nombre;
     private $primerApellido;
@@ -14,9 +17,10 @@ abstract class Persona extends Conexion implements CRUD{
     private $telefono;
     private $edad;
 
-    public function __construct($dni, $nombre, $primerApellido, $segundoApellido, $direccion,
+    public function __construct($foto,$dni, $nombre, $primerApellido, $segundoApellido, $direccion,
     $correo, $celular, $telefono)
     {
+        $this->setFoto($foto);
         $this->setDni($dni);
         $this->setNombre($nombre);
         $this->setPrimerApellido($primerApellido);
@@ -203,6 +207,42 @@ abstract class Persona extends Conexion implements CRUD{
     public function setEdad($edad)
     {
         $this->edad = $edad;
+
+        return $this;
+    }
+    
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * Set the value of foto
+     *
+     * @return  self
+     */ 
+    public function setFoto($foto)
+    {
+        $this->foto = new Fotografia($foto['name'],$foto['size'],$foto['type'],$foto['tmp_name']);
+        return $this;
+    }
+
+    /**
+     * Get the value of idFoto
+     */ 
+    public function getIdFoto()
+    {
+        return $this->idFoto;
+    }
+
+    /**
+     * Set the value of idFoto
+     *
+     * @return  self
+     */ 
+    public function setIdFoto($idFoto)
+    {
+        $this->idFoto = $idFoto;
 
         return $this;
     }

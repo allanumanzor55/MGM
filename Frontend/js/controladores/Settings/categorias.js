@@ -69,12 +69,14 @@ async function rellenarSelect() {
     document.getElementById('selectCategoria').innerHTML = ``
     if (!(typeof document.getElementById('selectCategoria') === "undefined")) {
         const datos = await obtener(URL_CTL, { clase: D_CATEGORIA[0].clase })
-        datos.forEach(dato => {
-            var option = document.createElement("option")
-            option.value = dato.idTipo
-            option.text = dato.descripcion + " | " + dato.material
-            document.getElementById('selectCategoria').appendChild(option)
-        })
+        if (Array.isArray(datos)) {
+            datos.forEach(dato => {
+                var option = document.createElement("option")
+                option.value = dato.idTipo
+                option.text = dato.descripcion + " | " + dato.material
+                document.getElementById('selectCategoria').appendChild(option)
+            })
+        }
     }
 
 }

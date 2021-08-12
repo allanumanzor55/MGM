@@ -1,28 +1,44 @@
 const URL_CLIENTE = '../Backend/api/cliente.php'
 const D_CLIENTE = { idForm: "formCliente" }
-async function guardarCliente(btn) {
+async function guardarCliente(btn, permiso) {
     await guardar(btn, URL_CLIENTE, D_CLIENTE)
+    refrescarCardClientes('Cliente', permiso)
 }
 
-async function refrescarCardClientes() {
+function esEmpresa(chk) {
+    document.getElementById('checkRtn').hidden = (chk) ? false : true
+    document.getElementById('divRtn').hidden = true
+    document.getElementById('chkRtn').checked = false
+    document.getElementById('nombreEmpresa').value = ""
+    document.getElementById('rtnEmpresa').value = ""
+    document.getElementById('divNombreEmpresa').hidden = (chk) ? false : true
+}
+
+function tieneRTN(chk) {
+    document.getElementById('divRtn').hidden = (chk) ? false : true
+    document.getElementById('rtnEmpresa').value = ""
+}
+
+async function refrescarCardClientes(tipoVisualizacion, permiso) {
     const datos = await obtener(URL_CLIENTE, {})
     console.log(datos)
-    rellenarCardsCliente(datos)
+    rellenarCardsCliente(datos, tipoVisualizacion, permiso)
 }
 
 async function modificarCliente(btn, id) {
     const datos = await obtener(URL_CLIENTE, { id: id })
-    document.getElementById('clienteTabContent').classList.remove('active', 'show')
-    document.getElementById('ingresarCliente').classList.add('active', 'show')
-    document.getElementById('ingresarClienteTab').classList.add('active')
-    document.getElementById('clienteTab').classList.remove('active')
+    mostrarTab('ingresarCliente', 'clienteTabContent')
+    document.getElementById('titleCliente').innerHTML = 'Modificar Cliente'
     intercalarBotones(D_CLIENTE.idForm, false)
     rellenarFormulario(datos)
 }
 
-async function confirmarModificarCliente(btn) {
+async function confirmarModificarCliente(btn, permiso) {
     await modificar(btn, URL_CLIENTE, { idForm: D_CLIENTE.idForm })
+    document.getElementById('titleCliente').innerHTML = 'Ingresar Cliente'
     intercalarBotones(D_CLIENTE.idForm, true)
+    refrescarCardClientes("Cliente", permiso)
+
 }
 async function buscarCliente(valor) {
     if (valor != "" && tipoCliente != "" && idCardCliente != "") {
@@ -35,46 +51,58 @@ async function buscarCliente(valor) {
     }
 }
 
-
 async function eliminarCliente(btn, id) {
     await eliminar(btn, URL_CLIENTE, { id: id })
     refrescarCardClientes()
 }
 
-function rellenarCardsCliente(datos) {
+function rellenarCardsCliente(datos, tipoVisualizacion, permiso) {
     let content = `<div class="row pb-2">`
     if (Array.isArray(datos)) {
         datos.forEach(cliente => {
-            content +=
-                `<div class="col col-sm-4 col-md-3 col-lg-3">
-                <div class="card h-100 p-1">
-                    <img src="../Frontend/img/perfil.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h6 class="card-title">${(cliente.nombre + " " + cliente.primerApellido).toUpperCase()}</h6>
-                        <p class="card-text">
-                            <strong>celular:</strong><br>
-                            ${(cliente.celular == "") ? "N/D" : cliente.celular}
-                        </p>
+                    content +=
+                        `<div class="col col-sm-4 col-md-3 col-lg-3">
+                            <div class="card h-100 p-1">
+                                <div class="style="min-height:250px !important; max-height:250px !important"">
+                                    <img src="data:${cliente.formato};base64, ${cliente.fotografia}" 
+                                    class="img-fluid" alt="...">
+                                </div>
+                            <div class="card-body">
+                                <h6 class="card-title">${(cliente.nombre + " " + cliente.primerApellido).toUpperCase()}</h6>
+                                <p class="card-text">
+                                    <strong>celular:</strong><br>
+                                    ${(cliente.celular == "") ? "N/D" : cliente.celular}
+                                </p>
+                            </div>
+                            <div class="d-flex justify-content-between p-2">
+                                ${tipoVisualizacion=="Cliente"?//Tipo De Visualizacio
+                                `<a href="#" class="btn btn-outline-warning    zmdi  zmdi-plus"
+                                data-bs-toggle="modal" data-bs-target="#clienteModal" 
+                                onmouseover="this.style.color='white'" onmouseout="this.style.color='#ffc107'"
+                                onclick="mostrarDatosCliente(${cliente.idCliente})"></a>
+                                ${permiso==3 || permiso==4?//sSi es visualizacion de 'Cliente' se otorgan los permisos
+                                    `<div>
+                                        <a title="Actualizar" href="#" class="btn btn-outline-success zmdi zmdi-refresh"
+                                        onclick="modificarCliente(this,${cliente.idCliente})"></a>
+                                        <a title="Eliminar" href="#" class="btn btn-outline-danger zmdi zmdi-delete"
+                                        onclick="eliminarCliente(this,${cliente.idCliente})"></a>
+                                    </div>`:
+                                    ``
+                                }`:
+                                `<div>
+                                    <a href="#" class="btn btn-outline-success"
+                                    onclick="crearCotizacion(this,${cliente.idCliente})">
+                                    <i class="zmdi zmdi-plus"></i></a>
+                                </div>`
+                                }
+                            </div>
                     </div>
-                    <div class="d-flex justify-content-between p-2">
-                        <a href="#" class="btn btn-outline-warning    zmdi  zmdi-plus"
-                        data-bs-toggle="modal" data-bs-target="#clienteModal" 
-                        onmouseover="this.style.color='white'" onmouseout="this.style.color='#ffc107'"
-                        onclick="mostrarDatosCliente(${cliente.idCliente})"></a>
-                        <div>
-                            <a title="Actualizar" href="#" class="btn btn-outline-success zmdi zmdi-refresh"
-                            onclick="modificarCliente(this,${cliente.idCliente})"></a>
-                            <a title="Eliminar" href="#" class="btn btn-outline-danger zmdi zmdi-delete"
-                            onclick="eliminarCliente(this,${cliente.idCliente})"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+                </div>`;
         })
         content += `</div>`;
-        document.getElementById('clienteTabContent').innerHTML = content
+        document.getElementById('cardsCliente').innerHTML = content
     } else {
-        document.getElementById('clienteTabContent').innerHTML = `No Existen Registros`
+        document.getElementById('cardsCliente').innerHTML = `No Existen Registros`
     }
 }
 
@@ -84,24 +112,27 @@ function rellenarFormulario(datos) {
     console.log(form);
     form[0].value = datos.idCliente
     form[1].value = datos.tipoCliente
-        //2
-    form[3].value = datos.dni
-    form[4].value = datos.nombre
-    form[5].value = datos.primerApellido
-    form[6].value = datos.segundoApellido
-    form[7].value = datos.direccion
-    form[8].value = datos.correo
-    form[9].value = datos.celular
-    form[10].value = datos.telefono
-    form[11].value = datos.edad
+    form[4].value = datos.nombreEmpresa
+    form[5].value = datos.rtnEmpresa
+    //6
+    form[7].value = datos.dni
+    form[8].value = datos.nombre
+    form[9].value = datos.primerApellido
+    form[10].value = datos.segundoApellido
+    form[11].value = datos.direccion
+    form[12].value = datos.correo
+    form[13].value = datos.celular
+    form[14].value = datos.telefono
+    form[15].value = datos.edad
 }
 
 async function mostrarDatosCliente(id) {
     const datos = await obtener(URL_CLIENTE, { id: id })
+    console.log(datos);
     let content = `<div class="row justify-content-center align-items-center">`
     content +=
         `<div class="col-5">
-            <img src="img/perfil.jpg" class="img-fluid" alt="" srcset="">
+            <img src="data:${datos.formato};base64, ${datos.fotografia}" class="img-fluid" alt="" srcset="">
         </div>
         <div class="col-6">
             <div class="table-responsive">

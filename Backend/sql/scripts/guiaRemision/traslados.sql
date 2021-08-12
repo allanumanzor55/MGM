@@ -6,7 +6,7 @@ BEGIN
     DECLARE ceros INT;
     SELECT COUNT(*) INTO __idGuia FROM guia_remision;
     SET __idGuia := __idGuia + 1;
-    SET ceros := 12-LENGTH(__idGuia);
+    SET ceros := 8-LENGTH(__idGuia);
     SET codGuia :="";
     WHILE ceros > 0 DO
         SET codGuia := CONCAT(codGuia,"0");

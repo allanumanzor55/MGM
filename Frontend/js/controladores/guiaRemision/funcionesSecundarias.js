@@ -1,9 +1,9 @@
-async function refrescarTableGuia() {
+async function refrescarTableGuia(permiso) {
     datos = await obtener(URL_GUIA, {})
-    rellenarTableGuia(datos)
+    rellenarTableGuia(datos, permiso)
 }
 
-async function rellenarTableGuia(datos) {
+async function rellenarTableGuia(datos, permiso) {
     let content =
         `<thead>
             <tr>
@@ -13,14 +13,14 @@ async function rellenarTableGuia(datos) {
                 <th scope="col">Bodega Salida</th>
                 <th scope="col">Bodega Destino</th>
                 <th scope="col">Materia Prima/Materiales</th>
-                <th scope="col">Eliminar</th>
+                ${permiso==3 || permiso==4?`<th scope="col">Eliminar</th>`:``}
             </tr>
         </thead>
         <tbody>`
     if (Array.isArray(datos)) {
         datos.forEach(guia => {
-            content +=
-                `<tr>
+                    content +=
+                        `<tr>
                     <td>${guia.codigo}</td>
                     <td>${guia.fecha}</td>
                     <td>${guia.motivoTraslado.substr(0,45)}${(guia.motivoTraslado.length>45)?'...':''}</td>
@@ -32,7 +32,11 @@ async function rellenarTableGuia(datos) {
                         <a title="Materiales" href="#" class="btn btn-outline-warning mx-1"
                         onclick="mostrarMaterialesGuia(${guia.idGuia})"><i class="zmdi zmdi-dropbox"></i></a>
                     </td>
-                    <td><a href="#" class="btn btn-outline-danger"><i class="zmdi zmdi-delete"></i></a></td>
+                    ${permiso==3 || permiso==4?
+                        `<td><a href="#" class="btn btn-outline-danger"><i class="zmdi zmdi-delete"></i></a></td>`:
+                        ``
+                    }
+                    
                 </tr>`
         })
     }
@@ -91,7 +95,7 @@ function rellenarAcordionMateriales(idAcordion) {
                             </div>
                         </div>
                     </div>
-                </div>`
+            </div>`
 
     })
 }
@@ -145,7 +149,7 @@ function rellenarAcordionPrima(idAcordion) {
                             </div>
                         </div>
                         </div>
-                    </div>`
+            </div>`
     })
 }
 

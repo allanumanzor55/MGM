@@ -31,14 +31,13 @@ class Login extends Conexion{
             if($datosLogin['idUser']!=0){
                 $query = $this->cnn->prepare("CALL comprobarPassword(?,?,@validado)");
                 $query->execute(array($datosLogin['idUser'],$this->password));
-                $query->closeCursor();
                 $result = $this->cnn->query("SELECT @validado as 'validado' ")->fetch(PDO::FETCH_ASSOC);
                 $datosLogin['validado'] = boolval($result['validado']);
                 if($datosLogin['validado']){
                     $token = bin2hex(openssl_random_pseudo_bytes(16));
-                    $query = $this->cnn->prepare("CALL login(?,?);");
+                    $datosLogin['token'] = $token;
+                    $query = $this->cnn->prepare("CALL Login(?,?)");
                     $query->execute(array($datosLogin['idUser'],$token));
-                    $query->closeCursor();
                     setcookie('id',$datosLogin['id'],time() + (86400 * 1), "/");
                     setcookie('tipoUsuario',$datosLogin['tipoUsuario'],time() + (86400 * 1), "/");
                     setcookie('idUser',$datosLogin['idUser'],time() + (86400 * 1), "/");
@@ -57,9 +56,9 @@ class Login extends Conexion{
     }
     
     public static function validarLogin($cnn){
-        $query = $cnn->prepare("CALL comprobarLogin(?,@validado); ");
+        $query = $cnn->prepare("CALL comprobarLogin(?,@validado);");
         $query->execute(array($_COOKIE['token']));
-        $result = $cnn->query(" SELECT @validado as 'validado'; ")->fetch(PDO::FETCH_ASSOC);
+        $result = $cnn->query("SELECT @validado as validado ")->fetch(PDO::FETCH_ASSOC);
         return boolval($result['validado']);
     }
 
@@ -80,10 +79,18 @@ class Login extends Conexion{
         return $result;
     }
     
+    public static function obtenerPermiso($cnn,$permiso){
+        $p = self::obtenerPermisos($cnn);
+        foreach ($p as $key => $value) {
+            if($key==$permiso){
+                return $value;
+            }
+        }
+    }
     public static function habilitarModulo($permiso,$modulo){
         if($permiso==0){
             return "";
-        }elseif($permiso==1 or $permiso==2 or $permiso==3){
+        }elseif($permiso>=1 and $permiso<=4){
             return $modulo;
         }
     }
@@ -118,6 +125,8 @@ class Login extends Conexion{
         '<li class="nav-item"><a title="Catalogo" class="nav-link btn-mg-1" href="catalogo.php">Catalogo</a></li>');
         echo self::habilitarModulo($permisos['cotizacion'],
         '<li class="nav-item"><a title="Cotizacion" class="nav-link btn-mg-1" href="cotizaciones.php">Cotizacion</a></li>');
+        echo self::habilitarModulo($permisos['pedido'],
+        '<li class="nav-item"><a title="Ordenes" class="nav-link btn-mg-1" href="ordenes.php">Ordenes</a></li>');
         if($permisos['clientes']>0 and $permisos['empleados']>0){
             $emp = self::habilitarModulo($permisos['empleados'],
             '<li class="nav-item"><a title="Empleados" class="nav-link btn-mg-1" href="empleados.php">Empleados</a></li>');
@@ -139,6 +148,21 @@ class Login extends Conexion{
             '<li class="nav-item"><a title="Empleados" class="nav-link btn-mg-1 zmdi zmdi-male-alt zmdi-hc-2x" href="empleados.php"></a></li>');
             echo self::habilitarModulo($permisos['clientes'],
             '<li class="nav-item"><a title="Clientes" class="nav-link btn-mg-1 zmdi zmdi-accounts zmdi-hc-2x" href="clientes.php"></a></li>');
+        }
+    }
+    static function verf_perm($nivel,$permiso){
+        if($nivel=="l"){
+            return $permiso==1 ?true:false;
+        }elseif ($nivel=="e") {
+            return $permiso==2 ?true:false;
+        }elseif ($nivel=="g") {
+            return $permiso==3?true:false;
+        }elseif($nivel=="adm"){
+            return $permiso==4?true:false;
+        }elseif($nivel=="an"){//anyway
+            return $permiso>=1 && $permiso<=4?true:false;
+        }else{
+            return false;
         }
     }
 }

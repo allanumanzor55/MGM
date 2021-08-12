@@ -20,20 +20,21 @@
                         <li class="breadcrumb-item active" aria-current="page">Empleados</li>
                     </ol>
                 </nav>
-                <div class="d-flex justify-content-between my-2">
-                    <span class="display-6" style="font-size: xx-large !important;">
-                        Empleados
-                    </span>
-                </div>
-                <hr>
                 <div class="align-items-start bg-light min-vh-100 pt-2">
                     <ul class="nav nav-pills mb-3" id="pills-tabEmpleado" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link nav-link-mg-2 active" id="ingresarEmpleadoTab" data-bs-toggle="pill" data-bs-target="#ingresarEmpleado" type="button" role="tab" aria-controls="ingresarEmpleado" aria-selected="true">Ingresar</button>
-                        </li>
                     </ul>
                     <div class="tab-content min-vh-50" id="pills-tabContentEmpleado">
-                        <div class="tab-pane fade show active" id="ingresarEmpleado" role="tabpanel" aria-labelledby="ingresarEmpleadoTab">
+                        <div class="tab-pane fade" id="ingresarEmpleado" role="tabpanel" aria-labelledby="ingresarEmpleadoTab">
+                        <div class="d-flex justify-content-between my-2">
+                                <span class="display-6" style="font-size: xx-large !important;">
+                                    Empleados
+                                </span>
+                                <a href="#" class="btn btn-outline-secondary"
+                                    onclick="mostrarTab('tabsCargos','ingresarEmpleado')">
+                                    <i class="zmdi zmdi-arrow-left"></i>
+                                </a>
+                            </div>
+                            <hr>
                             <form id="formEmpleado" class="row g-3" enctype="multipart/form-data">
                                 <input type="hidden" name="id" id=>
                                 <div class="col-12">
@@ -89,6 +90,28 @@
                                 </div>
                             </form>
                         </div>
+                        <div id="tabsCargos" class="tab-pane show active">
+                            <div class="d-flex justify-content-between my-2">
+                                <span class="display-6" style="font-size: xx-large !important;">
+                                    Empleados
+                                </span>
+                                <?php
+                                    include_once('../Backend/class/class-conexion.php');
+                                    include_once('../Backend/class/class-login.php');
+                                    $db = new Conexion();
+                                    $cnn = $db->getConexion();
+                                    $p = intval(Login::obtenerPermiso($cnn,'empleados'));
+                                    echo 
+                                    Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
+                                    '<a href="#" class="btn btn-outline-success"
+                                    onclick="mostrarTab(\'ingresarEmpleado\',\'tabsCargos\')">
+                                    <i class="zmdi zmdi-plus"></i>
+                                    </a>':
+                                    ''; 
+                                ?>
+                            </div>
+                            <hr>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,10 +135,16 @@
     </div>
     <footer>
         <script src="js/controladores/CRUD.js"></script>
-        <script src="js/controladores/Settings/cargos.js"></script>
         <script src="js/controladores/empleados.js"></script>
+        <script src="js/controladores/Settings/cargos.js"></script>
         <script>
-            crearTabsCargos()
+            crearTabsCargos(<?php
+            include_once('../Backend/class/class-conexion.php');
+            include_once('../Backend/class/class-login.php');
+            $db = new Conexion();$cnn = $db->getConexion();
+            $p = Login::obtenerPermiso($cnn,'empleados');
+            echo Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+            ?>)
             rellenarSelectCargos()
         </script>
     </footer>

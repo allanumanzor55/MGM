@@ -27,8 +27,19 @@
                             <span class="display-6" style="font-size: xx-large !important;">
                                 Catalogo De Productos
                             </span>
-                            <a title="Crear Guia De Remision" href="#" onclick="mostrarTab('tab-ingresar','tab-catalogo')" class="btn btn-outline-success">
-                                <i class="zmdi zmdi-plus"></i></a>
+                            <?php
+                            include_once('../Backend/class/class-conexion.php');
+                            include_once('../Backend/class/class-login.php');
+                            $db = new Conexion();$cnn = $db->getConexion();
+                            $p = intval(Login::obtenerPermiso($cnn,'catalogo'));
+                            echo 
+                            Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                            '<a title="Agregar Producto" href="#" class="btn btn-outline-success"
+                            onclick="mostrarTab(\'tab-ingresar\',\'tab-catalogo\')">
+                            <i class="zmdi zmdi-plus"></i>
+                            </a>':
+                            '';
+                            ?>
                         </div>
                         <hr>
                         <div class="col-12 bg-light pt-3">
@@ -49,7 +60,7 @@
                             <input type="hidden" name="id" id="idCatalogo">
                             <div class="col-12">
                                 <label for="fotoCatalogo" class="form-label">Fotografia</label>
-                                <input class="form-control" type="file" name="foto" id="fotoCatalogo">
+                                <input class="form-control" type="file" name="foto[]" id="fotoCatalogo" multiple>
                             </div>
                             <div class="col-12">
                                 <label for="nombreProducto" class="form-label ">Nombre Producto</label>
@@ -62,10 +73,16 @@
                             <div class="col-12">
                                 <label for="precio" class="form-label ">Precio</label>
                                 <input type="number" name="precio" class="form-control readonly" id="precio">
+                                <div class="mt-2">
+                                    <label class="form-check-label" for="flexCheckChecked">
+                                        Excento de ISV?
+                                    </label>
+                                    <input class="form-check-input" name="exentoImpuesto" type="checkbox" value="1" id="exentoImpuesto">
+                                </div>
                             </div>
                             <div class="row justify-content-center my-3">
                                 <div class="col-4">
-                                    <a class="btn btn-outline-danger" onclick="agregarProductoCatalogo(this)" style="display: block !important;">Guardar</a>
+                                    <a class="btn btn-outline-warning" onclick="agregarProductoCatalogo(this)" style="display: block !important;">Guardar</a>
                                     <a class="btn btn-outline-success" onclick="confirmarModificarCatalogo(this)" style="display: none;">Modificar</a>
                                 </div>
                             </div>
@@ -78,7 +95,16 @@
     <footer>
         <script src="js/controladores/CRUD.js"></script>
         <script src="js/controladores/catalogo.js"></script>
-        <script>refrescarCardCatalogo('Catalogo')</script>
+        <script>refrescarCardCatalogo(
+            'Catalogo',
+            <?php
+                include_once('../Backend/class/class-conexion.php');
+                include_once('../Backend/class/class-login.php');
+                $db = new Conexion();
+                $cnn = $db->getConexion();
+                $p = Login::obtenerPermiso($cnn,'catalogo');
+                echo Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+            ?>)</script>
     </footer>
     <?php include_once('canvas.php'); ?>
 </body>

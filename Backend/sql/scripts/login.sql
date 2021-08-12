@@ -30,9 +30,9 @@ BEGIN
     END IF;
 END/
 
-CREATE OR REPLACE PROCEDURE login(IN id INT, IN _token TEXT)
+CREATE OR REPLACE PROCEDURE Login(IN Id INT, IN Token VARCHAR(1024))
 BEGIN
-    UPDATE usuarios SET token=_token WHERE idUsuario = id;
+    UPDATE usuarios SET token=Token WHERE idUsuario = Id;
 END/ 
 
 CREATE OR REPLACE PROCEDURE comprobarLogin(IN _token TINYTEXT, OUT Validado BOOLEAN)
@@ -54,7 +54,7 @@ END/
 CREATE OR REPLACE PROCEDURE obtenerPermisos(IN Id INT)
 BEGIN
     SELECT rol.idRol,rol.empleados,rol.clientes,rol.inventario,rol.guiaRemision,
-    rol.bodegas,rol.catalogo,rol.cotizacion,rol.configuracion
+    rol.bodegas,rol.catalogo,rol.cotizacion,rol.pedido,rol.configuracion
     FROM roles rol 
     JOIN vw_usuarios us ON us.idRol = rol.idRol
     WHERE us.idUsuario = Id;

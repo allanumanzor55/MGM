@@ -5,13 +5,17 @@ include_once('trait-acciones.php');
 class Cotizacion extends Conexion implements CRUD{
     use Acciones;
     private $descripcion;
+    private $empleado;
+    private $cliente;
     private $productos;
     private $db;
     private $cnn;
 
-    function __construct($descripcion,$productos)
+    function __construct($descripcion,$empleado,$cliente,$productos)
     {
         $this->descripcion = $descripcion;
+        $this->empleado = $empleado;
+        $this->cliente = $cliente;
         $this->productos = $productos;
         $this->db = new Conexion();
         $this->cnn = $this->db->getConexion();
@@ -19,7 +23,7 @@ class Cotizacion extends Conexion implements CRUD{
 
     public function guardar(){
         try{
-            $query = $this->cnn->prepare("CALL guardarCotizacion(:descripcion,@idCotizacion);");
+            $query = $this->cnn->prepare("CALL guardarCotizacion(:descripcion,:empleado,:cliente,@idCotizacion);");
             $query->execute($this->obtenerDatos());
             $result = $this->cnn->query("SELECT @idCotizacion as idCotizacion ")->fetch(PDO::FETCH_ASSOC);
             $query->closeCursor();
@@ -76,6 +80,16 @@ class Cotizacion extends Conexion implements CRUD{
         }
     }
 
+    static public function obtenerPorEstado($cnn,$estado){
+        try{
+            $query = $cnn->prepare("CALL obtenerCotizacionEstado(:estado)");
+            $query->execute(array("estado"=>$estado));
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
     public function modificar($id){
         try{
             $query = $this->cnn->prepare("CALL modificarCotizacion(:descripcion,:id)");
@@ -88,6 +102,17 @@ class Cotizacion extends Conexion implements CRUD{
             return Acciones::error_message($e,false);
         }
     }
+
+    static public function modificarEstado($cnn,$id,$estado){
+        try{
+            $query = $cnn->prepare("CALL modificarEstadoCotizacion(:id,:estado);");
+            $query->execute(array("id"=>$id,"estado"=>$estado));
+            return Acciones::error_message("modificado",true);
+        }catch(Exception $e){
+            return Acciones::error_message($e,false);
+        }
+    }
+
     static public function eliminar($id,$cnn){
         try{
             $query = $cnn->prepare("CALL eliminarCotizacion(:id)");
@@ -112,7 +137,9 @@ class Cotizacion extends Conexion implements CRUD{
     public function obtenerDatos()
     {
         return array(
-            "descripcion"=>$this->descripcion
+            "descripcion"=>$this->descripcion,
+            "empleado"=>$this->empleado,
+            "cliente"=>$this->cliente
         );
     }
 }
