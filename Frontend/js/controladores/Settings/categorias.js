@@ -17,6 +17,7 @@ async function eliminarCategoria(btn, id) {
 }
 
 async function modificarCategoria(btn, id) {
+    modificarModalIngresar('categoria')
     btn.style.disabled = true
     const datos = await obtener(URL_CTL, { id: id, clase: D_CATEGORIA[0].clase })
     btn.style.disabled = false
@@ -44,7 +45,8 @@ async function refrescarTablaCategoria() {
                 <td>${categoria.descripcion}</td>
                 <td>${categoria.material}</td>
                 <td>
-                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarCategoria(this,${categoria.idTipo})">
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarCategoria(this,${categoria.idTipo})"
+                    data-bs-toggle="modal" data-bs-target="#modalIngresar">
                         <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
@@ -93,11 +95,11 @@ async function eliminarEstilo(btn, id) {
 }
 
 async function modificarEstilo(btn, id) {
+    modificarModalIngresar('estilo')
     btn.style.disabled = true
     const datos = await obtener(URL_CTL, { id: id, clase: D_CATEGORIA[1].clase })
     btn.style.disabled = false
     let form = document.querySelectorAll("form#formEstilo input, form#formEstilo select")
-    console.log(form)
     form[0].value = datos.idCategoria
     form[1].value = datos.idTipo
     form[2].value = datos.estilo
@@ -121,7 +123,8 @@ async function refrescarTablaEstilo() {
                 <td>${estilo.material}</td>
                 <td>${estilo.estilo}</td>
                 <td>
-                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarEstilo(this,${estilo.idCategoria})">
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarEstilo(this,${estilo.idCategoria})"
+                    data-bs-toggle="modal" data-bs-target="#modalIngresar">
                         <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
@@ -194,6 +197,7 @@ async function eliminarTalla(btn, id) {
 }
 
 async function modificarTalla(btn, id) {
+    modificarModalIngresar('talla')
     btn.style.disabled = true
     const datos = await obtener(URL_CTL, { id: id, clase: D_CATEGORIA[2].clase })
     btn.style.disabled = false
@@ -218,7 +222,8 @@ async function refrescarTablaTalla() {
                 `<tr>
                 <td>${talla.descripcion}</td>
                 <td>
-                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarTalla(this,${talla.idTalla})">
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarTalla(this,${talla.idTalla})"
+                    data-bs-toggle="modal" data-bs-target="#modalIngresar">
                         <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>

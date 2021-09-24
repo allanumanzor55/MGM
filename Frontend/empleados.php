@@ -11,7 +11,7 @@
         <header>
             <?php include_once('nav.php'); ?>
         </header>
-        <div class="row" style="min-height: 8.9vh !important;"></div>
+        <div class="row" style="min-height: 8.2vh !important;"></div>
         <main class="row px-5">
             <div class="container vw-100 min-vh-100 bg-light pt-1">
                 <nav aria-label="breadcrumb">
@@ -27,7 +27,7 @@
                         <div class="tab-pane fade" id="ingresarEmpleado" role="tabpanel" aria-labelledby="ingresarEmpleadoTab">
                         <div class="d-flex justify-content-between my-2">
                                 <span class="display-6" style="font-size: xx-large !important;">
-                                    Empleados
+                                    <strong>Empleados</strong>
                                 </span>
                                 <a href="#" class="btn btn-outline-secondary"
                                     onclick="mostrarTab('tabsCargos','ingresarEmpleado')">
@@ -46,37 +46,37 @@
                                     <label for="formFile" class="form-label">Fotografia</label>
                                     <input class="form-control" type="file" name="foto" id="fotoEmpleado">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12"> 
                                     <label for="dni" class="form-label ">DNI</label>
                                     <input type="text" name="dni" class="form-control readonly" id="dni">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="nombre" class="form-label ">Nombre</label>
                                     <input type="text" name="nombre" class="form-control readonly" id="nombre">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="primerApellido" class="form-label">Primer apellido</label>
                                     <input type="text" name="primerApellido" class="form-control" id="primerApellido">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
                                     <label for="segundoApellido" class="form-label">Segundo apellido</label>
                                     <input type="text" name="segundoApellido" class="form-control" id="segundoApellido">
+                                </div>
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="correo" class="form-label">Correo</label>
+                                    <input type="email" name="correo" class="form-control" id="correo">
+                                </div>
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="celular" class="form-label">Celular</label>
+                                    <input type="text" name="celular" class="form-control" id="celular">
+                                </div>
+                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label for="telefono" class="form-label">Telefono</label>
+                                    <input type="text" name="telefono" class="form-control" id="telefono">
                                 </div>
                                 <div class="col-12">
                                     <label for="direccion" class="form-label">Direccion</label>
                                     <textarea class="form-control" name="direccion" id="direccion" cols="120" rows="4"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <label for="correo" class="form-label">Correo</label>
-                                    <input type="email" name="correo" class="form-control" id="correo">
-                                </div>
-                                <div class="col-12">
-                                    <label for="celular" class="form-label">Celular</label>
-                                    <input type="text" name="celular" class="form-control" id="celular">
-                                </div>
-                                <div class="col-12">
-                                    <label for="telefono" class="form-label">Telefono</label>
-                                    <input type="text" name="telefono" class="form-control" id="telefono">
                                 </div>
                                 <div class="col-12">
                                     <label for="sueldo" class="form-label">Sueldo</label>
@@ -93,7 +93,7 @@
                         <div id="tabsCargos" class="tab-pane show active">
                             <div class="d-flex justify-content-between my-2">
                                 <span class="display-6" style="font-size: xx-large !important;">
-                                    Empleados
+                                    <strong>Empleados</strong>
                                 </span>
                                 <?php
                                     include_once('../Backend/class/class-conexion.php');

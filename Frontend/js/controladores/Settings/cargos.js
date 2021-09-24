@@ -11,6 +11,7 @@ async function eliminarCargo(btn, id) {
 }
 
 async function modificarCargo(btn, id) {
+    modificarModalIngresar('cargo')
     btn.style.disabled = true;
     const datos = await obtener(URL_CARGO, { id: id, clase: D_CARGO.clase })
     btn.style.disabled = false;
@@ -37,12 +38,13 @@ async function refrescarTablaCargo() {
                 `<tr>
                 <td>${cargo.descripcion}</td>
                 <td>
-                    <a title="Actualizar" class="btn btn-success" onclick="modificarCargo(this,${cargo.idTipoEmpleado})">
+                    <a title="Actualizar" class="btn btn-outline-success" onclick="modificarCargo(this,${cargo.idTipoEmpleado})"
+                    data-bs-toggle="modal" data-bs-target="#modalIngresar">
                         <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
                 <td>
-                    <a title="Eliminar" class="btn btn-danger" onclick="eliminarCargo(this,${cargo.idTipoEmpleado})">
+                    <a title="Eliminar" class="btn btn-outline-danger" onclick="eliminarCargo(this,${cargo.idTipoEmpleado})">
                         <i class=" zmdi  zmdi-delete"></i>
                     </a>
                 </td>

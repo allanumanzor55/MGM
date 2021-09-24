@@ -12,7 +12,7 @@
         <header>
             <?php include_once('nav.php'); ?>
         </header>
-        <div class="row" style="min-height: 8.8vh !important;"></div>
+        <div class="row" style="min-height: 8.1vh !important;"></div>
         <main class="row px-5">
             <div class="container vw-100 min-vh-100 bg-light pt-1">
                 <nav aria-label="breadcrumb">
@@ -27,7 +27,7 @@
                             <div class="container-fluid">
                                 <div class="d-flex justify-content-between">
                                     <span class="display-6" style="font-size: xx-large !important;">
-                                    Bodegas
+                                        <strong>Bodegas</strong>
                                     </span>
                                     <?php
                                     include_once('../Backend/class/class-conexion.php');
@@ -54,7 +54,7 @@
                             <div class="container-fluid">
                                 <div class="d-flex justify-content-between">
                                     <span class="display-6" style="font-size: xx-large !important;">
-                                    Bodegas
+                                        <strong>Bodegas</strong>
                                     </span>
                                     <a href="#" class="btn btn-outline-secondary" onclick="mostrarTab('tabBodegas','tabIngresar')"><i class="zmdi zmdi-arrow-left"></i></a>
                                 </div>

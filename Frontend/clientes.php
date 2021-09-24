@@ -10,7 +10,7 @@
         <header>
             <?php include_once('nav.php'); ?>
         </header>
-        <div class="row" style="min-height: 8.8vh !important;"></div>
+        <div class="row" style="min-height: 8.23vh !important;"></div>
         <main class="row px-5">
             <div class="container vw-100 min-vh-100 bg-light pt-1">
                 <nav aria-label="breadcrumb">
@@ -24,7 +24,7 @@
                         <div class="tab-pane fade" id="ingresarCliente" role="tabpanel" aria-labelledby="ingresarClienteTab">
                             <div class="d-flex justify-content-between my-2">
                                 <span id="titleCliente" class="display-6" style="font-size: xx-large !important;">
-                                    Ingresar Cliente
+                                    <strong>Ingresar Cliente</strong>
                                 </span>
                                 <div>
                                 <a href="#" class="btn btn-outline-secondary"
@@ -75,42 +75,43 @@
                                     <label for="formFile" class="form-label">Fotografia</label>
                                     <input class="form-control" type="file" name="foto" id="fotoCliente">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <label for="dni" class="form-label ">DNI</label>
                                     <input type="text" name="dni" class="form-control readonly" id="dni">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <label for="nombre" class="form-label ">Nombre</label>
                                     <input type="text" name="nombre" class="form-control readonly" id="nombre">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <label for="primerApellido" class="form-label">Primer apellido</label>
                                     <input type="text" name="primerApellido" class="form-control" id="primerApellido">
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <label for="segundoApellido" class="form-label">Segundo apellido</label>
                                     <input type="text" name="segundoApellido" class="form-control" id="segundoApellido">
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <label for="correo" class="form-label">Correo</label>
+                                    <input type="email" name="correo" class="form-control" id="correo">
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <label for="celular" class="form-label">Celular</label>
+                                    <input type="text" name="celular" class="form-control" id="celular">
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                    <label for="telefono" class="form-label">Telefono</label>
+                                    <input type="text" name="telefono" class="form-control" id="telefono">
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                    <label for="edad" class="form-label">Edad</label>
+                                    <input type="number" name="edad" class="form-control" id="edad">
                                 </div>
                                 <div class="col-12">
                                     <label for="direccion" class="form-label">Direccion</label>
                                     <textarea class="form-control" name="direccion" id="direccion" cols="120" rows="4"></textarea>
                                 </div>
-                                <div class="col-12">
-                                    <label for="correo" class="form-label">Correo</label>
-                                    <input type="email" name="correo" class="form-control" id="correo">
-                                </div>
-                                <div class="col-12">
-                                    <label for="celular" class="form-label">Celular</label>
-                                    <input type="text" name="celular" class="form-control" id="celular">
-                                </div>
-                                <div class="col-12">
-                                    <label for="telefono" class="form-label">Telefono</label>
-                                    <input type="text" name="telefono" class="form-control" id="telefono">
-                                </div>
-                                <div class="col-12">
-                                    <label for="sueldo" class="form-label">Edad</label>
-                                    <input type="number" name="edad" class="form-control" id="edad">
-                                </div>
+                                
                                 <div class="row justify-content-center my-3">
                                     <div class="col-4">
                                         <a class="btn btn-outline-warning" 
@@ -144,7 +145,7 @@
                         <div class="tab-pane fade show active" id="clienteTabContent" role="tabpanel" aria-labelledby="ClienteTab">
                             <div class="d-flex justify-content-between my-2">
                                 <span class="display-6" style="font-size: xx-large !important;">
-                                    Clientes
+                                    <strong>Clientes</strong>
                                 </span>
                                 <div>
                                 <?php

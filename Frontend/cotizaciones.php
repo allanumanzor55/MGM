@@ -12,7 +12,7 @@
         <header>
             <?php include_once('nav.php'); ?>
         </header>
-        <div class="row" style="min-height: 9vh !important;"></div>
+        <div class="row" style="min-height: 8.2vh !important;"></div>
         <main class="row px-5 min-vh-100">
             <div class="align-items-start bg-light min-vh-100 pt-2">
                 <nav aria-label="breadcrumb">
@@ -24,10 +24,11 @@
                 <div class=" tab-content min-vh-50" id="pills-tabContentCotizacion">
                     <div class="tab-pane show active" id="tab-cotizacion" role="tabpanel" aria-labelledby="ingresarInventarioFinalTab">
                         <div class="d-flex justify-content-between my-2">
-                            <span class="display-6" style="font-size: xx-large !important;">
-                                Cotizaciones 
-                                <span id="titleCotizacion">Pendientes</span>
-                            </span>
+                                <span class="display-6" style="font-size: xx-large !important;">
+                                    <strong>Cotizaciones
+                                    <span id="titleCotizacion">Pendientes</span>
+                                    </strong>
+                                </span>
                             <?php
                                 include_once('../Backend/class/class-conexion.php');
                                 include_once('../Backend/class/class-login.php');
@@ -69,7 +70,7 @@
                     <div class="tab-pane fade" id="tab-clientes">
                         <div class="d-flex justify-content-between my-2">
                             <span class="display-6" style="font-size: xx-large !important;">
-                                Seleccionar Cliente
+                                <strong>Seleccionar Cliente</strong>
                             </span>
                             <a title="Volver a registros" href="#" onclick="mostrarTab('tab-cotizacion','tab-clientes')" class="btn btn-outline-secondary">
                                 <i class="zmdi zmdi-arrow-left"></i></a>
@@ -84,7 +85,7 @@
                     <div class="tab-pane fade" id="tab-ingresar" role="tabpanel" aria-labelledby="InventarioFinalTab">
                         <div class="d-flex justify-content-between my-2">
                             <span class="display-6" style="font-size: xx-large !important;">
-                                Cotizar
+                                <strong>Cotizar</strong>
                             </span>
                             <a title="Volver a registros" href="#" onclick="mostrarTab('tab-cotizacion','tab-ingresar')" class="btn btn-outline-success">
                                 <i class="zmdi zmdi-arrow-left"></i></a>
@@ -144,7 +145,7 @@
                     <div class="tab-pane fade" id="tab-catalogo" role="tabpanel" aria-labelledby="ingresarInventarioFinalTab">
                         <div class="d-flex justify-content-between my-2">
                             <span class="display-6" style="font-size: xx-large !important;">
-                                Catalogo De Productos
+                                <strong>Catalogo De Productos</strong>
                             </span>
                             <a title="Volver a registros" href="#" onclick="mostrarTab('tab-ingresar','tab-catalogo')" class="btn btn-outline-success">
                                 <i class="zmdi zmdi-arrow-left"></i></a>
@@ -156,7 +157,7 @@
                     <div class="tab-pane fade" id="tab-productos" role="tabpanel">
                         <div class="d-flex justify-content-between my-2">
                             <span class="display-6" style="font-size: xx-large !important;">
-                                Productos Cotizados
+                                <strong>Productos Cotizados</strong>
                             </span>
                             <a title="Volver a registros" href="#" onclick="mostrarTab('tab-cotizacion','tab-productos')" class="btn btn-outline-secondary">
                                 <i class="zmdi zmdi-arrow-left"></i></a>

@@ -8,55 +8,53 @@
 </head>
 
 <body>
-
+  <style>
+    .col.btn-outline-warning{
+      color: tomato;
+      border-color:  tomato;
+    }
+    .col.btn-outline-warning:hover{
+      color:white;
+      border-color: tomato;
+      background-color: tomato;
+    }
+  </style>
   <body id="bg-landing" class="container-fluid px-0">
     <div class="container-fluid bg-opacity min-vh-100 w-100">
       <header>
         <?php include_once('nav.php'); ?>
       </header>
-      <div class="row" style="min-height: 8.8vh !important;"></div>
+      <div class="row" style="min-height: 8.23vh !important;"></div>
       <main class="px-5">
         <div class="row justify-content-center bg-light px-0 pt-2">
           <div class="tab-content col-10 min-vh-100" id="tab-tabContent">
             <div class="tab-pane show active min-vh-100" id="tab-panel" role="tabpanel">
               <div class="d-flex justify-content-between my-2">
-                <span class="display-6" style="font-size: xx-large !important;">
-                  Panel de configuraciones
+                <span class="display-5" style="font-size: xx-large !important;">
+                  <strong>Panel de configuraciones</strong>
                 </span>
               </div>
-              <hr>
+              
               <div class="row align-items-center justify-content-center" style="min-height:75vh !important;">
                 <div class="col-10">
-                  <div class="row gy-2 justify-content-center">
-                    <div class="btn col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle" style="height: 180px !important; background: tomato !important;" onclick="mostrarTab('tab-categoria','tab-panel')">
-                      <div class="row h-100 align-items-center justify-content-center text-white">
-                        <span class="display-6 text-center">Categorias</span>
-                      </div>
+                  <div class="row gy-2 justify-content-center align-items-center">
+                    <div class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 btn btn-outline-warning align-middle pt-5" style="height: 180px !important;" onclick="mostrarTab('tab-categoria','tab-panel')">
+                      <span class="display-6 text-center">Categorias</span>
                     </div>
-                    <div class="btn col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle" style="height: 180px !important; background: tomato !important;" onclick="mostrarTab('tab-estilo','tab-panel')">
-                      <div class="row h-100 align-items-center justify-content-center text-white">
-                        <span class="display-6 text-center">Estilos</span>
-                      </div>
+                    <div class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle btn btn-outline-warning pt-5" style="height: 180px !important;" onclick="mostrarTab('tab-estilo','tab-panel')">
+                      <span class="display-6 text-center">Estilos</span>
                     </div>
-                    <div class="btn col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle" style="height: 180px !important; background: tomato !important;" onclick="mostrarTab('tab-tallas','tab-panel')">
-                      <div class="row h-100 align-items-center justify-content-center text-white">
-                        <span class="display-6 text-center">Tallas</span>
-                      </div>
+                    <div class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle btn btn-outline-warning pt-5" style="height: 180px !important;" onclick="mostrarTab('tab-tallas','tab-panel')">
+                      <span class="display-6 text-center">Tallas</span>
                     </div>
-                    <div class="btn col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle" style="height: 180px !important; background: tomato !important;" onclick="mostrarTab('tab-roles','tab-panel')">
-                      <div class="row h-100 align-items-center justify-content-center text-white">
-                        <span class="display-6 text-center">Roles</span>
-                      </div>
+                    <div class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle btn btn-outline-warning pt-5" style="height: 180px !important;" onclick="mostrarTab('tab-roles','tab-panel')">
+                      <span class="display-6 text-center">Roles</span>
                     </div>
-                    <div class="btn col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle" style="height: 180px !important; background: tomato !important;" onclick="mostrarTab('tab-cargos','tab-panel')">
-                      <div class="row h-100 align-items-center justify-content-center text-white">
-                        <span class="display-6 text-center">Cargos</span>
-                      </div>
+                    <div class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle btn btn-outline-warning pt-5" style="height: 180px !important;" onclick="mostrarTab('tab-cargos','tab-panel')">
+                      <span class="display-6 text-center">Cargos</span>
                     </div>
-                    <div class="btn col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle" style="height: 180px !important; background: tomato !important;">
-                      <div class="row h-100 align-items-center justify-content-center text-white">
-                        <span class="display-6 text-center">Empresa</span>
-                      </div>
+                    <div class="col col-12 col-sm-12 col-md-5 col-lg-5 col-xl-3 mx-1 align-middle btn btn-outline-warning pt-5" style="height: 180px !important;">
+                      <span class="display-6 text-center">Empresa</span>
                     </div>
                   </div>
                 </div>
@@ -68,25 +66,17 @@
                 <span class="display-6" style="font-size: xx-large !important;">
                   Categorias
                 </span>
-                <a href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-categoria')">
-                  <i class="zmdi zmdi-arrow-left"></i>
-                </a>
+                <span>
+                  <a href="#" href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-categoria')">
+                    <i class="zmdi zmdi-arrow-left"></i>
+                  </a>
+                  <a href="" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalIngresar" onclick="modificarModalIngresar('categoria')">
+                    <i class="zmdi zmdi-plus"></i>
+                  </a>
+                </span>
               </div>
-              <hr>
+              
               <div class="container-fluid">
-                <form class="row g-3 align-items-center" id="formCategoria" enctype="multipart/form-data">
-                  <input type="hidden" name="id" id="idCategoria" value="">
-                  <div class="col-4">
-                    <input type="text" class="form-control" id="descripcionCat" name="descripcion" placeholder="Descripcion">
-                  </div>
-                  <div class="col-4">
-                    <input type="text" class="form-control" id="material" name="material" placeholder="Material">
-                  </div>
-                  <div class="col-4">
-                    <a type="button" class="btn btn-outline-warning" onclick="guardarCategoria(this)" style="display: block !important;">Guardar</a>
-                    <a type="button" class="btn btn-outline-success" onclick="confirmarModificarCategoria(this)" value="modificar" style="display: none !important;">Modificar</a>
-                  </div>
-                </form>
                 <hr class="mx-auto my-3">
                 <div class="row">
                   <div class="table-responsive">
@@ -113,26 +103,17 @@
                 <span class="display-6" style="font-size: xx-large !important;">
                   Estilos
                 </span>
-                <a href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-estilo')">
-                  <i class="zmdi zmdi-arrow-left"></i>
-                </a>
+                <span>
+                  <a href="#" href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-estilo')">
+                    <i class="zmdi zmdi-arrow-left"></i>
+                  </a>
+                  <a href="" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalIngresar" onclick="modificarModalIngresar('estilo')">
+                      <i class="zmdi zmdi-plus"></i>
+                  </a>
+                </span>
               </div>
-              <hr>
+              
               <div class="container-fluid">
-                <form class="row g-3 align-items-center" id="formEstilo" enctype="multipart/form-data">
-                  <input type="hidden" name="id" id="idEstilo" value="">
-                  <div class="col-4">
-                    <select class="form-select" name="tipo" id="selectCategoria">
-                    </select>
-                  </div>
-                  <div class="col-4">
-                    <input type="text" class="form-control" id="estilo" name="estilo" placeholder="Estilo">
-                  </div>
-                  <div class="col-4">
-                    <a type="button" class="btn btn-outline-warning" onclick="guardarEstilo(this)" style="display: block !important;">Guardar</a>
-                    <a type="button" class="btn btn-outline-success" onclick="confirmarModificarEstilo(this)" value="modificar" style="display: none !important;">Modificar</a>
-                  </div>
-                </form>
                 <hr class="mx-auto my-3">
                 <div class="row">
                   <div class="table-responsive">
@@ -159,24 +140,17 @@
                 <span class="display-6" style="font-size: xx-large !important;">
                   Tallas
                 </span>
-                <a href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-tallas')">
-                  <i class="zmdi zmdi-arrow-left"></i>
-                </a>
+                <span>
+                  <a href="#" href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-tallas')">
+                    <i class="zmdi zmdi-arrow-left"></i>
+                  </a>
+                  <a href="" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalIngresar" onclick="modificarModalIngresar('talla')">
+                    <i class="zmdi zmdi-plus"></i>
+                  </a>
+                </span>
               </div>
-              <hr>
+              
               <div class="container-fluid">
-                <form class="row g-3 align-items-center" id="formTalla">
-                  <input type="hidden" name="id" id="idTalla">
-                  <div class="col-4">
-                    <div class="input-group">
-                      <input type="text" class="form-control" id="descripcionTal" name="descripcion" placeholder="Talla">
-                    </div>
-                  </div>
-                  <div class="col-4">
-                    <a type="button" class="btn btn-outline-warning" onclick="guardarTalla(this)" style="display: block !important;">Guardar</a>
-                    <a type="button" class="btn btn-outline-success" onclick="confirmarModificarTalla(this)" value="modificar" style="display: none !important;">Modificar</a>
-                  </div>
-                </form>
                 <hr class="mx-auto my-3">
                 <div class="row">
                   <div class="table-responsive">
@@ -201,18 +175,20 @@
                 <span class="display-6" style="font-size: xx-large !important;">
                   Roles
                 </span>
-                <div>
-                  <a class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-roles')">
-                    <i class="zmdi zmdi-arrow-left"></i>
-                  </a>
-                  <a title="Agregar" class="btn btn-outline-warning" 
-                  onclick="intercalarBotones('formRol2',true);limpiarFormulario('formRol');limpiarFormulario('formPermisos')"
-                  data-bs-toggle="modal" data-bs-target="#modalRol">
-                    <i class="zmdi zmdi-plus"></i>
-                  </a>
-                </div>
+                <span>
+                  <div>
+                    <a href="#" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-roles')">
+                      <i class="zmdi zmdi-arrow-left"></i>
+                    </a>
+                    <a title="Agregar" class="btn btn-outline-warning" 
+                    onclick="intercalarBotones('formRol2',true);limpiarFormulario('formRol');limpiarFormulario('formPermisos')"
+                    data-bs-toggle="modal" data-bs-target="#modalRol">
+                      <i class="zmdi zmdi-plus"></i>
+                    </a>
+                  </div>
+                </span>
               </div>
-              <hr>
+              
               <div class="row">
                 <div class="table-responsive">
                   <table class="table table-hover text-center" id="tableRol">
@@ -247,27 +223,16 @@
                 <span class="display-6" style="font-size: xx-large !important;">
                   Cargos
                 </span>
-                <a href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-cargos')">
-                  <i class="zmdi zmdi-arrow-left"></i>
-                </a>
+                <span>
+                  <a href="#" href="" class="btn btn-outline-secondary" onclick="mostrarTab('tab-panel','tab-cargos')">
+                    <i class="zmdi zmdi-arrow-left"></i>
+                  </a>
+                  <a href="" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modalIngresar" onclick="modificarModalIngresar('cargo')">
+                      <i class="zmdi zmdi-plus"></i>
+                  </a>
+                </span>
               </div>
-              <hr>
-              <form class="row g-3 align-items-center" id="formCargo">
-                <input type="hidden" name="id" id="idCargo">
-                <div class="col-4">
-                  <div class="input-group">
-                    <input type="text" class="form-control" id="descripcionTip" name="descripcion" placeholder="Cargo">
-                  </div>
-                </div>
-                <div class="col-4">
-                  <select class="form-select" name="rol" id="selectRoles">
-                  </select>
-                </div>
-                <div class="col-4">
-                  <a type="button" class="btn btn-outline-warning" onclick="guardarCargo(this)" style="display:block !important;">Guardar</a>
-                  <a type="button" class="btn btn-outline-success" onclick="confirmarModificarCargo(this)" value="modificar" style="display: none !important;">Modificar</a>
-                </div>
-              </form>
+              
               <hr class="mx-auto my-3">
               <div class="row">
                 <div class="table-responsive">
@@ -590,8 +555,22 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="modalIngresar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="body">
+          
+          </div>
+        </div>
+      </div>
+    </div>
     <footer>
       <script src="js/controladores/CRUD.js"></script>
+      <script src="js/controladores/Settings/others.js"></script>
       <script src="js/controladores/Settings/categorias.js"></script>
       <script src="js/controladores/Settings/cargos.js"></script>
       <script src="js/controladores/Settings/roles.js"></script>
@@ -601,10 +580,6 @@
         refrescarTablaTalla()
         refrescarTablaCargo()
         refrescarTablaRol()
-        rellenarSelect()
-        rellenarSelectEstilo()
-        rellenarSelectTalla()
-        rellenarSelectRoles()
         intercalarBotones("formCategoria", true)
       </script>
     </footer>

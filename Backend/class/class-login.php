@@ -145,9 +145,9 @@ class Login extends Conexion{
             echo $li;
         }else{
             echo self::habilitarModulo($permisos['empleados'],
-            '<li class="nav-item"><a title="Empleados" class="nav-link btn-mg-1 zmdi zmdi-male-alt zmdi-hc-2x" href="empleados.php"></a></li>');
+            '<li class="nav-item"><a title="Empleados" class="nav-link btn-mg-1" href="empleados.php">Cliente</a></li>');
             echo self::habilitarModulo($permisos['clientes'],
-            '<li class="nav-item"><a title="Clientes" class="nav-link btn-mg-1 zmdi zmdi-accounts zmdi-hc-2x" href="clientes.php"></a></li>');
+            '<li class="nav-item"><a title="Clientes" class="nav-link btn-mg-1" href="clientes.php">Empleados</a></li>');
         }
     }
     static function verf_perm($nivel,$permiso){

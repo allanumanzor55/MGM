@@ -1,11 +1,6 @@
-#bg-login{
-    background-image: url('../img/back-5.jpg') !important;
-    background-attachment: fixed;
-    background-size: 50%;
-}
-
 #gradient{
     background-image: url('../img/back-13.webp') !important;
+    background-size: cover !important;
 }
 
 .rounded-mg{

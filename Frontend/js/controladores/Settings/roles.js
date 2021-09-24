@@ -93,14 +93,14 @@ async function refrescarTablaRol() {
                 <td>${(rol.pedido==="0")?not:(rol.pedido==="1")?lec:(rol.pedido==="2")?edit:(rol.pedido==="3")?gest:adm}</td>
                 <td>${(rol.configuracion==="0")?not:(rol.configuracion==="1")?lec:(rol.configuracion==="2")?edit:(rol.configuracion==="3")?gest:adm}</td>
                 <td>
-                    <a title="Actualizar" class="btn btn-success" 
+                    <a title="Actualizar" class="btn btn-outline-success" 
                     data-bs-toggle="modal" data-bs-target="#modalRol"
                     onclick="modificarRol(this,${rol.idRol});intercalarBotones('formRol2',false)">
                         <i class=" zmdi  zmdi-refresh"></i>
                     </a>
                 </td>
                 <td>
-                    <a title="Eliminar" class="btn btn-danger" onclick="eliminarRol(this,${rol.idRol})">
+                    <a title="Eliminar" class="btn btn-outline-danger" onclick="eliminarRol(this,${rol.idRol})">
                         <i class=" zmdi  zmdi-delete"></i>
                     </a>
                 </td>

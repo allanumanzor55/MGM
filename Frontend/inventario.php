@@ -10,7 +10,7 @@
       <header>
         <?php include_once('nav.php'); ?>
       </header>
-      <div class="row" style="min-height: 8.8vh !important;"></div>
+      <div class="row" style="min-height: 8.2vh !important;"></div>
       <main class="row px-5">
         <div class="container vw-100 min-vh-100 bg-light">
           <nav aria-label="breadcrumb">
@@ -22,7 +22,7 @@
           <div class="table-responsive align-items-start bg-light min-vh-100">
               <div class="d-flex justify-content-between">
                 <span class="display-6 tituloBodega" style="font-size: xx-large !important;">
-                Inventario
+                  <strong>Inventario</strong>
                 </span>
                 <a href="guiaRemision.php" 
                   class="btn btn-outline-warning">

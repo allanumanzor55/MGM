@@ -1,6 +1,6 @@
 #bg-landing {
     width: auto !important;
-    background-image: url('../img/back-5.jpg') !important;
+    /*background-image: url('../img/back-5.jpg') !important;*/
     background-attachment: fixed;
     background-size: 35%;
 }

@@ -118,6 +118,8 @@ function mostrarMensaje(data) {
 function intercalarBotones(idForm, centinela) {
     let btnGuardar = document.querySelector(`form#${idForm} a.btn.btn-outline-warning`)
     let btnModificar = document.querySelector(`form#${idForm} a.btn.btn-outline-success`)
+    console.log(btnGuardar)
+    console.log(btnModificar)
     if (btnGuardar != null && btnModificar != null) {
         if (!centinela) {
             btnGuardar.style.display = "none";

@@ -30,7 +30,8 @@ async function logout() {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33f',
-        confirmButtonText: 'Si, seguro!!'
+        confirmButtonText: 'Si, seguro!!',
+        cancelButtonText: 'No'
     })
     if (r.isConfirmed) {
         let datosLogout = new FormData()
@@ -67,13 +68,8 @@ async function perfil() {
         el.disabled = true;
         el.style.border = 'none'
     })
-    document.getElementById('perfilDNI').value = datos.dni
-    document.getElementById('perfilUsuario').value = datos.usuario
-    document.getElementById('perfilNombres').value = datos.nombre
-    document.getElementById('perfilApellidos').value = datos.primerApellido + " " + datos.segundoApellido
-    document.getElementById('perfilCelular').value = datos.celular
-    document.getElementById('perfilTelefono').value = datos.telefono
-    document.getElementById('perfilDireccion').value = datos.direccion
+    document.getElementById('nombrePerfil').innerHTML = datos.nombre + " "+datos.primerApellido + " " + datos.segundoApellido
+    document.getElementById('usuarioPerfil').innerHTML = datos.usuario
 }
 
 async function navbar() {
