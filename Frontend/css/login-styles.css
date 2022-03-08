@@ -1,8 +1,10 @@
 #gradient{
-    background-image: url('../img/back-13.webp') !important;
-    background-size: cover !important;
+    background-image: url('../img/background-5.jpg') !important;
+    background-size: contain;
 }
-
+#back{
+    background-color: rgba(0,0,0,0.45) !important;
+}
 .rounded-mg{
     border-radius: 20px !important;
 }

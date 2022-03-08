@@ -2,6 +2,7 @@ const URL_LOGIN = '../Backend/api/login.php';
 async function login(btn) {
     btn.disabled = true
     var datosLogin = new FormData(document.getElementById('formLogin'));
+    
     datosLogin.append("accion", "LOGIN");
     const { data } = await axios.post(URL_LOGIN, datosLogin)
     console.log(data);

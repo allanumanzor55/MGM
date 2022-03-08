@@ -121,7 +121,7 @@
                                             $db = new Conexion();
                                             $cnn = $db->getConexion();
                                             $p = Login::obtenerPermiso($cnn,'clientes');
-                                            $p = Login::verf_perm("g",$p) || Login::verf_perm("adm",$p)?$p:-1;
+                                            $p = (Login::verf_perm("g",$p) || Login::verf_perm("adm",$p))?$p:-1;
                                             echo 'onclick="guardarCliente(this,'.$p.')"';
                                         ?>
                                         style="display: block !important;">Guardar</a>
@@ -155,7 +155,7 @@
                                     $cnn = $db->getConexion();
                                     $p = intval(Login::obtenerPermiso($cnn,'clientes'));
                                     echo 
-                                    Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                                    Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
                                     '<a href="#" class="btn btn-outline-success"
                                     onclick="mostrarTab(\'ingresarCliente\',\'clienteTabContent\')">
                                     <i class="zmdi zmdi-plus"></i>

@@ -55,6 +55,14 @@ class Login extends Conexion{
         }
     }
     
+    public static function verificarPM($cnn,$password){
+        $query = $cnn->prepare("CALL comprobarMasterPassword(?,@validado)");
+        $query->execute(array($password));
+        $result = $cnn->query("SELECT @validado as 'validado' ")->fetch(PDO::FETCH_ASSOC);
+        $validado = boolval($result['validado']);
+        return $validado;
+    }
+
     public static function validarLogin($cnn){
         $query = $cnn->prepare("CALL comprobarLogin(?,@validado);");
         $query->execute(array($_COOKIE['token']));
@@ -87,6 +95,7 @@ class Login extends Conexion{
             }
         }
     }
+
     public static function habilitarModulo($permiso,$modulo){
         if($permiso==0){
             return "";
@@ -96,28 +105,11 @@ class Login extends Conexion{
     }
 
     public static function generarMenu($permisos){
-        if($permisos['inventario'] and $permisos['bodegas']>0){
-            $inv = self::habilitarModulo($permisos['inventario'],
-            '<li class="nav-item"><a title="Inventario" class="nav-link btn-mg-1" href="inventario.php">Inventario</a></li>');
-            $bod = self::habilitarModulo($permisos['bodegas'],
-            '<li class="nav-item"><a title="Bodegas" class="nav-link btn-mg-1" href="bodegas.php">Bodegas</a></li>');
-            $li =
-            '<li class="nav-item dropdown">
-            <a class="nav-link btn-mg-1 dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Inventario
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                '.$inv.'
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                '.$bod.'
-            </ul>
-            </li>';
-            echo $li;
-        }else{
+        if($permisos['inventario']>0){
             echo self::habilitarModulo($permisos['inventario'],
-            '<li class="nav-item"><a title="Inventario" class="nav-link btn-mg-1" href="inventario.php"></a>Inventario</li>');
+            '<li class="nav-item"><a title="Inventario" class="nav-link btn-mg-1" href="inventario.php">Inventario</a></li>');
+        }
+        if($permisos['bodegas']>0){
             echo self::habilitarModulo($permisos['bodegas'],
             '<li class="nav-item"><a title="Bodegas" class="nav-link btn-mg-1" href="bodegas.php">Bodegas</a></li>');
         }
@@ -150,6 +142,7 @@ class Login extends Conexion{
             '<li class="nav-item"><a title="Clientes" class="nav-link btn-mg-1" href="clientes.php">Empleados</a></li>');
         }
     }
+
     static function verf_perm($nivel,$permiso){
         if($nivel=="l"){
             return $permiso==1 ?true:false;
@@ -160,7 +153,7 @@ class Login extends Conexion{
         }elseif($nivel=="adm"){
             return $permiso==4?true:false;
         }elseif($nivel=="an"){//anyway
-            return $permiso>=1 && $permiso<=4?true:false;
+            return ($permiso>=1 && $permiso<=4)?true:false;
         }else{
             return false;
         }

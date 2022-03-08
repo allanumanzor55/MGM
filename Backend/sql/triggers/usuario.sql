@@ -26,6 +26,7 @@ BEGIN
     SELECT COUNT(idCliente) INTO id FROM clientes;
     SELECT CONCAT(SUBSTR(NEW.nombre,1,2),NEW.primerApellido,id+1) INTO usuario;
     SELECT CONCAT(SUBSTR(usuario,3,1),SUBSTR(UUID(),3,7),SUBSTR(new.primerApellido,1,3)) INTO p;
+    
     INSERT INTO usuarios(usuario,TipoUsuario,password,token) VALUES(usuario,'CLIENTE',AES_ENCRYPT(HEX(p),usuario),0);
     SET NEW.usuario := usuario;
 END*

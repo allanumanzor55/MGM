@@ -36,7 +36,7 @@
                                     $cnn = $db->getConexion();
                                     $p = intval(Login::obtenerPermiso($cnn,'bodegas'));
                                     echo 
-                                    Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                                    Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
                                     '<a href="#" class="btn btn-outline-success"
                                     onclick="mostrarTab(\'tabIngresar\',\'tabBodegas\')">
                                     <i class="zmdi zmdi-plus"></i>

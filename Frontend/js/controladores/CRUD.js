@@ -178,17 +178,20 @@ async function accederConfiguraciones(btn) {
         showCancelButton: true,
         confirmButtonText: 'Ingresar',
         showLoaderOnConfirm: true,
-        preConfirm: (login) => {
-                if (login === "1234") {
-                    return true
-                } else {
+        preConfirm: async (login) => {
+                let datosLogin = new FormData();
+                datosLogin.append("password",login)
+                datosLogin.append("accion","MP")
+                const {data} = await axios.post('../Backend/api/login.php',datosLogin)
+                if (data) {
+                    return data
+                }else{
                     Swal.showValidationMessage(`Contraseña Incorrecta`)
                 }
-            } //,
-            //allowOutsideClick: () => !Swal.isLoading()
+            } 
     })
     if (response.isConfirmed) {
-        if (response.value == true) {
+        if (response.value) {
             window.location = "setting.php";
         }
     }

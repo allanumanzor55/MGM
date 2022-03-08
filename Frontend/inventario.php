@@ -73,19 +73,36 @@
                   <!--Materia Prima-->
                   <div class="tab-pane fade show active" id="tabContentInventarioMateriaPrima" role="tabpanel"
                   aria-labelledby="inventarioMateriaPrimaTab">
-                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                      <li class="nav-item" role=" presentation">
-                        <button class="nav-link nav-link-mg-1" id="ingresarPrima-tab" data-bs-toggle="tab" data-bs-target="#ingresarPrima" type="button" role="tab" aria-controls="ingresarPrima" aria-selected="true">Ingresar</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link nav-link-mg-1 active" id="cardInventarioPrima-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioPrima" type="button" role="tab" aria-controls="cardInventarioPrima" aria-selected="false"
-                        >Registros Inventario</button>
-                      </li>
+                    <ul class="nav nav-tabs mb-3 pb-2" id="myTab" role="tablist">
                       <li class="nav-item col ms-2" role="presentation">
                         <input type="text" class="form-control" placeholder="Buscar" id="buscarPrima" 
                         onkeyup="buscarInventario(this.value,'Prima')" 
                         onfocus="seleccionarTab('Prima',false,true)">
                       </li>
+                      <?php
+                        include_once('../Backend/class/class-conexion.php');
+                        include_once('../Backend/class/class-login.php');
+                        $db = new Conexion();
+                        $cnn = $db->getConexion();
+                        $p = intval(Login::obtenerPermiso($cnn,'clientes'));
+                        echo 
+                        Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
+                        '
+                        <li class="ms-2" id="ingresarBtnPrima">
+                        <a class="btn btn-outline-success" id="ingresarPrima-tab" data-bs-toggle="tab" data-bs-target="#ingresarPrima" type="button" role="tab" aria-controls="ingresarPrima" aria-selected="true"
+                        onclick="intercalarBotonInventario(\'Prima\',true)">
+                            <i class="zmdi zmdi-plus"></i>
+                        </a>
+                        </li>
+                        <li class="ms-2" id="regresarBtnPrima" style="display:none;">
+                          <a class="btn btn-outline-secondary" id="cardInventarioPrima-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioPrima" type="button" role="tab" aria-controls="cardInventarioPrima" aria-selected="false"
+                          onclick="intercalarBotonInventario(\'Prima\',false)">
+                          <i class="zmdi zmdi-arrow-left"></i>
+                          </a>
+                        </li>
+                        ':
+                        '';
+                      ?>
                     </ul>
                     <div class="tab-content min-vh-50" id="tabContentInventarioMateriaPrima">
                       <div class="tab-pane fade" id="ingresarPrima" role="tabpanel" aria-labelledby="ingresarPrima-tab">
@@ -163,19 +180,35 @@
                   <!--Materiales-->
                   <div class="tab-pane fade show" id="tabContentInventarioMateriales" role="tabpanel"
                   aria-labelledby="inventarioMateriaPrimaTab">
-                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                      <li class="nav-item" role=" presentation">
-                        <button class="nav-link nav-link-mg-1" id="ingresarMaterial-tab" data-bs-toggle="tab" data-bs-target="#ingresarMaterial" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link nav-link-mg-1 active" id="cardInventarioMaterial-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioMaterial" type="button" role="tab" aria-controls="cardInventario" aria-selected="false"
-                        >Registros Materiales</button>
-                      </li>
+                    <ul class="nav nav-tabs mb-3 pb-2" id="myTab" role="tablist">
                       <li class="nav-item col ms-2" role="presentation">
                         <input type="text" class="form-control" placeholder="Buscar" id="buscarMaterial" 
                         onkeyup="buscarInventario(this.value,'Material')" 
                         onfocus="seleccionarTab('Material',false,true)">
                       </li>
+                      <?php
+                        include_once('../Backend/class/class-conexion.php');
+                        include_once('../Backend/class/class-login.php');
+                        $db = new Conexion();
+                        $cnn = $db->getConexion();
+                        $p = intval(Login::obtenerPermiso($cnn,'clientes'));
+                        echo 
+                        Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
+                        '<li class="ms-2" id="ingresarBtnMaterial">
+                        <a class="btn btn-outline-success" id="ingresarMaterial-tab" data-bs-toggle="tab" data-bs-target="#ingresarMaterial" type="button" role="tab" aria-controls="ingresarMaterial" aria-selected="true"
+                        onclick="intercalarBotonInventario(\'Material\',true)">
+                            <i class="zmdi zmdi-plus"></i>
+                        </a>
+                        </li>
+                        <li class="ms-2" id="regresarBtnMaterial" style="display:none;">
+                          <a class="btn btn-outline-secondary" id="cardInventarioMaterial-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioMaterial" type="button" role="tab" aria-controls="cardInventarioMaterial" aria-selected="false"
+                          onclick="intercalarBotonInventario(\'Material\',false)">
+                          <i class="zmdi zmdi-arrow-left"></i>
+                          </a>
+                        </li>'
+                        :
+                        '';
+                      ?>
                     </ul>
                     <div class="tab-content min-vh-50" id="myTabContent">
                       <div class="tab-pane fade min-vh-50" id="ingresarMaterial" role="tabpanel" aria-labelledby="ingresarMaterial-tab">
@@ -236,19 +269,35 @@
                   <!--Herramientas-->
                   <div class="tab-pane fade show" id="tabContentInventarioHerramientas" role="tabpanel"
                   aria-labelledby="inventarioMateriaPrimaTab">
-                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                      <li class="nav-item" role=" presentation">
-                        <button class="nav-link nav-link-mg-1" id="ingresarHerramienta-tab" data-bs-toggle="tab" data-bs-target="#ingresarHerramienta" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link nav-link-mg-1 active" id="cardInventarioHerramienta-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioHerramienta" type="button" role="tab" aria-controls="cardInventario" aria-selected="false"
-                        >Registros Herramientas</button>
-                      </li>
+                    <ul class="nav nav-tabs mb-3 pb-2" id="myTab" role="tablist">
                       <li class="nav-item col ms-2" role="presentation">
                         <input type="text" class="form-control" placeholder="Buscar" id="buscarHerramienta" 
                         onkeyup="buscarInventario(this.value,'Herramienta')" 
                         onfocus="seleccionarTab('Herramienta',false,true)">
                       </li>
+                      <?php
+                        include_once('../Backend/class/class-conexion.php');
+                        include_once('../Backend/class/class-login.php');
+                        $db = new Conexion();
+                        $cnn = $db->getConexion();
+                        $p = intval(Login::obtenerPermiso($cnn,'clientes'));
+                        echo 
+                        Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
+                        '<li class="ms-2" id="ingresarBtnHerramienta">
+                        <a class="btn btn-outline-success" id="ingresarHerramienta-tab" data-bs-toggle="tab" data-bs-target="#ingresarHerramienta" type="button" role="tab" aria-controls="ingresarHerramienta" aria-selected="true"
+                        onclick="intercalarBotonInventario(\'Herramienta\',true)">
+                            <i class="zmdi zmdi-plus"></i>
+                        </a>
+                        </li>
+                        <li class="ms-2" id="regresarBtnHerramienta" style="display:none;">
+                          <a class="btn btn-outline-secondary" id="cardInventarioHerramienta-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioHerramienta" type="button" role="tab" aria-controls="cardInventarioHerramienta" aria-selected="false"
+                          onclick="intercalarBotonInventario(\'Herramienta\',false)">
+                            <i class="zmdi zmdi-arrow-left"></i>
+                          </a>
+                        </li>'
+                        :
+                        '';
+                      ?>
                     </ul>
                     <div class="tab-content min-vh-50" id="myTabContent">
                       <div class="tab-pane fade" id="ingresarHerramienta" role="tabpanel" aria-labelledby="ingresarHerramienta-tab">
@@ -301,19 +350,35 @@
                   <!--General-->
                   <div class="tab-pane fade show" id="tabContentInventarioGeneral" role="tabpanel"
                   aria-labelledby="inventarioMateriaPrimaTab">
-                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                      <li class="nav-item" role=" presentation">
-                        <button class="nav-link nav-link-mg-1" id="ingresarGeneral-tab" data-bs-toggle="tab" data-bs-target="#ingresarGeneral" type="button" role="tab" aria-controls="ingresar" aria-selected="true">Ingresar</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link nav-link-mg-1 active" id="cardInventarioGeneral-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioGeneral" type="button" role="tab" aria-controls="cardInventario" aria-selected="false"
-                        >Registros Inventario General</button>
-                      </li>
+                    <ul class="nav nav-tabs mb-3 pb-2" id="myTab" role="tablist">
                       <li class="nav-item col ms-2" role="presentation">
                         <input type="text" class="form-control" placeholder="Buscar" id="buscarGeneral" 
                         onkeyup="buscarInventario(this.value,'General')" 
                         onfocus="seleccionarTab('General',false,true)">
                       </li>
+                      <?php
+                        include_once('../Backend/class/class-conexion.php');
+                        include_once('../Backend/class/class-login.php');
+                        $db = new Conexion();
+                        $cnn = $db->getConexion();
+                        $p = intval(Login::obtenerPermiso($cnn,'clientes'));
+                        echo 
+                        Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
+                        '<li class="ms-2" id="ingresarBtnGeneral">
+                        <a class="btn btn-outline-success" id="ingresarGeneral-tab" data-bs-toggle="tab" data-bs-target="#ingresarGeneral" type="button" role="tab" aria-controls="ingresarGeneral" aria-selected="true"
+                        onclick="intercalarBotonInventario(\'General\',true)">
+                            <i class="zmdi zmdi-plus"></i>
+                        </a>
+                        </li>
+                        <li class="ms-2" id="regresarBtnGeneral" style="display:none;">
+                          <a class="btn btn-outline-secondary" id="cardInventarioGeneral-tab" data-bs-toggle="tab" data-bs-target="#cardInventarioGeneral" type="button" role="tab" aria-controls="cardInventarioGeneral" aria-selected="false"
+                          onclick="intercalarBotonInventario(\'General\',false)">
+                          <i class="zmdi zmdi-arrow-left"></i>
+                          </a>
+                        </li>'
+                        :
+                        '';
+                      ?>
                     </ul>
                     <div class="tab-content min-vh-50" id="myTabContent">
                       <div class="tab-pane fade" id="ingresarGeneral" role="tabpanel" aria-labelledby="ingresarGeneral-tab">

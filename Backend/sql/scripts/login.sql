@@ -59,3 +59,18 @@ BEGIN
     JOIN vw_usuarios us ON us.idRol = rol.idRol
     WHERE us.idUsuario = Id;
 END/
+
+CREATE OR REPLACE PROCEDURE generarMasterPassword()
+BEGIN
+    DELETE FROM master_password;
+    INSERT INTO master_password VALUES (AES_ENCRYPT(HEX(SUBSTR(UUID(),1,10)),'KarlaRafaelMario'));
+END/
+CREATE OR REPLACE PROCEDURE comprobarMasterPassword(IN MasterPassword TINYTEXT, OUT Validado BOOLEAN)
+BEGIN
+    DECLARE c TINYTEXT;
+    SET Validado := FALSE;
+    SELECT CONVERT(UNHEX(AES_DECRYPT(contra,'KarlaRafaelMario')) USING utf8) INTO c FROM master_password;
+    IF c = MasterPassword THEN
+        SET Validado = TRUE;
+    END IF;
+END/

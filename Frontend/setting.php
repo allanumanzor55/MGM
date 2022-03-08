@@ -33,6 +33,9 @@
                 <span class="display-5" style="font-size: xx-large !important;">
                   <strong>Panel de configuraciones</strong>
                 </span>
+                <a href="#" class="mt-2 pt-1" style="color:tomato;">
+                  Cambiar contraseña maestra
+                </a>
               </div>
               
               <div class="row align-items-center justify-content-center" style="min-height:75vh !important;">

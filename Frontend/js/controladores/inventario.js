@@ -51,7 +51,7 @@ async function modificarInventario(btn, id, clase) {
     const datos = await obtener(URL_INVENTARIO, { clase: clase, id: id })
     intercalarBotones(D_INVENTARIO.idForm + clase, false)
     seleccionarTab(clase, true, false)
-    document.getElementById(`ingresar${clase}-tab`).innerHTML = 'Modificar'
+    intercalarBotonInventario(clase,true)
     rellenarFormulario(datos, clase)
 }
 
@@ -69,7 +69,7 @@ async function modificarStock(btn, id, clase) {
         try {
             let datos = { id: id, stock: result.value, campoModificado: "stock", tipoInventario: clase }
             const { data } =
-            await axios.put(URL_INVENTARIO, datos)
+                await axios.put(URL_INVENTARIO, datos)
             mostrarMensaje(data)
         } catch (e) {
             Swal.fire({ icon: 'error', title: "Algo salio mal...", text: e.message })
@@ -98,34 +98,34 @@ async function mostrarDatosInventario(id, clase) {
                             <th>Descripcion</th>
                             <td>${datos.descripcion}</td>
                         </tr>
-                        ${(clase!="Prima")?
-                            ``:
-                            `<tr>
-                                <td><strong>Categoria  </strong>${datos.tipo}</td>
-                                <td><strong>Material  </strong>${datos.material}</td>
-                            </tr>
-                            <tr>
-                                <th>Estilo</th>
-                                <td>${datos.estilo}</td>
-                            </tr>
-                            ${(datos.tipo.toLowerCase()=="camisa" && datos.tipo.toLowerCase()=="pantalon")?
-                                ``:
-                                `<tr><th>Talla</th><td>${datos.talla}</td></tr>`
-                            }`
-                        }
-                        ${(clase=="General")?
-                            ``:
-                            `<tr>
-                                <th>Proveedor</th>
-                                <td>${datos.empresa}</td>
-                            </tr>`
-                        }
-                        ${(clase!="Herramienta"||clase!="General")?
-                            ``:
-                            `<tr>
-                                <th>Precio</th>
-                                <td>${datos.precio}</td>
-                            </tr>`
+                        ${(clase != "Prima") ?
+                        `` :
+                        `<tr>
+                            <td><strong>Categoria  </strong>${datos.tipo}</td>
+                            <td><strong>Material  </strong>${datos.material}</td>
+                        </tr>
+                        <tr>
+                            <th>Estilo</th>
+                            <td>${datos.estilo}</td>
+                        </tr>
+                        ${(datos.tipo.toLowerCase() == "camisa" && datos.tipo.toLowerCase() == "pantalon") ?
+                        `` :
+                        `<tr><th>Talla</th><td>${datos.talla}</td></tr>`
+                        }`
+                    }
+                        ${(clase == "General") ?
+                        `` :
+                        `<tr>
+                            <th>Proveedor</th>
+                            <td>${datos.empresa}</td>
+                        </tr>`
+                    }
+                        ${(clase != "Herramienta" || clase != "General") ?
+                        `` :
+                        `<tr>
+                            <th>Precio</th>
+                            <td>${datos.precio}</td>
+                        </tr>`
                         }
                         <tr>
                             <th>Stock</th>
@@ -135,9 +135,9 @@ async function mostrarDatosInventario(id, clase) {
                 </table>
             </div>
         </div>`
-    content+=`</div>`
-    document.querySelector('#datosInventario').innerHTML=content
-    document.querySelector('#inventarioModalFooter').innerHTML=
+    content += `</div>`
+    document.querySelector('#datosInventario').innerHTML = content
+    document.querySelector('#inventarioModalFooter').innerHTML =
     `<button type="button" class="btn btn-outline-secondary" 
     data-bs-dismiss="modal">Cerrar</button>
     <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal"
@@ -146,37 +146,36 @@ async function mostrarDatosInventario(id, clase) {
     </button>`
 }
 
-async function seleccionarTab(clase,centinela){
-    if(centinela){
-        document.getElementById(`cardInventario${clase}`).classList.remove('active','show')
-        document.getElementById(`cardInventario${clase}-tab`).classList.remove('active')
-        document.getElementById(`ingresar${clase}`).classList.add('active','show')
-        document.getElementById(`ingresar${clase}-tab`).classList.add('active')
-    }else{
-        await refrescarCardsInventario(clase,'Inventario')
-        document.getElementById(`cardInventario${clase}`).classList.add('active','show')
-        document.getElementById(`cardInventario${clase}-tab`).classList.add('active')
-        document.getElementById(`ingresar${clase}`).classList.remove('active','show')
-        document.getElementById(`ingresar${clase}-tab`).classList.remove('active')
+async function seleccionarTab(clase, centinela) {
+    if (centinela) {
+        document.getElementById(`cardInventario${clase}`).classList.remove('active', 'show')
+        document.getElementById(`ingresar${clase}`).classList.add('active', 'show')
+    } else {
+        await refrescarCardsInventario(clase, 'Inventario')
+        document.getElementById(`cardInventario${clase}`).classList.add('active', 'show')
+        document.getElementById(`ingresar${clase}`).classList.remove('active', 'show')
     }
 }
 
-async function confirmarModificarInventario(btn,clase){
-    let idForm = D_INVENTARIO.idForm+clase
-    await modificar(btn,URL_INVENTARIO,{clase:clase,idForm:idForm})
-    intercalarBotones(D_INVENTARIO.idForm+clase,true)
-    document.getElementById(`ingresar${clase}-tab`).innerHTML = 'Ingresar'
-    window.scroll(0,0)
-    document.querySelectorAll(`.form-select, .label-bodega`).forEach(el=>el.style.display='block')
+async function confirmarModificarInventario(btn, clase) {
+
+    let idForm = D_INVENTARIO.idForm + clase
+    await modificar(btn, URL_INVENTARIO, { clase: clase, idForm: idForm })
+    intercalarBotones(D_INVENTARIO.idForm + clase, true)
+    intercalarBotonInventario(clase,false)
+    seleccionarTab(clase,false)
+    window.scroll(0, 0)
+    document.querySelectorAll(`.form-select, .label-bodega`).forEach(el => el.style.display = 'block')
 }
 
-function rellenarFormulario(datos,clase){
+function rellenarFormulario(datos, clase) {
+
     let form = document.getElementById(`formInventario${clase}`).querySelectorAll('input,select')
     form[0].value = datos.idInventario
     form[1].style.display = 'none'
-    document.querySelectorAll('.label-bodega').forEach(el=> el.style.display = 'none')
-    if(clase=="Prima"){
-        rellenarSelectEstilo(datos.idTipo,datos.tipo)
+    document.querySelectorAll('.label-bodega').forEach(el => el.style.display = 'none')
+    if (clase == "Prima") {
+        rellenarSelectEstilo(datos.idTipo, datos.tipo)
         form[2].value = datos.idTipo
         form[3].value = datos.idCategoria
         form[4].value = datos.idTalla
@@ -187,7 +186,7 @@ function rellenarFormulario(datos,clase){
         form[9].value = datos.stock
         form[10].value = datos.precio
         form[11].value = datos.puntoReorden
-    }else if(clase=="Material"){    
+    } else if (clase == "Material") {
         form[2].value = datos.idProveedor
         //2
         form[4].value = datos.descripcion
@@ -195,50 +194,50 @@ function rellenarFormulario(datos,clase){
         form[6].value = datos.stock
         form[7].value = datos.precio
         form[8].value = datos.puntoReorden
-    }else if(clase=="Herramienta"){
+    } else if (clase == "Herramienta") {
         form[2].value = datos.idProveedor
         //2
         form[4].value = datos.descripcion
         form[5].value = datos.marca
         form[6].value = datos.stock
-    }else if(clase =="General"){
+    } else if (clase == "General") {
         //2
         form[3].value = datos.descripcion
         form[4].value = datos.stock
     }
 }
 
-function rellenarCardsInv(datos,clase,opcion){
+function rellenarCardsInv(datos, clase, opcion) {
     let idCard = `cardInventario${clase}`
     let content = `<div class="row pb-2 min-vh-50">`
-    let dInv=""
-    if(opcion!="Inventario"){
-        document.getElementById('cardInventarioPrima').innerHTML=``
-        document.getElementById('cardInventarioMaterial').innerHTML=``
+    let dInv = ""
+    if (opcion != "Inventario") {
+        document.getElementById('cardInventarioPrima').innerHTML = ``
+        document.getElementById('cardInventarioMaterial').innerHTML = ``
         //document.getElementById('tablaMateriales').innerHTML=``
     }
     if (Array.isArray(datos)) {
-        if(datos.length==0){
+        if (datos.length == 0) {
             document.getElementById(idCard).innerHTML = `No Existen Registros`
-        }else{
+        } else {
             datos.forEach(Inv => {
                 let advertencia = ""
-                if(clase=="Material" || clase=="Prima"){
+                if (clase == "Material" || clase == "Prima") {
                     let puntoR = parseInt(Inv.puntoReorden)
                     let stock = parseInt(Inv.stock)
-                    if(stock>puntoR){
+                    if (stock > puntoR) {
                         advertencia = `<i class="zmdi zmdi-circle zmdi-hc-lg text-success"></i>`
-                    }else if(stock==puntoR){
+                    } else if (stock == puntoR) {
                         advertencia = `<i class="zmdi zmdi-circle zmdi-hc-lg text-warning"></i>`
-                    }else if(stock<puntoR){
+                    } else if (stock < puntoR) {
                         advertencia = `<i class="zmdi zmdi-circle zmdi-hc-lg text-danger"></i>`
                     }
                 }
-                dInv = (clase=="Material")?
-                `${Inv.idInventario}|${Inv.descripcion}|${Inv.empresa}|${Inv.marca}|${Inv.precio}`:(clase=="Prima")?
-                `${Inv.idInventario}|${Inv.descripcion}|${Inv.tipo}|${Inv.material}|${Inv.estilo}|${Inv.talla}|${Inv.empresa}`:``
+                dInv = (clase == "Material") ?
+                    `${Inv.idInventario}|${Inv.descripcion}|${Inv.empresa}|${Inv.marca}|${Inv.precio}` : (clase == "Prima") ?
+                        `${Inv.idInventario}|${Inv.descripcion}|${Inv.tipo}|${Inv.material}|${Inv.estilo}|${Inv.talla}|${Inv.empresa}` : ``
                 content +=
-                    `${(opcion=="Inventario")?
+                    `${(opcion == "Inventario") ?
                         `<div class="col-sm-4 col-md-4 col-lg-3">`
                         :
                         `<div class="col-sm-6 col-md-4 col-lg-3">`
@@ -248,45 +247,57 @@ function rellenarCardsInv(datos,clase,opcion){
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <span>
-                                        ${(Inv.descripcion.substr(0,30)+((Inv.descripcion.length>30)?"...":"")).toUpperCase()}
+                                        ${(Inv.descripcion.substr(0, 30) + ((Inv.descripcion.length > 30) ? "..." : "")).toUpperCase()}
                                     </span>
                                     <p class="card-text">
-                                        ${(opcion=="Inventario")?advertencia:``}    
+                                        ${(opcion == "Inventario") ? advertencia : ``}    
                                     </p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between mx-2">
-                                ${(opcion=="Inventario")?
-                                    //Inv
-                                    `<div>
-                                        <a href="#" class="btn btn-outline-warning  zmdi  zmdi-plus"
-                                        data-bs-toggle="modal" data-bs-target="#inventarioModal" 
-                                        onmouseover="this.style.color='white'" onmouseout="this.style.color='#ffc107'"
-                                        onclick="mostrarDatosInventario(${Inv.idInventario},'${clase}')"></a>
-                                    </div>
-                                    <div>
-                                    <a title="Actualizar" href="#" class="btn btn-outline-success  zmdi  zmdi-refresh" 
-                                        onclick="modificarInventario(this,${Inv.idInventario},'${clase}')"></a>
-                                    <a title="Eliminar" href="#" class="btn btn-outline-danger  zmdi  zmdi-delete"
-                                    onclick="eliminarInventario(this,${Inv.idInventario},'${clase}')"></a>
-                                    </div>`
-                                    :
-                                    `${(opcion=="guiaRemision")?
-                                        //Guia de remision
-                                        `<a title="Agregar" href="#" class="btn btn-outline-success  zmdi  zmdi-plus"
+                                ${(opcion == "Inventario") ?
+                        //Inv
+                        `<div>
+                            <a href="#" class="btn btn-outline-warning  zmdi  zmdi-plus"
+                            data-bs-toggle="modal" data-bs-target="#inventarioModal" 
+                            onmouseover="this.style.color='white'" onmouseout="this.style.color='#ffc107'"
+                            onclick="mostrarDatosInventario(${Inv.idInventario},'${clase}')"></a>
+                        </div>
+                        <div>
+                            <a title="Actualizar" href="#" class="btn btn-outline-success  zmdi  zmdi-refresh" 
+                                onclick="modificarInventario(this,${Inv.idInventario},'${clase}')"></a>
+                            <a title="Eliminar" href="#" class="btn btn-outline-danger  zmdi  zmdi-delete"
+                            onclick="eliminarInventario(this,${Inv.idInventario},'${clase}')"></a>
+                        </div>`
+                        :
+                        `${(opcion == "guiaRemision") ?
+                            //Guia de remision
+                            `<a title="Agregar" href="#" class="btn btn-outline-success  zmdi  zmdi-plus"
                                         onclick="agregarInventarioGuia(this,${Inv.idInventario},'${clase}')"></a>`
-                                        :
-                                        `<a title="Agregar" href="#" class="btn btn-outline-success  zmdi  zmdi-plus" 
-                                        ${(clase=="Material")?`data-bs-toggle="modal" data-bs-target="#cantidadMaterialModal"`:``}
-                                        ${(clase=="Prima"?`data-bs-dismiss="modal"`:``)}
+                            :
+                            `<a title="Agregar" href="#" class="btn btn-outline-success  zmdi  zmdi-plus" 
+                                        ${(clase == "Material") ? `data-bs-toggle="modal" data-bs-target="#cantidadMaterialModal"` : ``}
+                                        ${(clase == "Prima" ? `data-bs-dismiss="modal"` : ``)}
                                         onclick="agregarIdMaterial(this,${dInv},'${clase}')"></a>`
-                                    }`
-                                }</div></div></div>`
+                        }`
+                    }</div></div></div>`
             })
             content += `</div>`;
             document.getElementById(idCard).innerHTML = content
         }
     } else {
         document.getElementById(idCard).innerHTML = `No Existen Registros`
+    }
+}
+
+function intercalarBotonInventario(tipo, centinela) {
+    let btnIngresar = document.getElementById(`ingresarBtn${tipo}`)
+    let btnRegresar = document.getElementById(`regresarBtn${tipo}`)
+    if (centinela) {
+        btnIngresar.style.display = 'none'
+        btnRegresar.style.display = 'block'
+    } else {
+        btnIngresar.style.display = 'block'
+        btnRegresar.style.display = 'none'
     }
 }

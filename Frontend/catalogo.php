@@ -33,7 +33,7 @@
                             $db = new Conexion();$cnn = $db->getConexion();
                             $p = intval(Login::obtenerPermiso($cnn,'catalogo'));
                             echo 
-                            Login::verf_perm("e",$p) || Login::verf_perm("g",$p)?
+                            Login::verf_perm("e",$p)||Login::verf_perm("g",$p)||Login::verf_perm("adm",$p)?
                             '<a title="Agregar Producto" href="#" class="btn btn-outline-success"
                             onclick="mostrarTab(\'tab-ingresar\',\'tab-catalogo\')">
                             <i class="zmdi zmdi-plus"></i>

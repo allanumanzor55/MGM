@@ -18,5 +18,10 @@ switch($_POST['accion']){
     case 'LOGOUT':
         Login::logout($cnn);
     break;
+    case 'MP':
+        if(isset($_POST['password'])){
+            echo Login::verificarPM($cnn,$_POST['password']);
+        }
+    break;
 }
 ?>
